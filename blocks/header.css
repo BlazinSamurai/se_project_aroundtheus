@@ -1,0 +1,29 @@
+.header {
+  margin-top: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.header__logo-image {
+  max-width: 173px;
+  max-height: 33px;
+  padding-bottom: 41px;
+}
+
+.header__line {
+  max-width: 880px;
+  border-bottom: 1px solid #545454;
+  flex-grow: 1;
+  opacity: 70%;
+}
+
+@media screen and (max-width: 425px) {
+  .header {
+    margin: 0;
+  }
+
+  .header__logo-image {
+    margin: 28px 167px 0 27px;
+  }
+}

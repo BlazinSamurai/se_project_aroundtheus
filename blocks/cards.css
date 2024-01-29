@@ -1,0 +1,44 @@
+.cards {
+  margin-top: 30px;
+}
+
+.card__list {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, 282px);
+  grid-gap: 20px 17px;
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  max-width: 282px;
+  max-height: 361px;
+}
+
+.card__image {
+  width: 282px;
+  height: 282px;
+  border-radius: 10px 10px 0 0;
+}
+
+.card__description {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: white;
+  color: black;
+  height: 79px;
+  border-radius: 0 0 10px 10px;
+  font-family: Inter, sans-serif;
+  font-weight: 900;
+}
+
+.card__button-like {
+  background: transparent url(../images/heart.icon.svg) center no-repeat;
+  width: 21px;
+  height: 18px;
+  border-style: none;
+}
