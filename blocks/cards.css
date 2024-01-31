@@ -36,9 +36,21 @@
   font-weight: 900;
 }
 
+.card__title {
+  max-width: 220px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .card__button-like {
   background: transparent url(../images/heart.icon.svg) center no-repeat;
   width: 21px;
   height: 18px;
   border-style: none;
+  opacity: 100%;
+}
+
+.card__button-like:hover {
+  opacity: 50%;
 }
