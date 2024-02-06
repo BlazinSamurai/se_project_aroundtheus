@@ -1,4 +1,4 @@
-.cards {
+.card-section {
   margin-top: 30px;
 }
 
@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   max-width: 282px;
-  max-height: 361px;
+  min-height: 361px;
 }
 
 .card__image {
@@ -30,10 +30,8 @@
   justify-content: space-around;
   background-color: white;
   color: black;
-  height: 79px;
+  min-height: 79px;
   border-radius: 0 0 10px 10px;
-  font-family: Inter, sans-serif;
-  font-weight: 900;
 }
 
 .card__title {
@@ -41,6 +39,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 900;
+  margin: 0;
 }
 
 .card__button-like {

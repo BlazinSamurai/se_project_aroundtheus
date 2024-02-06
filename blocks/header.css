@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  border-bottom: rgb(84 84 84 / 70%);
+  border-style: solid;
 }
 
 .header__logo-image {
@@ -29,11 +31,7 @@
 }
 
 @media screen and (max-width: 425px) {
-  .header {
-    margin: 0;
-  }
-
   .header__logo-image {
-    margin: 28px 167px 0 27px;
+    margin-right: 167px;
   }
 }

@@ -4,13 +4,13 @@
 }
 
 .footer__text {
-  width: 318px;
-  height: 18px;
+  max-width: 318px;
   font-family: Inter;
   font-weight: 400;
   font-size: 18px;
   line-height: 21.78px;
   color: #545454;
+  margin: 0;
 }
 
 @media screen and (max-width: 880px) {
@@ -23,6 +23,5 @@
 @media screen and (max-width: 425px) {
   .footer {
     max-width: 282px;
-    margin: 48px auto 36px;
   }
 }
