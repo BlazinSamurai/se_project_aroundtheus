@@ -5,19 +5,13 @@
   justify-content: flex-start;
   border-bottom: rgb(84 84 84 / 70%);
   border-style: solid;
+  border-width: 1px;
 }
 
 .header__logo-image {
   max-width: 173px;
   max-height: 33px;
   padding-bottom: 41px;
-}
-
-.header__line {
-  max-width: 880px;
-  border-bottom: 1px solid #545454;
-  flex-grow: 1;
-  opacity: 70%;
 }
 
 @media screen and (max-width: 880px) {

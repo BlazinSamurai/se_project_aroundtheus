@@ -96,11 +96,11 @@
 @media screen and (max-width: 425px) {
   .profile {
     flex-direction: column;
-    align-items: center;
   }
 
   .profile__avatar {
-    padding-bottom: 30px;
+    padding: 42px 99px 30px 101px;
+    margin: 0;
   }
 
   .profile__info {
@@ -113,7 +113,7 @@
   }
 
   .profile__name {
-    font-family: Inter;
+    font-family: Inter, Arial, sans-serif;
     font-weight: 500;
     font-size: 22px;
     line-height: 26.63px;
@@ -134,14 +134,8 @@
     margin-top: 14px;
   }
 
-  .profile__description {
-    width: 100%;
-    text-align: center;
-  }
-
   .profile__button-add {
     margin: 0;
     width: 282px;
-    height: 50px;
   }
 }

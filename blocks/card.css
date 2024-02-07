@@ -1,5 +1,5 @@
-.card-section {
-  margin-top: 30px;
+.card {
+  margin-top: 51px;
 }
 
 .card__list {
@@ -11,7 +11,7 @@
   padding: 0;
 }
 
-.card {
+.card__section {
   display: flex;
   flex-direction: column;
   max-width: 282px;
