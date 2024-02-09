@@ -44,6 +44,7 @@
 
 .profile__button-edit:hover {
   opacity: 60%;
+  cursor: pointer;
 }
 
 .profile__bio {
@@ -72,9 +73,10 @@
 
 .profile__button-add:hover {
   opacity: 60%;
+  cursor: pointer;
 }
 
-@media screen and (max-width: 880px) {
+@media screen and (max-width: 879px) {
   .profile {
     max-width: 581px;
   }
@@ -113,8 +115,6 @@
   }
 
   .profile__name {
-    font-family: Inter, Arial, sans-serif;
-    font-weight: 500;
     font-size: 22px;
     line-height: 26.63px;
   }
@@ -129,8 +129,6 @@
     width: 100%;
     font-size: 14px;
     line-height: 16.94px;
-    display: flex;
-    justify-content: center;
     margin-top: 14px;
   }
 
