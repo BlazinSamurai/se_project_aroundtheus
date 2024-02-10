@@ -30,6 +30,9 @@
   }
 
   .header__logo-image {
+    max-width: 126px;
+    max-height: 24px;
+    padding-bottom: 32px;
     margin-right: 0;
   }
 }
