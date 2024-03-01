@@ -25,26 +25,53 @@ const initialCards = [
   },
 ];
 
-/*
- * You’ll implement the opening and closing of the modal box.
- * The modal box must be opened once the user clicks on the "Edit" button,
- * and be closed upon clicking on the close button in the upper right
- * corner. Use the addEventListener() method to detect when the user
- * clicks on these buttons. Save your JS in the /scripts folder inside
- * the project.
- */
-
 let profileEditButton = document.querySelector(".profile__button-edit");
-let modalCloseButton = document.querySelector(".modal");
+let modal = document.querySelector(".modal");
+let modalCloseButton = modal.querySelector(".modal__close");
+let modalSaveButton = modal.querySelector(".modal__button");
+let modalForm = modal.querySelector(".modal__form");
+let modalInputName = modal.querySelector(".modal__input-top");
+let modalInputBio = modal.querySelector(".modal__input-bottom");
+let profileName = document.querySelector(".profile__name");
+let profileBio = document.querySelector(".profile__bio");
+let cardListEl = document.querySelector(".card__list");
+let cardTemplate =
+  document.querySelector("#card-template").content.firstElementChild;
 
-function openModal() {
-  modalCloseButton.classList.add("modal_opened");
+function close() {
+  modal.classList.remove("modal_opened");
 }
 
-profileEditButton.addEventListener("click", openModal);
-
-function closeModal() {
-  modalCloseButton.classList.remove("modal_opened");
+function getCardElement(cardData) {
+  let cardElement = cardTemplate.cloneNode(true);
+  let cardImageEl = cardElement.querySelector(".card__image");
+  let cardTitleEl = cardElement.querySelector(".card__title");
+  cardImageEl.src = cardData.link;
+  cardTitleEl.textContent = cardData.name;
+  return cardElement;
 }
 
-modalCloseButton.addEventListener("click", closeModal);
+profileEditButton.addEventListener("click", () => {
+  modal.classList.add("modal_opened");
+
+  modal
+    .querySelector(".modal__input-top")
+    .setAttribute("placeholder", profileName.textContent);
+  modal
+    .querySelector(".modal__input-bottom")
+    .setAttribute("placeholder", profileBio.textContent);
+});
+
+modalCloseButton.addEventListener("click", close());
+
+modalForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  profileName.textContent = modalInputName.value;
+  profileBio.textContent = modalInputBio.value;
+  close();
+});
+
+initialCards.forEach((cardData) => {
+  let cardElement = getCardElement(cardData);
+  cardListEl.append(cardElement);
+});
