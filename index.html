@@ -45,22 +45,24 @@
 
     <div class="modal">
       <div class="modal__container">
-        <button class="modal__close"></button>
-        <p class="modal__heading">Edit Profile</p>
+        <button class="modal__close" type="button"></button>
+        <h2 class="modal__heading">Edit Profile</h2>
         <form class="modal__form">
           <input
             class="modal__input modal__input-top"
             type="text"
             name="name"
             placeholder="Name"
+            required
           />
           <input
             class="modal__input modal__input-bottom"
             type="text"
             name="bio"
             placeholder="Bio"
+            required
           />
-          <button class="modal__button">Save</button>
+          <button class="modal__button" type="submit">Save</button>
         </form>
       </div>
     </div>
@@ -75,7 +77,6 @@
       </li>
     </template>
 
-    <script src="./challenges/script.js"></script>
-    <script src="./scripts/index.js"></script>
+    <script src="./scripts/index.js" defer></script>
   </body>
 </html>
