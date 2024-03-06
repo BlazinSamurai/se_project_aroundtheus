@@ -44,7 +44,7 @@
 }
 
 .modal__heading {
-  width: 330px;
+  width: 100%;
   height: 23px;
   font-family: Inter, Arial, sans-serif;
   font-weight: 900;
@@ -54,7 +54,7 @@
 }
 
 .modal__form {
-  width: 358px;
+  width: 100%;
   border-bottom: 1px;
   border-color: #000;
   display: flex;
