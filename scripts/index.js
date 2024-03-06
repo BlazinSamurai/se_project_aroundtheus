@@ -49,9 +49,9 @@ function closeModal() {
 
 function getCardElement(cardData) {
   const cardElement = cardTemplate.cloneNode(true);
-  let cardImageEl = cardElement.querySelector(".card__image");
-  let cardTitleEl = cardElement.querySelector(".card__title");
-  let cardAltNameEl = cardElement.querySelector(".card__image");
+  const cardImageEl = cardElement.querySelector(".card__image");
+  const cardTitleEl = cardElement.querySelector(".card__title");
+  const cardAltNameEl = cardElement.querySelector(".card__image");
   cardImageEl.src = cardData.link;
   cardTitleEl.textContent = cardData.name;
   cardAltNameEl.alt = cardData.altName;
