@@ -43,11 +43,12 @@
       <h3 class="footer__text">&copy; 2022 Around The U.S.</h3>
     </footer>
 
-    <div class="modal">
+    <!-- Edit Modal -->
+    <div class="modal" id="edit-modal">
       <div class="modal__container">
         <button class="modal__close" type="button"></button>
         <h2 class="modal__heading">Edit Profile</h2>
-        <form class="modal__form">
+        <form class="modal__form" id="edit-modal-form">
           <input
             class="modal__input"
             id="modal-input-top"
@@ -69,15 +70,65 @@
       </div>
     </div>
 
+    <!-- Add Modal -->
+    <div class="modal" id="add-modal">
+      <div class="modal__container">
+        <button class="modal__close" type="button"></button>
+        <h2 class="modal__heading">New Place</h2>
+        <form class="modal__form" id="add-modal-form">
+          <input
+            class="modal__input"
+            id="modal-input-top-add"
+            type="text"
+            name="title"
+            placeholder="Tilte"
+            required
+          />
+          <input
+            class="modal__input"
+            id="modal-input-bottom-add"
+            type="text"
+            name="url"
+            placeholder="Image URL"
+            required
+          />
+          <button class="modal__button" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Card Template -->
     <template id="card-template">
       <li class="card__section">
+        <button
+          class="card__button-trash"
+          id="card-button-trash"
+          type="button"
+        ></button>
         <img src="" alt="" class="card__image" />
         <div class="card__description">
           <h2 class="card__title"></h2>
-          <button class="card__button-like" type="button"></button>
+          <button
+            class="card__button-like"
+            id="card-button-like"
+            type="button"
+          ></button>
         </div>
       </li>
     </template>
+
+    <!-- Preview Modal -->
+    <div class="modal" id="preview-modal">
+      <div class="modal__container" id="preview-modal-container">
+        <button
+          class="modal__close"
+          type="button"
+          id="preview-modal-button"
+        ></button>
+        <img src="" alt="" class="modal__preview-image" />
+        <h2 class="modal__heading" id="modal-preview-title">New Place</h2>
+      </div>
+    </div>
 
     <script src="./scripts/index.js" defer></script>
   </body>
