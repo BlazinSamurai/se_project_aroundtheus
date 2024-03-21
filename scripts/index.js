@@ -49,6 +49,7 @@ const profileBio = document.querySelector(".profile__bio");
 const cardListEl = document.querySelector(".card__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
+const previewModal = document.querySelector("#preview-modal");
 const previewModalCloseButton = document.querySelector("#preview-modal-button");
 
 editModalForm.addEventListener("submit", handleProfileFormSubmit);
@@ -62,9 +63,9 @@ function closeModal(modal) {
   modal.classList.remove("modal_opened");
 }
 
-function renderCard(cardData, ListEl) {
+function renderCard(cardData, listEl) {
   const cardElement = getCardElement(cardData);
-  ListEl.prepend(cardElement);
+  listEl.prepend(cardElement);
 }
 
 function handleProfileFormSubmit(e) {
@@ -83,30 +84,30 @@ function handleAddCardFormSubmit(e) {
   closeModal(addModal);
 }
 
-profileEditButton.addEventListener("click", () => {
-  editModal.classList.add("modal_opened");
-});
+function fillProfileForm() {
+  editModalName.value = profileName.textContent;
+  editModalBio.value = profileBio.textContent;
+}
 
 editModalCloseButton.addEventListener("click", () => {
-  editModal.classList.remove("modal_opened");
+  closeModal(editModal);
 });
 
 profileAddButton.addEventListener("click", () => {
-  addModal.classList.add("modal_opened");
+  openModal(addModal);
 });
 
 addModalCloseButton.addEventListener("click", () => {
-  addModal.classList.remove("modal_opened");
+  closeModal(addModal);
+});
+
+previewModalCloseButton.addEventListener("click", () => {
+  closeModal(previewModal);
 });
 
 profileEditButton.addEventListener("click", () => {
-  editModalName.value = profileName.textContent;
-  editModalBio.value = profileBio.textContent;
-});
-
-profileAddButton.addEventListener("click", () => {
-  addModalTitle.value;
-  addModalURL.value;
+  fillProfileForm();
+  openModal(editModal);
 });
 
 initialCards.forEach((cardData) => renderCard(cardData, cardListEl));
@@ -117,7 +118,6 @@ function getCardElement(cardData) {
   const cardTitleEl = cardElement.querySelector(".card__title");
   const cardLikeButton = cardElement.querySelector(".card__button-like");
   const cardTrashButton = cardElement.querySelector(".card__button-trash");
-  const previewModal = document.querySelector("#preview-modal");
   const previewImageEl = previewModal.querySelector(".modal__preview-image");
   const previewTitleEl = previewModal.querySelector("#modal-preview-title");
 
@@ -133,16 +133,41 @@ function getCardElement(cardData) {
     previewImageEl.src = cardData.link;
     previewImageEl.alt = cardData.altName;
     previewTitleEl.textContent = cardData.name;
-    previewModal.classList.add("modal_opened");
-  });
-
-  previewModalCloseButton.addEventListener("click", () => {
-    previewModal.classList.remove("modal_opened");
+    openModal(previewModal);
   });
 
   cardTrashButton.addEventListener("click", () => {
-    cardElement.remove(cardData);
+    cardElement.remove();
   });
 
   return cardElement;
 }
+
+/*
+  these two lines do reset but dont create the card
+  addModal.reset();
+  e.reset();
+
+  e.preventDefault().reset();
+  addModal.reset();
+  e.preventDefault();
+  const name = addModalTitle.value;
+  const altName = addModalTitle.value;
+  const link = addModalURL.value;
+  renderCard({ name, altName, link }, cardListEl).reset();
+  renderCard({ name, altName, link }, cardListEl);
+
+  when these lines are before closeModal() the modal
+  itself doesnt close or reset the values
+  cardListEl.reset();
+  addModal.reset();
+  e.reset();
+
+  closeModal(addModal).reset();
+  closeModal(addModal);
+
+  these lines close allow to close the modal but no to reset
+  addModal.reset();
+  e.reset();
+  cardListEl.reset();
+*/
