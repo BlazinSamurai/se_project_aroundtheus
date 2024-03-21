@@ -77,11 +77,12 @@ function handleProfileFormSubmit(e) {
 
 function handleAddCardFormSubmit(e) {
   e.preventDefault();
+
   const name = addModalTitle.value;
   const altName = addModalTitle.value;
   const link = addModalURL.value;
   renderCard({ name, altName, link }, cardListEl);
-  addModal.reset;
+  addModalForm.reset();
   closeModal(addModal);
 }
 
