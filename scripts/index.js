@@ -49,6 +49,7 @@ const profileBio = document.querySelector(".profile__bio");
 const cardListEl = document.querySelector(".card__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
+const previewModalCloseButton = document.querySelector("#preview-modal-button");
 
 editModalForm.addEventListener("submit", handleProfileFormSubmit);
 addModalForm.addEventListener("submit", handleAddCardFormSubmit);
@@ -116,7 +117,9 @@ function getCardElement(cardData) {
   const cardTitleEl = cardElement.querySelector(".card__title");
   const cardLikeButton = cardElement.querySelector(".card__button-like");
   const cardTrashButton = cardElement.querySelector(".card__button-trash");
-  const previewImageEl = document.querySelector(".modal__preview-image");
+  const previewModal = document.querySelector("#preview-modal");
+  const previewImageEl = previewModal.querySelector(".modal__preview-image");
+  const previewTitleEl = previewModal.querySelector("#modal-preview-title");
 
   cardLikeButton.addEventListener("click", () => {
     cardLikeButton.classList.toggle("card__button-like_active");
@@ -126,13 +129,15 @@ function getCardElement(cardData) {
   cardTitleEl.textContent = cardData.name;
   cardImageEl.alt = cardData.altName;
 
-  // for third modal: add click listener to the cardImageEl
-  //  use openModal with previewImageModal, modal you need to add to your html
   cardImageEl.addEventListener("click", () => {
     previewImageEl.src = cardData.link;
-    previewImageEl.textContent = cardData.name;
     previewImageEl.alt = cardData.altName;
-    previewImageEl.classList.add("modal_opened");
+    previewTitleEl.textContent = cardData.name;
+    previewModal.classList.add("modal_opened");
+  });
+
+  previewModalCloseButton.addEventListener("click", () => {
+    previewModal.classList.remove("modal_opened");
   });
 
   cardTrashButton.addEventListener("click", () => {
