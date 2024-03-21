@@ -81,7 +81,7 @@ function handleAddCardFormSubmit(e) {
   const altName = addModalTitle.value;
   const link = addModalURL.value;
   renderCard({ name, altName, link }, cardListEl);
-  cardListEl.reset();
+  addModal.reset();
   closeModal(addModal);
 }
 
