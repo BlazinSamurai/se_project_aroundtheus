@@ -40,8 +40,10 @@ const editModalCloseButton = editModal.querySelector(".modal__close");
 const editModalForm = editModal.querySelector("#edit-modal-form");
 const addModalForm = document.querySelector("#add-modal-form");
 const addModalCloseButton = addModal.querySelector(".modal__close");
-const editModalName = editModal.querySelector("#modal-input-top");
-const editModalBio = editModal.querySelector("#modal-input-bottom");
+const editModalName = editModal.querySelector("#edit-modal-name");
+const editModalBio = editModal.querySelector("#edit-modal-bio");
+const editModalNameError = editModal.querySelector("#edit-modal-name-error");
+const editModalBioError = editModal.querySelector("#edit-modal-bio-error");
 const addModalTitle = addModal.querySelector("#modal-input-top-add");
 const addModalURL = addModal.querySelector("#modal-input-bottom-add");
 const profileName = document.querySelector(".profile__name");
@@ -52,6 +54,10 @@ const cardTemplate =
 const previewModal = document.querySelector("#preview-modal");
 const previewModalCloseButton = document.querySelector("#preview-modal-button");
 
+let editButtonClick = false;
+let addButtonClick = false;
+let previewModalClick = false;
+
 editModalForm.addEventListener("submit", handleProfileFormSubmit);
 addModalForm.addEventListener("submit", handleAddCardFormSubmit);
 
@@ -60,6 +66,7 @@ function openModal(modal) {
 }
 
 function closeModal(modal) {
+  addModalForm.reset();
   modal.classList.remove("modal_opened");
 }
 
@@ -77,7 +84,6 @@ function handleProfileFormSubmit(e) {
 
 function handleAddCardFormSubmit(e) {
   e.preventDefault();
-
   const name = addModalTitle.value;
   const altName = addModalTitle.value;
   const link = addModalURL.value;
@@ -91,12 +97,21 @@ function fillProfileForm() {
   editModalBio.value = profileBio.textContent;
 }
 
+document.addEventListener("keydown", function (evt) {
+  if (evt.key === "Escape") {
+    closeModal(editModal);
+    closeModal(addModal);
+    closeModal(previewModal);
+  }
+});
+
 editModalCloseButton.addEventListener("click", () => {
   closeModal(editModal);
 });
 
 profileAddButton.addEventListener("click", () => {
   openModal(addModal);
+  addButtonClick = true;
 });
 
 addModalCloseButton.addEventListener("click", () => {
@@ -110,6 +125,7 @@ previewModalCloseButton.addEventListener("click", () => {
 profileEditButton.addEventListener("click", () => {
   fillProfileForm();
   openModal(editModal);
+  editButtonClick = true;
 });
 
 initialCards.forEach((cardData) => renderCard(cardData, cardListEl));
@@ -136,6 +152,7 @@ function getCardElement(cardData) {
     previewImageEl.alt = cardData.altName;
     previewTitleEl.textContent = cardData.name;
     openModal(previewModal);
+    previewModalClick = true;
   });
 
   cardTrashButton.addEventListener("click", () => {
@@ -145,31 +162,11 @@ function getCardElement(cardData) {
   return cardElement;
 }
 
-/*
-  these two lines do reset but dont create the card
-  addModal.reset();
-  e.reset();
-
-  e.preventDefault().reset();
-  addModal.reset();
-  e.preventDefault();
-  const name = addModalTitle.value;
-  const altName = addModalTitle.value;
-  const link = addModalURL.value;
-  renderCard({ name, altName, link }, cardListEl).reset();
-  renderCard({ name, altName, link }, cardListEl);
-
-  when these lines are before closeModal() the modal
-  itself doesnt close or reset the values
-  cardListEl.reset();
-  addModal.reset();
-  e.reset();
-
-  closeModal(addModal).reset();
-  closeModal(addModal);
-
-  these lines close allow to close the modal but no to reset
-  addModal.reset();
-  e.reset();
-  cardListEl.reset();
-*/
+document.addEventListener("click", function (evt) {
+  const openedModal = document.querySelector(".modal_opened");
+  if (evt.target === openedModal) {
+    closeModal(editModal);
+    closeModal(addModal);
+    closeModal(previewModal);
+  }
+});
