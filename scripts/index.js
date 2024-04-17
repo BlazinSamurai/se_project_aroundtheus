@@ -54,20 +54,38 @@ const cardTemplate =
 const previewModal = document.querySelector("#preview-modal");
 const previewModalCloseButton = document.querySelector("#preview-modal-button");
 
-let editButtonClick = false;
-let addButtonClick = false;
-let previewModalClick = false;
-
 editModalForm.addEventListener("submit", handleProfileFormSubmit);
 addModalForm.addEventListener("submit", handleAddCardFormSubmit);
 
 function openModal(modal) {
   modal.classList.add("modal_opened");
+  document.addEventListener("keydown", function (evt) {
+    if (evt.key === "Escape") {
+      closeModal(modal);
+    }
+  });
+  document.addEventListener("click", function (evt) {
+    const openedModal = document.querySelector(".modal_opened");
+    if (evt.target === openedModal) {
+      closeModal(modal);
+    }
+  });
 }
 
 function closeModal(modal) {
   addModalForm.reset();
   modal.classList.remove("modal_opened");
+  document.removeEventListener("keydown", function (evt) {
+    if (evt.key === "Escape") {
+      closeModal(modal);
+    }
+  });
+  document.removeEventListener("click", function (evt) {
+    const openedModal = document.querySelector(".modal_opened");
+    if (evt.target === openedModal) {
+      closeModal(modal);
+    }
+  });
 }
 
 function renderCard(cardData, listEl) {
@@ -96,14 +114,6 @@ function fillProfileForm() {
   editModalName.value = profileName.textContent;
   editModalBio.value = profileBio.textContent;
 }
-
-document.addEventListener("keydown", function (evt) {
-  if (evt.key === "Escape") {
-    closeModal(editModal);
-    closeModal(addModal);
-    closeModal(previewModal);
-  }
-});
 
 editModalCloseButton.addEventListener("click", () => {
   closeModal(editModal);
@@ -161,12 +171,3 @@ function getCardElement(cardData) {
 
   return cardElement;
 }
-
-document.addEventListener("click", function (evt) {
-  const openedModal = document.querySelector(".modal_opened");
-  if (evt.target === openedModal) {
-    closeModal(editModal);
-    closeModal(addModal);
-    closeModal(previewModal);
-  }
-});
