@@ -61,24 +61,23 @@ addModalForm.addEventListener("submit", handleAddCardFormSubmit);
 function openModal(modal) {
   currentModal = modal;
   modal.classList.add("modal_opened");
-  document.addEventListener("keydown", escapeKeyListener);
-  modal.addEventListener("click", clickKeyListener);
+  document.addEventListener("keydown", handleEscape);
+  modal.addEventListener("mousedown", handleOverlay);
 }
 
 function closeModal(modal) {
-  addModalForm.reset();
   modal.classList.remove("modal_opened");
-  document.removeEventListener("keydown", escapeKeyListener);
-  modal.removeEventListener("click", clickKeyListener);
+  document.removeEventListener("keydown", handleEscape);
+  modal.removeEventListener("mousedown", handleOverlay);
 }
 
-function escapeKeyListener(evt) {
+function handleEscape(evt) {
   if (evt.key === "Escape") {
     closeModal(currentModal);
   }
 }
 
-function clickKeyListener(evt) {
+function handleOverlay(evt) {
   if (evt.target.id === currentModal.id) {
     closeModal(currentModal);
   }
