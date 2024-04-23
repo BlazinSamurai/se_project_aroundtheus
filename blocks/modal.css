@@ -89,6 +89,7 @@
 
 .modal__input:invalid {
   border-bottom: 1px solid red;
+  margin: 0;
 }
 
 .modal__input-error {
@@ -190,14 +191,15 @@
   }
 
   .modal__input:first-of-type {
-    padding: 75px 0 0;
+    margin: 75px 0 0;
   }
 
   .modal__input:last-of-type {
-    padding: 30px 0 0;
+    margin: 30px 0 0;
   }
-
+  /*
   .modal__button {
     margin: 45px 0 25px;
   }
+  */
 }
