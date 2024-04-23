@@ -23,12 +23,8 @@ function hasInvalidInput(inputList) {
   return !inputList.every((inputEl) => inputEl.validity.valid);
 }
 
-// disableButton
-// enableButton
-
 function toggleButtonState(inputEls, submitButton, { inactiveButtonClass }) {
   if (hasInvalidInput(inputEls)) {
-    // move the bottom two line into its own function
     submitButton.classList.add(inactiveButtonClass);
     submitButton.disabled = true;
     return;
