@@ -61,17 +61,12 @@ function enableValidation(options) {
   });
 }
 
-// enabling validation by calling enableValidation()
-// pass all the settings on call
-
 const config = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
   submitButtonSelector: ".modal__button",
   inactiveButtonClass: ".modal__button-error",
   inputErrorClass: ".modal__input-error",
-  //errorClass: "popup__error_visible",
-  //errorClass: ".modal__input-error",
 };
 
 enableValidation(config);

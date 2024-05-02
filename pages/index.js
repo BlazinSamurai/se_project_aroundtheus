@@ -1,4 +1,6 @@
-const initialCards = [
+import Card from "../components/Card.js";
+
+const cardsData = [
   {
     name: "Lago di Braies",
     altName: "Lago di Braise",
@@ -30,6 +32,12 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
   },
 ];
+
+cardsData.forEach((data) => {
+  const card = new Card(data, "#card-template", "#preview-modal");
+  const cardElement = card.getView();
+  document.querySelector("#card-template").appendChild(cardElement);
+});
 
 const profileEditButton = document.querySelector(".profile__button-edit");
 const profileAddButton = document.querySelector(".profile__button-add");
@@ -131,21 +139,22 @@ profileEditButton.addEventListener("click", () => {
   openModal(editModal);
 });
 
-initialCards.forEach((cardData) => renderCard(cardData, cardListEl));
+cardsData.forEach((cardData) => renderCard(cardData, cardListEl));
 
 function getCardElement(cardData) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImageEl = cardElement.querySelector(".card__image");
   const cardTitleEl = cardElement.querySelector(".card__title");
-  const cardLikeButton = cardElement.querySelector(".card__button-like");
-  const cardTrashButton = cardElement.querySelector(".card__button-trash");
+  //const cardLikeButton = cardElement.querySelector(".card__button-like");
+  //const cardTrashButton = cardElement.querySelector(".card__button-trash");
   const previewImageEl = previewModal.querySelector(".modal__preview-image");
   const previewTitleEl = previewModal.querySelector("#modal-preview-title");
 
+  /*
   cardLikeButton.addEventListener("click", () => {
     cardLikeButton.classList.toggle("card__button-like_active");
   });
-
+  */
   cardImageEl.src = cardData.link;
   cardTitleEl.textContent = cardData.name;
   cardImageEl.alt = cardData.altName;
@@ -157,9 +166,10 @@ function getCardElement(cardData) {
     openModal(previewModal);
   });
 
+  /*
   cardTrashButton.addEventListener("click", () => {
     cardElement.remove();
   });
-
+*/
   return cardElement;
 }
