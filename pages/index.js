@@ -34,7 +34,7 @@ const cardsData = [
 ];
 
 cardsData.forEach((data) => {
-  const card = new Card(data, "#card-template", "#preview-modal");
+  const card = new Card(data, "#card-template", handleImageClick);
   const cardElement = card.getView();
   document.querySelector(".card__list").prepend(cardElement);
   //console.log(cardElement);
@@ -141,6 +141,20 @@ profileEditButton.addEventListener("click", () => {
 });
 
 //cardsData.forEach((cardData) => renderCard(cardData, cardListEl));
+
+function handleImageClick(cardData) {
+  const cardElement = cardTemplate.cloneNode(true);
+  const cardImageEl = cardElement.querySelector(".card__image");
+  const previewImageEl = previewModal.querySelector(".modal__preview-image");
+  const previewTitleEl = previewModal.querySelector("#modal-preview-title");
+
+  cardImageEl.addEventListener("click", () => {
+    previewImageEl.src = cardData.link;
+    previewImageEl.alt = cardData.altName;
+    previewTitleEl.textContent = cardData.name;
+    openModal(previewModal);
+  });
+}
 
 function getCardElement(cardData) {
   //const cardElement = cardTemplate.cloneNode(true);
