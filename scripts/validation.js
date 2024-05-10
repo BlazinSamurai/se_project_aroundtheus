@@ -1,8 +1,3 @@
-//import Form from "../components/FormValidation";
-
-//const card = new Card(data, "#card-template", "#preview-modal");
-//const forms = new Form();
-
 function showInputError(formEl, inputEl, { inputErrorClass, errorClass }) {
   const errorMessageEl = formEl.querySelector(`#${inputEl.id}-error`);
   inputEl.classList.add(inputErrorClass);
@@ -54,7 +49,7 @@ function enableValidation(options) {
   // querySelector for the forms tags
   // not the best practice just in case we add more forms
   // const formEls = Array.from(document.querySelectorAll("form"));
-  // using a spread operator here, expect an array and grab and creates
+  // using a spread operator(...) here, expect an array and grab and creates
   // an array like item. Work like Array.from
   const formEls = [...document.querySelectorAll(options.formSelector)];
   formEls.forEach((formEl) => {
@@ -70,7 +65,7 @@ const config = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
   submitButtonSelector: ".modal__button",
-  inactiveButtonClass: ".modal__button-error",
+  inactiveButtonClass: ".modal__button_error",
   inputErrorClass: ".modal__input-error",
 };
 
