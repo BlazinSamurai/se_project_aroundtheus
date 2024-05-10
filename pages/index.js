@@ -36,7 +36,8 @@ const cardsData = [
 cardsData.forEach((data) => {
   const card = new Card(data, "#card-template", "#preview-modal");
   const cardElement = card.getView();
-  document.querySelector("#card-template").appendChild(cardElement);
+  document.querySelector(".card__list").prepend(cardElement);
+  //console.log(cardElement);
 });
 
 const profileEditButton = document.querySelector(".profile__button-edit");
@@ -139,22 +140,20 @@ profileEditButton.addEventListener("click", () => {
   openModal(editModal);
 });
 
-cardsData.forEach((cardData) => renderCard(cardData, cardListEl));
+//cardsData.forEach((cardData) => renderCard(cardData, cardListEl));
 
 function getCardElement(cardData) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardImageEl = cardElement.querySelector(".card__image");
-  const cardTitleEl = cardElement.querySelector(".card__title");
+  //const cardElement = cardTemplate.cloneNode(true);
+  //const cardImageEl = cardElement.querySelector(".card__image");
+  //const cardTitleEl = cardElement.querySelector(".card__title");
   //const cardLikeButton = cardElement.querySelector(".card__button-like");
   //const cardTrashButton = cardElement.querySelector(".card__button-trash");
-  const previewImageEl = previewModal.querySelector(".modal__preview-image");
-  const previewTitleEl = previewModal.querySelector("#modal-preview-title");
-
   /*
   cardLikeButton.addEventListener("click", () => {
     cardLikeButton.classList.toggle("card__button-like_active");
   });
-  */
+
+  cardElement.querySelector(".card__image").src = passed in value.link ;
   cardImageEl.src = cardData.link;
   cardTitleEl.textContent = cardData.name;
   cardImageEl.alt = cardData.altName;
@@ -166,10 +165,10 @@ function getCardElement(cardData) {
     openModal(previewModal);
   });
 
-  /*
   cardTrashButton.addEventListener("click", () => {
     cardElement.remove();
   });
-*/
+
   return cardElement;
+  */
 }

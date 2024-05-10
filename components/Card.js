@@ -7,11 +7,19 @@ The Card class is intended to replace the functionality of you
 
 export default class Card {
   constructor({ name, altName, link }, cardSelector, handleImageClick) {
+    this._data = { name, altName, link };
     this._name = name;
     this._altName = altName;
     this._link = link;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+  }
+
+  _setCardData() {
+    this._cardElement.querySelector(".card__image").src = this._link;
+    this._cardElement.querySelector(".card__title").textContent = this._name;
+
+    return this._cardElement;
   }
 
   _setEventListener() {
@@ -26,6 +34,12 @@ export default class Card {
       .addEventListener("mousedown", () => {
         this._handleDeleteButton();
       });
+
+    this._cardElement
+      .querySelector(".card__image")
+      .addEventListener("click", () => {
+        this._handleImageClick();
+      });
   }
 
   _handleLikeIcon() {
@@ -39,20 +53,20 @@ export default class Card {
     this._cardElement = null;
   }
 
+  _handleImageClick() {
+    alert(`Link: ${this._link}, Name: ${this._name}`);
+  }
+
   getView() {
-    // get the card view?
     this._cardElement = document
       .querySelector(this._cardSelector)
       .content.querySelector(".card__section")
       .cloneNode(true);
 
-    console.log(`In getView(). "this._cardElement": ${this._cardElement}`);
-    console.log(`In getView(). "this": ${this}`);
+    this._setCardData();
 
-    // set event setEventListeners
     this._setEventListener();
 
-    // return the card
     return this._cardElement;
   }
 }
