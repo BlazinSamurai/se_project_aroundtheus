@@ -62,8 +62,6 @@ const editModalForm = editModal.querySelector("#edit-modal-form");
 const editModalName = editModal.querySelector("#edit-modal-name");
 const editModalBio = editModal.querySelector("#edit-modal-bio");
 const editModalCloseButton = editModal.querySelector(".modal__close");
-const editModalNameError = editModal.querySelector("#edit-modal-name-error");
-const editModalBioError = editModal.querySelector("#edit-modal-bio-error");
 
 /*-- Preview Modal --*/
 const previewImageModal = document.querySelector(".preview-Image-Modal");
@@ -86,16 +84,12 @@ const inputErrorClass = document.querySelectorAll(".modal__input-error");
 let currentModal;
 
 /*-- Global Array --*/
-const config = [
-  formSelector,
-  inputSelector,
-  submitButtonSelector,
-  inputErrorClass,
-];
-
-const ModalBtnDisabled = document.querySelectorAll(".modal__button_disabled");
-console.log(ModalBtnDisabled);
-console.log(config);
+// const config = [
+//   formSelector,
+//   inputSelector,
+//   submitButtonSelector,
+//   inputErrorClass,
+// ];
 
 /*---------------------------------------------------*/
 /*                     Functions                     */
@@ -233,7 +227,10 @@ profileEditButton.addEventListener("click", () => {
   openModal(editModal);
 });
 
-const editProfileFormValidator = new Form(config, editModal);
+const editProfileFormValidator = new Form(
+  { formSelector, inputSelector, submitButtonSelector, inputErrorClass },
+  editModal
+);
 editProfileFormValidator.enableValidation();
 
 // const addCardValidator = new Form(config, addModal);
