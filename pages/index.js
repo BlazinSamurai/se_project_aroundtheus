@@ -40,14 +40,6 @@ cardsData.forEach((data) => {
   document.querySelector(".card__list").prepend(cardElement);
 });
 
-const config = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__button",
-  inactiveButtonClass: ".modal__button_disabled",
-  inputErrorClass: ".modal__input-error",
-};
-
 /*---------------------------------------------------*/
 /*                     Elements                      */
 /*---------------------------------------------------*/
@@ -84,8 +76,26 @@ const profileAddButton = document.querySelector(".profile__button-add");
 const profileName = document.querySelector(".profile__name");
 const profileBio = document.querySelector(".profile__bio");
 
+/*-- Config --*/
+const formSelector = document.querySelectorAll(".modal__form");
+const inputSelector = document.querySelectorAll(".modal__input");
+const submitButtonSelector = document.querySelectorAll(".modal__button");
+const inputErrorClass = document.querySelectorAll(".modal__input-error");
+
 /*-- Global Variables --*/
 let currentModal;
+
+/*-- Global Array --*/
+const config = [
+  formSelector,
+  inputSelector,
+  submitButtonSelector,
+  inputErrorClass,
+];
+
+const ModalBtnDisabled = document.querySelectorAll(".modal__button_disabled");
+console.log(ModalBtnDisabled);
+console.log(config);
 
 /*---------------------------------------------------*/
 /*                     Functions                     */

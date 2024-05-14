@@ -6,13 +6,16 @@ export default class Form {
     this._formSelector = form.formSelector;
     this._inputSelector = form.inputSelector;
     this._submitButtonSelector = form.submitButtonSelector;
-    this._inactiveButtonClass = form.inactiveButtonClass;
+    // this selector is null cause it is not used anywhere in index.html
+    // this._inactiveButtonClass = form.inactiveButtonClass;
     this._inputErrorClass = form.inputErrorClass;
   }
 
   _disableButton() {
-    this._submitButtonSelector.classlist.add(this._inactiveButtonClass);
-    this._submitButtonSelector.disabled = true;
+    this._inactiveButtonClass = this._submitButtonSelector.classlist.add(
+      ".modal__button_disabled"
+    );
+    //this._submitButtonSelector.disabled = true;
   }
 
   enableValidation() {
