@@ -75,10 +75,10 @@ const profileName = document.querySelector(".profile__name");
 const profileBio = document.querySelector(".profile__bio");
 
 /*-- Config --*/
-const formSelector = document.querySelectorAll(".modal__form");
-const inputSelector = document.querySelectorAll(".modal__input");
-const submitButtonSelector = document.querySelectorAll(".modal__button");
-const inputErrorClass = document.querySelectorAll(".modal__input-error");
+const formSelectors = document.querySelectorAll(".modal__form");
+const inputSelectors = document.querySelectorAll(".modal__input");
+const submitButtonSelectors = document.querySelectorAll(".modal__button");
+const errorSelectors = document.querySelectorAll(".modal__input-error");
 
 /*-- Global Variables --*/
 let currentModal;
@@ -228,7 +228,7 @@ profileEditButton.addEventListener("click", () => {
 });
 
 const editProfileFormValidator = new Form(
-  { formSelector, inputSelector, submitButtonSelector, inputErrorClass },
+  { formSelectors, inputSelectors, submitButtonSelectors, errorSelectors },
   editModal
 );
 editProfileFormValidator.enableValidation();

@@ -1,9 +1,9 @@
 export default class Form {
   constructor(form, validatedForm) {
-    this._formSelector = form.formSelector;
-    this._inputSelector = form.formSelector;
-    this._submitButtonSelector = form.submitButtonSelector;
-    this._inputErrorClass = form.inputErrorClass;
+    this._formSelector = form.formSelectors;
+    this._inputSelector = form.inputSelectors;
+    this._submitButtonSelector = form.submitButtonSelectors;
+    this._inputErrorClass = form.errorSelectors;
 
     this._validatedForm = validatedForm;
   }
