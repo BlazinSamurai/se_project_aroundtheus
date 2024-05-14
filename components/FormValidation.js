@@ -1,16 +1,20 @@
 export default class Form {
-  constructor(form, validatedForm) {
+  constructor(form, formToValidate) {
     this._formSelector = form.formSelectors;
     this._inputSelector = form.inputSelectors;
     this._submitButtonSelector = form.submitButtonSelectors;
     this._inputErrorClass = form.errorSelectors;
 
-    this._validatedForm = validatedForm;
+    this._validatedForm = formToValidate;
   }
 
-  _checkInputValidity() {
-    if (!this._inputSelector.validity.valid) {
-      console.log(`Input Invalid.`);
+  // _showInputError(inputEl) {;
+  // }
+
+  _checkInputValidity(inputEl) {
+    if (!inputEl.validity.valid) {
+      console.log("Invalid Input.");
+      //this._showInputError(inputEl);
     }
   }
 
@@ -18,7 +22,7 @@ export default class Form {
     this._inputSelector.forEach((inputEl) => {
       inputEl.addEventListener("input", (e) => {
         e.preventDefault();
-        this._checkInputValidity();
+        this._checkInputValidity(inputEl);
         //this._toggleButtonState();
       });
     });
