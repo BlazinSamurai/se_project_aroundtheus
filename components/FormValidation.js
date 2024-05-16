@@ -14,9 +14,17 @@ export default class Form {
     this._errorClassEl.textContent = inputEl.validationMessage;
   }
 
+  _hideInputError(inputEl) {
+    this._errorClassEl = document.querySelector(`#${inputEl.id}-error`);
+    inputEl.classList.remove(this._errorClassEl.id);
+    this._errorClassEl.textContent = "";
+  }
+
   _checkInputValidity(inputEl) {
     if (!inputEl.validity.valid) {
       this._showInputError(inputEl);
+    } else {
+      this._hideInputError(inputEl);
     }
   }
 
