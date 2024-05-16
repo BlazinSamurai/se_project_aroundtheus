@@ -8,13 +8,15 @@ export default class Form {
     this._validatedForm = formToValidate;
   }
 
-  // _showInputError(inputEl) {;
-  // }
+  _showInputError(inputEl) {
+    this._errorClassEl = document.querySelector(`#${inputEl.id}-error`);
+    inputEl.classList.add(this._errorClassEl.id);
+    this._errorClassEl.textContent = inputEl.validationMessage;
+  }
 
   _checkInputValidity(inputEl) {
     if (!inputEl.validity.valid) {
-      console.log("Invalid Input.");
-      //this._showInputError(inputEl);
+      this._showInputError(inputEl);
     }
   }
 
