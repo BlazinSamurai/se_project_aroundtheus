@@ -23,3 +23,23 @@ console.log("Hello World!");
 //     this._errorClassEl = document.querySelector(`#${errorClass.id}`);
 //   }
 // });
+
+// _hasInvalidInput() {
+//   this._inputEl = [...document.querySelectorAll(".modal__input")];
+//   return !this._inputEl.every((input) => input.validity.valid);
+//   this._validity = this._inputEl.every((input) => {
+//     if (input.validity.valid) {
+//       this._enableButton();
+//     } else {
+//       this._disableButton();
+//     }
+//   });
+// }
+
+// _toggleButtonState() {
+//   if (this._hasInvalidInput()) {
+//     this._disableButton();
+//     return;
+//   }
+//   this._enableButton();
+// }

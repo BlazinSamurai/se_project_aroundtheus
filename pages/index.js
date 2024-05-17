@@ -83,14 +83,6 @@ const errorSelectors = document.querySelectorAll(".modal__input-error");
 /*-- Global Variables --*/
 let currentModal;
 
-/*-- Global Array --*/
-// const config = [
-//   formSelector,
-//   inputSelector,
-//   submitButtonSelector,
-//   inputErrorClass,
-// ];
-
 /*---------------------------------------------------*/
 /*                     Functions                     */
 /*---------------------------------------------------*/
