@@ -233,5 +233,8 @@ const editProfileFormValidator = new Form(
 );
 editProfileFormValidator.enableValidation();
 
-// const addCardValidator = new Form(config, addModal);
-// addCardValidator.enableValidation();
+const addCardValidator = new Form(
+  { formSelectors, inputSelectors, submitButtonSelectors, errorSelectors },
+  addModal
+);
+addCardValidator.enableValidation();
