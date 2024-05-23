@@ -38,11 +38,6 @@ export default class Card {
     this._cardElement.addEventListener("click", () => {
       this._handleImageClick(this);
     });
-
-    // this._cardElement.addEventListener("click", () => {
-    //   console.log(`this._name: ${this._name}`);
-    //   console.log(`this._link: ${this._link}`);
-    // });
   }
 
   _handleLikeIcon() {

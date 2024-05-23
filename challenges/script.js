@@ -43,3 +43,31 @@ console.log("Hello World!");
 //   }
 //   this._enableButton();
 // }
+
+/*---------------------------------------------------*/
+/*             other handleClickImage                */
+/*---------------------------------------------------*/
+
+// function handleImageClick(cardData) {
+//   cardTitleEl.textContent = cardData.name;
+//   cardAltTitleEl.alt = cardData.name;
+//   cardImageEl.src = cardData.link;
+//   cardImageEl.addEventListener("click", () => {
+//     previewTitleEl.textContent = cardData.name;
+//     previewAltTitleEl.alt = cardData.name;
+//     previewImageEl.src = cardData.link;
+//     openModal(previewModal);
+//   });
+// }
+
+// cardsData.forEach((cardData) => {
+//   cardTitleEl.textContent = cardData.name;
+//   cardAltTitleEl.alt = cardData.name;
+//   cardImageEl.src = cardData.link;
+//   cardImageEl.addEventListener("click", () => {
+//     previewTitleEl.textContent = cardData.name;
+//     previewAltTitleEl.alt = cardData.name;
+//     previewImageEl.src = cardData.link;
+//     openModal(previewModal);
+//   });
+// });
