@@ -11,6 +11,7 @@ export default class Card {
     this._name = name;
     this._altName = altName;
     this._link = link;
+
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
   }

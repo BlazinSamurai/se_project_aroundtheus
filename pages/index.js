@@ -46,13 +46,10 @@ const addModalURL = addModalForm.querySelector("#add-modal-url");
 const addModalCloseButton = addModal.querySelector(".modal__close");
 
 /*-- Card Selector --*/
-const cardListEl = document.querySelector(".card__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const cardElement = cardTemplate.cloneNode(true);
-const cardTitleEl = cardElement.querySelector(".card__title");
-const cardAltTitleEl = cardElement.querySelector(".card__image");
-const cardImageEl = cardElement.querySelector(".card__image");
+const cardListEl = document.querySelector(".card__list");
 
 /*-- Edit Modal --*/
 const editModal = document.querySelector("#edit-modal");
@@ -103,30 +100,20 @@ function closeModal(modal) {
 function renderCard(cardData, listEl) {
   const card = new Card(cardData, "#card-template", handleImageClick);
   const cardElement = card.getView();
-  handleImageClick();
   listEl.prepend(cardElement);
-  cardsData.push(cardData);
+  renderImageClick();
+}
+
+function renderImageClick() {
+  cardListEl.forEach((listEl) => {
+    const imageEl = listEl.querySelector(".card__image");
+    imageEl.addEventListener("click", handleImageClick(imageEl));
+  });
 }
 
 function fillProfileForm() {
   editModalName.value = profileName.textContent;
   editModalBio.value = profileBio.textContent;
-}
-
-function handleImageClick() {
-  const cardImgTemp = cardListEl.querySelectorAll(".card__image");
-  cardImgTemp.forEach((imgTemp) => {
-    imgTemp.addEventListener("click", (evt) => {
-      cardsData.forEach((data) => {
-        if (evt.target.src === data.link) {
-          previewTitleEl.textContent = data.name;
-          previewAltTitleEl.altName = data.name;
-          previewImageEl.src = data.link;
-          openModal(previewModal);
-        }
-      });
-    });
-  });
 }
 
 /*---------------------------------------------------*/
@@ -160,6 +147,13 @@ function handleAddCardFormSubmit(e) {
   renderCard({ name, altName, link }, cardListEl);
   addModalForm.reset();
   closeModal(addModal);
+}
+
+function handleImageClick(image) {
+  previewTitleEl.textContent = image._data.name;
+  previewAltTitleEl.textContent = image._data.altName;
+  previewImageEl.src = image._data.link;
+  openModal(previewModal);
 }
 
 /*---------------------------------------------------*/

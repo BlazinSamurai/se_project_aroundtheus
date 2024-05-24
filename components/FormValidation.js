@@ -12,14 +12,14 @@ export default class Form {
     this._errorClassEl = document.querySelector(`#${inputEl.id}-error`);
     inputEl.classList.add(this._errorClassEl.id);
     this._errorClassEl.textContent = inputEl.validationMessage;
-    //this._errorClassEl.classList.add(someErrorClass)
+    this._errorClassEl.classList.add(`#${inputEl.id}-error`);
   }
 
   _hideInputError(inputEl) {
     this._errorClassEl = document.querySelector(`#${inputEl.id}-error`);
     inputEl.classList.remove(this._errorClassEl.id);
     this._errorClassEl.textContent = "";
-    //this._errorClassEl.classList.remove(someErrorClass)
+    this._errorClassEl.classList.remove(`#${inputEl.id}-error`);
   }
 
   _checkInputValidity(inputEl) {
@@ -48,6 +48,7 @@ export default class Form {
     this._inputSelector.forEach((inputEl) => {
       inputEl.addEventListener("input", (e) => {
         e.preventDefault();
+
         this._checkInputValidity(inputEl);
       });
     });

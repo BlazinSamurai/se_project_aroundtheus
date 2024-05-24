@@ -23,7 +23,7 @@ console.log("Hello World!");
 //     this._errorClassEl = document.querySelector(`#${errorClass.id}`);
 //   }
 // });
-
+//
 // _hasInvalidInput() {
 //   this._inputEl = [...document.querySelectorAll(".modal__input")];
 //   return !this._inputEl.every((input) => input.validity.valid);
@@ -35,7 +35,7 @@ console.log("Hello World!");
 //     }
 //   });
 // }
-
+//
 // _toggleButtonState() {
 //   if (this._hasInvalidInput()) {
 //     this._disableButton();
@@ -43,31 +43,51 @@ console.log("Hello World!");
 //   }
 //   this._enableButton();
 // }
-
-/*---------------------------------------------------*/
-/*             other handleClickImage                */
-/*---------------------------------------------------*/
-
-// function handleImageClick(cardData) {
-//   cardTitleEl.textContent = cardData.name;
-//   cardAltTitleEl.alt = cardData.name;
-//   cardImageEl.src = cardData.link;
-//   cardImageEl.addEventListener("click", () => {
-//     previewTitleEl.textContent = cardData.name;
-//     previewAltTitleEl.alt = cardData.name;
-//     previewImageEl.src = cardData.link;
-//     openModal(previewModal);
-//   });
+//
+// _hasValidInput(inputEl) {
+//   console.log(inputEl.id);
+//   if (inputEl.id === "add-modal-title") {
+//     console.log("disable button");
+//   }
+//   if (inputEl.validity.valid) {
+//     return true;
+//   } else {
+//     return false;
+//   }
 // }
-
-// cardsData.forEach((cardData) => {
-//   cardTitleEl.textContent = cardData.name;
-//   cardAltTitleEl.alt = cardData.name;
-//   cardImageEl.src = cardData.link;
-//   cardImageEl.addEventListener("click", () => {
-//     previewTitleEl.textContent = cardData.name;
-//     previewAltTitleEl.alt = cardData.name;
-//     previewImageEl.src = cardData.link;
-//     openModal(previewModal);
+//
+// _toggleButtonState(inputEl) {
+//   if (this._hasValidInput(inputEl)) {
+//     this._enableButton();
+//     return;
+//   }
+//   this._disableButton();
+// }
+/*---------------------------------------------------*/
+/*        somewhat working handleClickImage          */
+/*---------------------------------------------------*/
+// this particular function needs a double click to start working
+// then when it does work it doesn't allow a preview of the
+// last picture
+//
+// const cardImgEl = cardListEl.querySelectorAll(".card__image");
+// cardImgEl.forEach((imgEl) => {
+//   imgEl.addEventListener("click", (evt) => {
+//     cardsData.forEach((data) => {
+//       if (evt.target.src === data.link) {
+//         previewTitleEl.textContent = data.name;
+//         previewAltTitleEl.altName = data.name;
+//         previewImageEl.src = data.link;
+//         openModal(previewModal);
+//       }
+//     });
 //   });
 // });
+//
+// Works but will preview and image if you click anywhere on the tile
+// plus is access the card's "private" data in constructor
+//
+// previewTitleEl.textContent = evt._data.name;
+// previewAltTitleEl.textContent = evt._data.altName;
+// previewImageEl.src = evt._data.link;
+// openModal(previewModal);
