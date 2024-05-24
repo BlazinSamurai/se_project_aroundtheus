@@ -101,14 +101,19 @@ function renderCard(cardData, listEl) {
   const card = new Card(cardData, "#card-template", handleImageClick);
   const cardElement = card.getView();
   listEl.prepend(cardElement);
-  renderImageClick();
+  cardsData.push(cardData);
+  handleImageClick();
 }
 
-function renderImageClick() {
-  cardListEl.forEach((listEl) => {
-    const imageEl = listEl.querySelector(".card__image");
-    imageEl.addEventListener("click", handleImageClick(imageEl));
+function renderImageClick(image) {
+  cardsData.forEach((card) => {
+    if (card.link === image) {
+      previewImageEl.src = card.link;
+      previewTitleEl.textContent = card.name;
+      previewAltTitleEl.textContent = card.name;
+    }
   });
+  return previewModal;
 }
 
 function fillProfileForm() {
@@ -149,11 +154,15 @@ function handleAddCardFormSubmit(e) {
   closeModal(addModal);
 }
 
-function handleImageClick(image) {
-  previewTitleEl.textContent = image._data.name;
-  previewAltTitleEl.textContent = image._data.altName;
-  previewImageEl.src = image._data.link;
-  openModal(previewModal);
+function handleImageClick() {
+  const listEls = [...cardListEl.querySelectorAll(".card__image")];
+  listEls.forEach((element) => {
+    element.addEventListener("click", (evt) => {
+      if (evt.target.src === element.src) {
+        openModal(renderImageClick(element.src));
+      }
+    });
+  });
 }
 
 /*---------------------------------------------------*/
