@@ -4,7 +4,7 @@
 
 console.log("Hello World!");
 
-//already know: which input, input is invalid, and the selectors are nodes
+// already know: which input, input is invalid, and the selectors are nodes
 // console.log(`inputEl: ${inputEl}`); [object HTMLInputElement]
 // console.log(`inputEl.id: ${inputEl.id}`); edit-modal-something
 // console.log(this._inputSelector); NodeList
@@ -91,3 +91,25 @@ console.log("Hello World!");
 // previewAltTitleEl.textContent = evt._data.altName;
 // previewImageEl.src = evt._data.link;
 // openModal(previewModal);
+//
+// Works Perfectly! Reviewer didn't like this method tho
+//
+// inside renderImageClick(image)
+// cardsData.forEach((card) => {
+//   if (card.link === image) {
+//     previewImageEl.src = card.link;
+//     previewTitleEl.textContent = card.name;
+//     previewImageEl.alt = card.name;
+//   }
+// });
+// return previewModal;
+//
+// inside handleClickImage()
+// const listEls = [...cardListEl.querySelectorAll(".card__image")];
+// listEls.forEach((element) => {
+//   element.addEventListener("click", (evt) => {
+//     if (evt.target.src === element.src) {
+//       openModal(renderImageClick(element.src));
+//     }
+//   });
+// });

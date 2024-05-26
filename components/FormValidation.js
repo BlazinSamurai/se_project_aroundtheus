@@ -1,9 +1,9 @@
-export default class Form {
-  constructor(form, formToValidate) {
-    this._formSelector = form.formSelectors;
-    this._inputSelector = form.inputSelectors;
-    this._submitButtonSelector = form.submitButtonSelectors;
-    this._inputErrorClass = form.errorSelectors;
+export default class FormValidator {
+  constructor(settings, formToValidate) {
+    this._formSelector = settings.formEl;
+    this._inputSelector = settings.inputEl;
+    this._submitButtonSelector = settings.submitButtonEl;
+    this._inputErrorClass = settings.errorEl;
 
     this._validatedForm = formToValidate;
   }
@@ -33,15 +33,21 @@ export default class Form {
   }
 
   _disableButton() {
-    this._button = this._validatedForm.querySelector(".modal__button");
-    this._button.classList.add("modal__button_disabled");
-    this._button.disabled = true;
+    this._submitButtonSelector.forEach((button) => {
+      button.classList.add(
+        `${this._submitButtonSelector[1].classList[0]}_disabled`
+      );
+      button.disabled = true;
+    });
   }
 
   _enableButton() {
-    this._button = this._validatedForm.querySelector(".modal__button");
-    this._button.classList.remove("modal__button_disabled");
-    this._button.disabled = false;
+    this._submitButtonSelector.forEach((button) => {
+      button.classList.remove(
+        `${this._submitButtonSelector[1].classList[0]}_disabled`
+      );
+      button.disabled = false;
+    });
   }
 
   _setEventListeners() {

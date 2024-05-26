@@ -1,5 +1,5 @@
 import Card from "../components/Card.js";
-import Form from "../components/FormValidation.js";
+import FormValidator from "../components/FormValidation.js";
 
 const cardsData = [
   {
@@ -50,6 +50,7 @@ const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const cardElement = cardTemplate.cloneNode(true);
 const cardListEl = document.querySelector(".card__list");
+const cardImageEl = cardElement.querySelectorAll(".card__image");
 
 /*-- Edit Modal --*/
 const editModal = document.querySelector("#edit-modal");
@@ -62,7 +63,6 @@ const editModalCloseButton = editModal.querySelector(".modal__close");
 const previewModal = document.querySelector("#preview-modal");
 const previewModalCloseButton = document.querySelector("#preview-modal-button");
 const previewTitleEl = previewModal.querySelector("#modal-preview-title");
-const previewAltTitleEl = previewModal.querySelector(".modal__preview-image");
 const previewImageEl = previewModal.querySelector(".modal__preview-image");
 
 /*-- Profile Selectors --*/
@@ -72,10 +72,10 @@ const profileName = document.querySelector(".profile__name");
 const profileBio = document.querySelector(".profile__bio");
 
 /*-- Config --*/
-const formSelectors = document.querySelectorAll(".modal__form");
-const inputSelectors = document.querySelectorAll(".modal__input");
-const submitButtonSelectors = document.querySelectorAll(".modal__button");
-const errorSelectors = document.querySelectorAll(".modal__input-error");
+const formEl = document.querySelectorAll(".modal__form");
+const inputEl = document.querySelectorAll(".modal__input");
+const submitButtonEl = document.querySelectorAll(".modal__button");
+const errorEl = document.querySelectorAll(".modal__input-error");
 
 /*-- Global Variables --*/
 let currentModal;
@@ -98,27 +98,18 @@ function closeModal(modal) {
 }
 
 function renderCard(cardData, listEl) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
-  const cardElement = card.getView();
+  const cardElement = createCard(cardData);
   listEl.prepend(cardElement);
-  cardsData.push(cardData);
-  handleImageClick();
-}
-
-function renderImageClick(image) {
-  cardsData.forEach((card) => {
-    if (card.link === image) {
-      previewImageEl.src = card.link;
-      previewTitleEl.textContent = card.name;
-      previewAltTitleEl.textContent = card.name;
-    }
-  });
-  return previewModal;
 }
 
 function fillProfileForm() {
   editModalName.value = profileName.textContent;
   editModalBio.value = profileBio.textContent;
+}
+
+function createCard(cardData) {
+  const card = new Card(cardData, "#card-template", handleImageClick);
+  return card.getView();
 }
 
 /*---------------------------------------------------*/
@@ -154,14 +145,12 @@ function handleAddCardFormSubmit(e) {
   closeModal(addModal);
 }
 
-function handleImageClick() {
-  const listEls = [...cardListEl.querySelectorAll(".card__image")];
-  listEls.forEach((element) => {
-    element.addEventListener("click", (evt) => {
-      if (evt.target.src === element.src) {
-        openModal(renderImageClick(element.src));
-      }
-    });
+function handleImageClick(data) {
+  data._cardElement.children[1].addEventListener("click", () => {
+    previewImageEl.src = data._cardElement.children[1].src;
+    previewTitleEl.textContent = data._name;
+    previewImageEl.alt = data._cardElement.children[1].alt;
+    openModal(previewModal);
   });
 }
 
@@ -199,8 +188,7 @@ profileEditButton.addEventListener("click", () => {
 /*---------------------------------------------------*/
 
 cardsData.forEach((data) => {
-  const card = new Card(data, "#card-template", handleImageClick);
-  const cardElement = card.getView();
+  const cardElement = createCard(data);
   cardListEl.prepend(cardElement);
 });
 
@@ -208,14 +196,14 @@ cardsData.forEach((data) => {
 /*                 Form Constructor                  */
 /*---------------------------------------------------*/
 
-const editProfileFormValidator = new Form(
-  { formSelectors, inputSelectors, submitButtonSelectors, errorSelectors },
+const editProfileFormValidator = new FormValidator(
+  { formEl, inputEl, submitButtonEl, errorEl },
   editModal
 );
 editProfileFormValidator.enableValidation();
 
-const addFormValidator = new Form(
-  { formSelectors, inputSelectors, submitButtonSelectors, errorSelectors },
+const addFormValidator = new FormValidator(
+  { formEl, inputEl, submitButtonEl, errorEl },
   addModal
 );
 addFormValidator.enableValidation();
