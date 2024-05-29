@@ -4,13 +4,6 @@
 
 console.log("Hello World!");
 
-// already know: which input, input is invalid, and the selectors are nodes
-// console.log(`inputEl: ${inputEl}`); [object HTMLInputElement]
-// console.log(`inputEl.id: ${inputEl.id}`); edit-modal-something
-// console.log(this._inputSelector); NodeList
-// console.log(this._inputErrorClass); NodeList
-// console.log(this._formSelector); NodeList of each Modal
-// console.log(this._errorClassEl); span class of error class
 // this._inputSelector.forEach((inputClass) => {
 //   if (inputClass.id === inputEl.id) {
 //     this._inputClassEl = inputClass;

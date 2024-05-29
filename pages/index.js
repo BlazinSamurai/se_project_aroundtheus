@@ -72,10 +72,12 @@ const profileName = document.querySelector(".profile__name");
 const profileBio = document.querySelector(".profile__bio");
 
 /*-- Config --*/
-const formEl = document.querySelectorAll(".modal__form");
-const inputEl = document.querySelectorAll(".modal__input");
-const submitButtonEl = document.querySelectorAll(".modal__button");
-const errorEl = document.querySelectorAll(".modal__input-error");
+const validationConfig = {
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__button",
+  errorClass: ".modal__input-error",
+};
 
 /*-- Global Variables --*/
 let currentModal;
@@ -196,14 +198,8 @@ cardsData.forEach((data) => {
 /*                 Form Constructor                  */
 /*---------------------------------------------------*/
 
-const editProfileFormValidator = new FormValidator(
-  { formEl, inputEl, submitButtonEl, errorEl },
-  editModal
-);
+const editProfileFormValidator = new FormValidator(validationConfig, editModal);
 editProfileFormValidator.enableValidation();
 
-const addFormValidator = new FormValidator(
-  { formEl, inputEl, submitButtonEl, errorEl },
-  addModal
-);
+const addFormValidator = new FormValidator(validationConfig, addModal);
 addFormValidator.enableValidation();

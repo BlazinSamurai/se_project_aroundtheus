@@ -1,9 +1,10 @@
 export default class FormValidator {
   constructor(settings, formToValidate) {
-    this._formSelector = settings.formEl;
-    this._inputSelector = settings.inputEl;
-    this._submitButtonSelector = settings.submitButtonEl;
-    this._inputErrorClass = settings.errorEl;
+    this._settings = settings;
+    this._formSelector = settings.formSelector;
+    this._inputSelector = settings.inputSelector;
+    this._submitButtonSelector = settings.submitButtonSelector;
+    this._inputErrorClass = settings.errorClass;
 
     this._validatedForm = formToValidate;
   }
@@ -13,6 +14,7 @@ export default class FormValidator {
     inputEl.classList.add(this._errorClassEl.id);
     this._errorClassEl.textContent = inputEl.validationMessage;
     this._errorClassEl.classList.add(`#${inputEl.id}-error`);
+    console.log("Error: Invalid!");
   }
 
   _hideInputError(inputEl) {
@@ -20,42 +22,44 @@ export default class FormValidator {
     inputEl.classList.remove(this._errorClassEl.id);
     this._errorClassEl.textContent = "";
     this._errorClassEl.classList.remove(`#${inputEl.id}-error`);
+    console.log("hide error message: Valid!");
   }
 
   _checkInputValidity(inputEl) {
-    if (!inputEl.validity.valid) {
-      this._showInputError(inputEl);
-      this._disableButton();
-    } else {
+    if (inputEl.validity.valid) {
       this._hideInputError(inputEl);
       this._enableButton();
+    } else {
+      this._showInputError(inputEl);
+      this._disableButton();
     }
   }
 
   _disableButton() {
-    this._submitButtonSelector.forEach((button) => {
-      button.classList.add(
-        `${this._submitButtonSelector[1].classList[0]}_disabled`
-      );
+    this._buttons.forEach((button) => {
+      button.classList.add(`${this._buttons[1].classList[0]}_disabled`);
       button.disabled = true;
     });
   }
 
   _enableButton() {
-    this._submitButtonSelector.forEach((button) => {
-      button.classList.remove(
-        `${this._submitButtonSelector[1].classList[0]}_disabled`
-      );
+    this._buttons.forEach((button) => {
+      button.classList.remove(`${this._buttons[1].classList[0]}_disabled`);
       button.disabled = false;
     });
   }
 
   _setEventListeners() {
-    this._inputSelector.forEach((inputEl) => {
-      inputEl.addEventListener("input", (e) => {
-        e.preventDefault();
+    this._inputs = [...document.querySelectorAll(`${this._inputSelector}`)];
+    this._errors = [...document.querySelectorAll(`${this._inputErrorClass}`)];
+    this._buttons = [
+      ...document.querySelectorAll(`${this._submitButtonSelector}`),
+    ];
 
-        this._checkInputValidity(inputEl);
+    this._inputs.forEach((input) => {
+      input.addEventListener("input", (e) => {
+        e.preventDefault();
+        this._checkInputValidity(input);
       });
     });
   }
