@@ -169,6 +169,7 @@ editModalCloseButton.addEventListener("click", () => {
 });
 
 profileAddButton.addEventListener("click", () => {
+  addFormValidator.resetButton();
   openModal(addModal);
 });
 
@@ -182,6 +183,7 @@ previewModalCloseButton.addEventListener("click", () => {
 
 profileEditButton.addEventListener("click", () => {
   fillProfileForm();
+  editProfileFormValidator.resetButton();
   openModal(editModal);
 });
 
