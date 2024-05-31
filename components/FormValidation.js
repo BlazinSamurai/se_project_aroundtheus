@@ -28,9 +28,7 @@ export default class FormValidator {
   }
 
   _returnsValidity() {
-    return this._validatedFormInputs.every(
-      (formInput) => formInput.validity.valid
-    );
+    return this._inputs.every((input) => input.validity.valid);
   }
 
   _toggleButtonState() {
@@ -50,8 +48,6 @@ export default class FormValidator {
   }
 
   _setEventListeners() {
-    this._validatedFormInputs = [];
-
     this._inputs = [
       ...this._validatedForm.querySelectorAll(`.${this._inputSelector}`),
     ];
@@ -61,14 +57,8 @@ export default class FormValidator {
     );
 
     this._inputs.forEach((input) => {
-      if (input.id.includes(this._validatedForm.id)) {
-        this._validatedFormInputs.push(input);
-      }
-    });
-
-    this._validatedFormInputs.forEach((formInput) => {
-      formInput.addEventListener("input", () => {
-        this._checkInputValidity(formInput);
+      input.addEventListener("input", () => {
+        this._checkInputValidity(input);
         this._toggleButtonState();
       });
     });

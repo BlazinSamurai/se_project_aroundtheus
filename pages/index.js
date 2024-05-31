@@ -148,14 +148,10 @@ function handleAddCardFormSubmit(e) {
 }
 
 function handleImageClick(data) {
-  console.log(data);
-  console.log(cardElement.children[1]);
-  data.cardElement.children[1].addEventListener("click", () => {
-    previewImageEl.src = data.link;
-    previewTitleEl.textContent = data.name;
-    previewImageEl.alt = data.altName;
-    openModal(previewModal);
-  });
+  previewImageEl.src = data.link;
+  previewTitleEl.textContent = data.name;
+  previewImageEl.alt = data.altName;
+  openModal(previewModal);
 }
 
 /*---------------------------------------------------*/
@@ -202,8 +198,11 @@ cardsData.forEach((data) => {
 /*                 Form Constructor                  */
 /*---------------------------------------------------*/
 
-const editProfileFormValidator = new FormValidator(validationConfig, editModal);
+const editProfileFormValidator = new FormValidator(
+  validationConfig,
+  editModalForm
+);
 editProfileFormValidator.enableValidation();
 
-const addFormValidator = new FormValidator(validationConfig, addModal);
+const addFormValidator = new FormValidator(validationConfig, addModalForm);
 addFormValidator.enableValidation();
