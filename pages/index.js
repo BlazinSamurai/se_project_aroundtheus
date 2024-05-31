@@ -73,10 +73,10 @@ const profileBio = document.querySelector(".profile__bio");
 
 /*-- Config --*/
 const validationConfig = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__button",
-  errorClass: ".modal__input-error",
+  formSelector: "modal__form",
+  inputSelector: "modal__input",
+  submitButtonSelector: "modal__button",
+  errorClass: "modal__input-error",
 };
 
 /*-- Global Variables --*/
@@ -148,10 +148,12 @@ function handleAddCardFormSubmit(e) {
 }
 
 function handleImageClick(data) {
-  data._cardElement.children[1].addEventListener("click", () => {
-    previewImageEl.src = data._cardElement.children[1].src;
-    previewTitleEl.textContent = data._name;
-    previewImageEl.alt = data._cardElement.children[1].alt;
+  console.log(data);
+  console.log(cardElement.children[1]);
+  data.cardElement.children[1].addEventListener("click", () => {
+    previewImageEl.src = data.link;
+    previewTitleEl.textContent = data.name;
+    previewImageEl.alt = data.altName;
     openModal(previewModal);
   });
 }
@@ -169,7 +171,7 @@ editModalCloseButton.addEventListener("click", () => {
 });
 
 profileAddButton.addEventListener("click", () => {
-  addFormValidator.resetButton();
+  addFormValidator.disableButton();
   openModal(addModal);
 });
 
@@ -183,7 +185,7 @@ previewModalCloseButton.addEventListener("click", () => {
 
 profileEditButton.addEventListener("click", () => {
   fillProfileForm();
-  editProfileFormValidator.resetButton();
+  editProfileFormValidator.disableButton();
   openModal(editModal);
 });
 
