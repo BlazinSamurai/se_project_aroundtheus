@@ -144,6 +144,7 @@ function handleAddCardFormSubmit(e) {
   const link = addModalURL.value;
   renderCard({ name, altName, link }, cardListEl);
   addModalForm.reset();
+  addFormValidator.disableButton();
   closeModal(addModal);
 }
 
@@ -167,7 +168,6 @@ editModalCloseButton.addEventListener("click", () => {
 });
 
 profileAddButton.addEventListener("click", () => {
-  addFormValidator.disableButton();
   openModal(addModal);
 });
 
