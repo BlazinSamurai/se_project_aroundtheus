@@ -4,7 +4,7 @@
   "description": "Online App where users can post picture of where they have been in the United States.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode producion"
   },
   "author": "Damian Lavin",
   "license": "ISC"
