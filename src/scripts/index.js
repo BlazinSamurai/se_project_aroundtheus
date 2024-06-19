@@ -1,5 +1,6 @@
-import Card from "../components/Card.js";
-import FormValidator from "../components/FormValidation.js";
+import Card from "../src/components/Card.js";
+import FormValidator from "../src/components/FormValidation.js";
+import "./pages/index.css";
 
 const cardsData = [
   {

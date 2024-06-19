@@ -9,14 +9,14 @@
       content="Sprint 3 landing page for 'Around The U.S.' app"
     />
     <meta name="keywords" content="Project 3, Landing Page, Around The U.S." />
-    <link rel="stylesheet" href="./pages/index.css" />
-    <link rel="favicon" href="favicon.ico" />
+    <!-- <link rel="stylesheet" href="../src/pages/index.css" /> -->
+    <link rel="favicon" href="./images/favicon.ico" />
     <title>Around The U.S.</title>
   </head>
   <body class="page">
     <header class="header page__section">
       <img
-        src="./images/aound.the.us.svg"
+        src="<%=require('./images/aound.the.us.svg')%>"
         alt="Around The U.S."
         class="header__logo-image"
       />
@@ -24,7 +24,7 @@
     <main>
       <section class="profile page__section">
         <img
-          src="./images/jacques.cousteau.png"
+          src="<%=require('./images/jacques.cousteau.png')%>"
           alt="Profile Pic"
           class="profile__avatar"
         />
@@ -141,7 +141,5 @@
         </h2>
       </div>
     </div>
-
-    <script src="./src/index.js" type="module" defer></script>
   </body>
 </html>
