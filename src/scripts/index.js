@@ -1,5 +1,8 @@
-import Card from "../src/components/Card.js";
-import FormValidator from "../src/components/FormValidation.js";
+import Card from "./Card.js";
+import FormValidator from "./FormValidation.js";
+import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage.js";
+import UserInfo from "./UserInfo.js";
 import "./pages/index.css";
 
 const cardsData = [
@@ -84,21 +87,29 @@ const validationConfig = {
 let currentModal;
 
 /*---------------------------------------------------*/
+/*                 Popup Constructor                 */
+/*---------------------------------------------------*/
+
+// const popupImg = new PopupWithImage(currentModal);
+
+// const popupForm = new PopupWithForm(".modal__form", () => {});
+
+/*---------------------------------------------------*/
 /*                     Functions                     */
 /*---------------------------------------------------*/
 
-function openModal(modal) {
-  currentModal = modal;
-  modal.classList.add("modal_opened");
-  document.addEventListener("keydown", handleEscape);
-  modal.addEventListener("mousedown", handleOverlay);
-}
+// function openModal(modal) {
+//   currentModal = modal;
+//   modal.classList.add("modal_opened");
+//   document.addEventListener("keydown", handleEscape);
+//   modal.addEventListener("mousedown", handleOverlay);
+// }
 
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
-  document.removeEventListener("keydown", handleEscape);
-  modal.removeEventListener("mousedown", handleOverlay);
-}
+// function closeModal(modal) {
+//   modal.classList.remove("modal_opened");
+//   document.removeEventListener("keydown", handleEscape);
+//   modal.removeEventListener("mousedown", handleOverlay);
+// }
 
 function renderCard(cardData, listEl) {
   const cardElement = createCard(cardData);
@@ -106,8 +117,12 @@ function renderCard(cardData, listEl) {
 }
 
 function fillProfileForm() {
-  editModalName.value = profileName.textContent;
-  editModalBio.value = profileBio.textContent;
+  const userInfo = new UserInfo(profileName, profileBio);
+  let info = {};
+  info = userInfo.getUserInfo();
+  userInfo.setUserInfo(info);
+  // editModalName.value = profileName.textContent;
+  // editModalBio.value = profileBio.textContent;
 }
 
 function createCard(cardData) {
@@ -119,41 +134,46 @@ function createCard(cardData) {
 /*                 Event Handlers                    */
 /*---------------------------------------------------*/
 
-function handleEscape(evt) {
-  if (evt.key === "Escape") {
-    closeModal(currentModal);
-  }
-}
+// function handleEscape(evt) {
+//   if (evt.key === "Escape") {
+//     closeModal(currentModal);
+//   }
+// }
 
-function handleOverlay(evt) {
-  if (evt.target.id === currentModal.id) {
-    closeModal(currentModal);
-  }
-}
+// function handleOverlay(evt) {
+//   if (evt.target.id === currentModal.id) {
+//     closeModal(currentModal);
+//   }
+// }
 
 function handleProfileFormSubmit(e) {
   e.preventDefault();
-  profileName.textContent = editModalName.value;
-  profileBio.textContent = editModalBio.value;
-  closeModal(editModal);
+  const popupForm = new PopupWithForm(editModal, () => {});
+  popupForm.setEventListeners();
+  // profileName.textContent = editModalName.value;
+  // profileBio.textContent = editModalBio.value;
+  // closeModal(editModal);
 }
 
 function handleAddCardFormSubmit(e) {
   e.preventDefault();
-  const name = addModalTitle.value;
-  const altName = addModalTitle.value;
-  const link = addModalURL.value;
-  renderCard({ name, altName, link }, cardListEl);
-  addModalForm.reset();
+  // const name = addModalTitle.value;
+  // const altName = addModalTitle.value;
+  // const link = addModalURL.value;
+  // renderCard({ name, altName, link }, cardListEl);
+  const popupForm = new PopupWithForm(addModal, () => {});
+  popupForm.setEventListeners();
+  // addModalForm.reset();
   addFormValidator.disableButton();
-  closeModal(addModal);
+  // closeModal(addModal);
 }
 
 function handleImageClick(data) {
-  previewImageEl.src = data.link;
-  previewTitleEl.textContent = data.name;
-  previewImageEl.alt = data.altName;
-  openModal(previewModal);
+  const popupImg = new PopupWithImage(data);
+  popupImg.setEventListeners(); // previewImageEl.src = data.link;
+  // previewTitleEl.textContent = data.name;
+  // previewImageEl.alt = data.altName;
+  // openModal(previewModal);
 }
 
 /*---------------------------------------------------*/
