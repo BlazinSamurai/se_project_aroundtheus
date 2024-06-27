@@ -1,5 +1,5 @@
 export default class UserInfo {
-  constructor({ nameSelector, jobElement }) {
+  constructor(nameSelector, jobElement) {
     this._nameSelector = nameSelector;
     this._jobElement = jobElement;
   }
@@ -10,6 +10,7 @@ export default class UserInfo {
       job: this._jobElement.textContent,
     };
 
+    // console.log(userInfo);
     return userInfo;
   }
 

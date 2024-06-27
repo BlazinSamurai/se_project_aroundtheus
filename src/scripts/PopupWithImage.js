@@ -1,8 +1,8 @@
 import Popup from "./Popup";
 
 export default class PopupWithImage extends Popup {
-  constructor(data) {
-    this.open(data);
+  constructor(popupSelector) {
+    super({ popupSelector });
   }
 
   open(data) {
@@ -11,6 +11,7 @@ export default class PopupWithImage extends Popup {
     // set the image's src and alt
     popupPreviewImage.src = data.link;
     popupPreviewImage.alt = data.altName;
+
     // set the caption's textContent
     popupPreviewImage.textContent = data.name;
 
