@@ -1,5 +1,6 @@
 export default class Popup {
   constructor({ popupSelector }) {
+    this._popupSelector = popupSelector;
     this._popupElement = document.querySelector(popupSelector);
   }
 
@@ -9,9 +10,15 @@ export default class Popup {
     }
   }
 
+  _handleOverlay(evt) {
+    if (`#${evt.target.id}` === this._popupSelector) {
+      this.close();
+    }
+  }
+
   open() {
     this._popupElement.classList.add("modal_opened");
-    this._popupElement.addEventListener("keypress", () => {
+    this._popupElement.addEventListener("keydown", () => {
       this.setEventListeners();
     });
     this._popupElement.addEventListener("click", () => {
@@ -21,13 +28,25 @@ export default class Popup {
 
   close() {
     this._popupElement.classList.remove("modal_opened");
+    this._popupElement.removeEventListener("keydown", () => {
+      this.setEventListeners();
+    });
+    this._popupElement.removeEventListener("click", () => {
+      this.setEventListeners();
+    });
   }
 
   setEventListeners() {
-    const closeButtonSelector = document.querySelector(".modal__close");
-    closeButtonSelector.addEventListener("click", this.close());
-
+    document.addEventListener("click", (e) => {
+      this._handleOverlay(e);
+    });
     document.addEventListener("keydown", (e) => {
+      this._handleEscClose(e);
+    });
+    document.removeEventListener("click", (e) => {
+      this._handleOverlay(e);
+    });
+    document.removeEventListener("keydown", (e) => {
       this._handleEscClose(e);
     });
   }
