@@ -1,7 +1,7 @@
 export default class UserInfo {
-  constructor(nameSelector, jobElement) {
+  constructor(nameSelector, bioElement) {
     this._nameSelector = nameSelector;
-    this._jobElement = jobElement;
+    this._bioElement = bioElement;
   }
 
   // returns an object containing information about the
@@ -10,7 +10,7 @@ export default class UserInfo {
   getUserInfo() {
     const userInfo = {
       name: this._nameSelector.textContent,
-      job: this._jobElement.textContent,
+      bio: this._bioElement.textContent,
     };
 
     return userInfo;
@@ -19,9 +19,8 @@ export default class UserInfo {
   // setUserInfo() takes new user data and adds it
   // to the page. This method should be used after successful
   // submission of the profile form
-  setUserInfo() {
-    const newUserInfo = this.getUserInfo();
-    this._nameSelector.textContent = newUserInfo.name;
-    this._jobElement.textContent = newUserInfo.job;
+  setUserInfo(newName, newBio) {
+    this._nameSelector.textContent = newName;
+    this._bioElement.textContent = newBio;
   }
 }

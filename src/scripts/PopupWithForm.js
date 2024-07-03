@@ -13,15 +13,13 @@ export default class PopupWithForm extends Popup {
 
     this._formValues = {};
     this._inputList.forEach((input) => {
-      // the name attribute of each field will serve as a key in this object
       this._formValues[input.name] = input.value;
     });
 
-    this._handleFormSubmit(this._formValues);
+    return this._formValues;
   }
 
   close() {
-    this._popupForm.reset();
     super.close();
   }
 
@@ -29,11 +27,12 @@ export default class PopupWithForm extends Popup {
   // event listener to the form and call the setEventListeners() method of the
   // parent class.
   setEventListeners() {
-    this._popupForm.addEventListener("click", super.setEventListeners());
-    this._popupForm.addEventListener("keydown", super.setEventListeners());
+    super.setEventListeners();
+
     this._popupForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this._getInputValues();
+      const formValues = this._getInputValues();
+      this._handleFormSubmit(formValues);
       this.close();
     });
   }

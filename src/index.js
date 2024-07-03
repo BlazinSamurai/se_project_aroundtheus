@@ -105,8 +105,12 @@ function createPopupImg(data) {
 /*                 Event Handlers                    */
 /*---------------------------------------------------*/
 
-function handleProfileFormSubmit() {
+function handleProfileFormSubmit(formValues) {
   profilePopupForm.setEventListeners();
+  const newName = formValues.name;
+  const newBio = formValues.bio;
+
+  userInfo.setUserInfo(newName, newBio);
 }
 
 function handleAddCardFormSubmit() {
@@ -122,10 +126,6 @@ function handleImageClick(data) {
 /*---------------------------------------------------*/
 /*                 Event Listeners                   */
 /*---------------------------------------------------*/
-
-editModalForm.addEventListener("submit", handleProfileFormSubmit);
-
-addModalForm.addEventListener("submit", handleAddCardFormSubmit);
 
 editModalCloseButton.addEventListener("click", () => {
   profilePopupForm.close();
@@ -146,9 +146,10 @@ previewModalCloseButton.addEventListener("click", () => {
 });
 
 profileEditButton.addEventListener("click", () => {
-  const userInfor = new UserInfo(profileName, profileBio);
-  userInfor.setUserInfo();
+  const currentUserInfo = userInfo.getUserInfo();
   profilePopupForm.open();
+  editModalName.value = currentUserInfo.name;
+  editModalBio.value = currentUserInfo.bio;
   editProfileFormValidator.disableButton();
 });
 
@@ -183,3 +184,5 @@ const cardPopupForm = new PopupWithForm(
   addModalClassStg,
   handleAddCardFormSubmit
 );
+
+const userInfo = new UserInfo(profileName, profileBio);
