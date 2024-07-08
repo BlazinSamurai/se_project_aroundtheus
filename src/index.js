@@ -2,6 +2,7 @@ import Card from "./scripts/Card.js";
 import FormValidator from "./scripts/FormValidation.js";
 import PopupWithForm from "./scripts/PopupWithForm.js";
 import PopupWithImage from "./scripts/PopupWithImage.js";
+import Section from "./scripts/Section.js";
 import UserInfo from "./scripts/UserInfo.js";
 import "./pages/index.css";
 
@@ -87,6 +88,10 @@ const addModalClassStg = "#add-modal";
 const editModalClassStg = "#edit-modal";
 const previewModalClassStg = "#preview-modal";
 
+const items = cardsData;
+const section = new Section({ items, renderer: createCard }, ".card__list");
+section.renderItems();
+
 /*---------------------------------------------------*/
 /*                     Functions                     */
 /*---------------------------------------------------*/
@@ -94,6 +99,22 @@ const previewModalClassStg = "#preview-modal";
 function createCard(cardData) {
   const card = new Card(cardData, "#card-template", handleImageClick);
   return card.getView();
+}
+
+function createProfilePopup() {
+  const profilePopup = new PopupWithForm(
+    editModalClassStg,
+    handleProfileFormSubmit
+  );
+  return profilePopup;
+}
+
+function createCardPopup() {
+  const cardPopup = new PopupWithForm(
+    addModalClassStg,
+    handleAddCardFormSubmit
+  );
+  return cardPopup;
 }
 
 function createPopupImg(data) {
@@ -106,16 +127,21 @@ function createPopupImg(data) {
 /*---------------------------------------------------*/
 
 function handleProfileFormSubmit(formValues) {
-  profilePopupForm.setEventListeners();
   const newName = formValues.name;
   const newBio = formValues.bio;
-
   userInfo.setUserInfo(newName, newBio);
+  const profilePopup = createProfilePopup();
+  profilePopup.close();
 }
 
-function handleAddCardFormSubmit() {
-  cardPopupForm.setEventListeners();
-  addFormValidator.disableButton();
+function handleAddCardFormSubmit(formValues) {
+  const name = formValues.title;
+  const altName = formValues.title;
+  const link = formValues.url;
+  const cardElement = createCard({ name, altName, link });
+  section.addItem(cardElement);
+  const cardPopup = createCardPopup();
+  cardPopup.close();
 }
 
 function handleImageClick(data) {
@@ -127,30 +153,26 @@ function handleImageClick(data) {
 /*                 Event Listeners                   */
 /*---------------------------------------------------*/
 
-editModalCloseButton.addEventListener("click", () => {
-  profilePopupForm.close();
+profileEditButton.addEventListener("click", () => {
+  const currentUserInfo = userInfo.getUserInfo();
+  const newProfilePopup = createProfilePopup();
+  newProfilePopup.open();
+  newProfilePopup.setEventListeners();
+  editModalName.value = currentUserInfo.name;
+  editModalBio.value = currentUserInfo.bio;
+  editProfileFormValidator.disableButton();
 });
 
 profileAddButton.addEventListener("click", () => {
-  cardPopupForm.open();
+  const newCardPopup = createCardPopup();
+  newCardPopup.open();
+  newCardPopup.setEventListeners();
   addFormValidator.disableButton();
-});
-
-addModalCloseButton.addEventListener("click", () => {
-  cardPopupForm.close();
 });
 
 previewModalCloseButton.addEventListener("click", () => {
   const popupImg = new PopupWithImage(previewModalClassStg);
   popupImg.close();
-});
-
-profileEditButton.addEventListener("click", () => {
-  const currentUserInfo = userInfo.getUserInfo();
-  profilePopupForm.open();
-  editModalName.value = currentUserInfo.name;
-  editModalBio.value = currentUserInfo.bio;
-  editProfileFormValidator.disableButton();
 });
 
 /*---------------------------------------------------*/
@@ -174,15 +196,5 @@ editProfileFormValidator.enableValidation();
 
 const addFormValidator = new FormValidator(validationConfig, addModalForm);
 addFormValidator.enableValidation();
-
-const profilePopupForm = new PopupWithForm(
-  editModalClassStg,
-  handleProfileFormSubmit
-);
-
-const cardPopupForm = new PopupWithForm(
-  addModalClassStg,
-  handleAddCardFormSubmit
-);
 
 const userInfo = new UserInfo(profileName, profileBio);

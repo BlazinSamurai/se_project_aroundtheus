@@ -9,7 +9,7 @@ export default class PopupWithForm extends Popup {
   // collects data from all the input fields and returns it as an object.
   // This data should then be passed to the submission handler as an argument
   _getInputValues() {
-    this._inputList = this._popupElement.querySelectorAll(".modal__input");
+    this._inputList = this._popupForm.querySelectorAll(".modal__input");
 
     this._formValues = {};
     this._inputList.forEach((input) => {
@@ -27,13 +27,12 @@ export default class PopupWithForm extends Popup {
   // event listener to the form and call the setEventListeners() method of the
   // parent class.
   setEventListeners() {
-    super.setEventListeners();
-
     this._popupForm.addEventListener("submit", (evt) => {
       evt.preventDefault();
       const formValues = this._getInputValues();
       this._handleFormSubmit(formValues);
-      this.close();
     });
+    super.setEventListeners();
+    this._popupForm.reset();
   }
 }

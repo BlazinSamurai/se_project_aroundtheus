@@ -13,7 +13,7 @@ export default class PopupWithImage extends Popup {
     popupPreviewImage.alt = data.altName;
 
     // set the caption's textContent
-    popupPreviewImage.textContent = data.name;
+    popupPreviewImage.value = data.name;
 
     super.open();
   }
