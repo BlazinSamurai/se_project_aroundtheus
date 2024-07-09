@@ -20,22 +20,38 @@ export default class Popup {
 
   open() {
     this._popupElement.classList.add("modal_opened");
-    document.addEventListener("click", (e) => {
-      this._handleOverlay(e);
-    });
-    document.addEventListener("keydown", (e) => {
-      this._handleEscClose(e);
-    });
+    document.addEventListener(
+      "click",
+      (e) => {
+        this._handleOverlay(e);
+      },
+      true
+    );
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        this._handleEscClose(e);
+      },
+      false
+    );
   }
 
   close() {
     this._popupElement.classList.remove("modal_opened");
-    document.removeEventListener("click", (e) => {
-      this._handleOverlay(e);
-    });
-    document.removeEventListener("keydown", (e) => {
-      this._handleEscClose(e);
-    });
+    document.removeEventListener(
+      "click",
+      (e) => {
+        this._handleOverlay(e);
+      },
+      true
+    );
+    document.removeEventListener(
+      "keydown",
+      (e) => {
+        this._handleEscClose(e);
+      },
+      false
+    );
   }
 
   // click event listener to the close icon of the popup.
