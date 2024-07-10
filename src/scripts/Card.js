@@ -1,10 +1,3 @@
-/*
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-The Card class is intended to replace the functionality of you
-'getCardElement' function from the previous project.
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*/
-
 export default class Card {
   constructor({ name, altName, link }, cardSelector, handleImageClick) {
     this.name = name;

@@ -5,8 +5,8 @@ import PopupWithImage from "./scripts/PopupWithImage.js";
 import Section from "./scripts/Section.js";
 import UserInfo from "./scripts/UserInfo.js";
 import "./pages/index.css";
-import { cardsData } from "./utils/constants.js";
-import { validationConfig } from "./utils/constants.js";
+import { cardsData } from "./utils/utils.js";
+import { validationConfig } from "./utils/utils.js";
 
 /*---------------------------------------------------*/
 /*                     Elements                      */
@@ -49,6 +49,8 @@ const profileBio = document.querySelector(".profile__bio");
 const addModalClassStg = "#add-modal";
 const editModalClassStg = "#edit-modal";
 const previewModalClassStg = "#preview-modal";
+const profileNameStg = ".profile__name";
+const profileBioStg = ".profile__bio";
 
 const items = cardsData;
 const section = new Section({ items, renderer: createCard }, ".card__list");
@@ -59,7 +61,14 @@ section.renderItems();
 /*---------------------------------------------------*/
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
+  const name = cardData.name;
+  const altName = cardData.name;
+  const link = cardData.link;
+  const card = new Card(
+    { name, altName, link },
+    "#card-template",
+    handleImageClick
+  );
   return card.getView();
 }
 
@@ -93,9 +102,8 @@ function handleImageClick(data) {
 
 profileEditButton.addEventListener("click", () => {
   const currentUserInfo = userInfo.getUserInfo();
+  profilePopup.setInputValues(currentUserInfo);
   profilePopup.open();
-  editModalName.value = currentUserInfo.name;
-  editModalBio.value = currentUserInfo.bio;
 });
 
 profileAddButton.addEventListener("click", () => {
@@ -106,10 +114,10 @@ profileAddButton.addEventListener("click", () => {
 /*                 Card Constructor                  */
 /*---------------------------------------------------*/
 
-cardsData.forEach((data) => {
-  const cardElement = createCard(data);
-  cardListEl.prepend(cardElement);
-});
+// cardsData.forEach((data) => {
+//   const cardElement = createCard(data);
+//   cardListEl.prepend(cardElement);
+// });
 
 /*---------------------------------------------------*/
 /*                 Form Constructor                  */
@@ -124,7 +132,7 @@ editProfileFormValidator.enableValidation();
 const addFormValidator = new FormValidator(validationConfig, addModalForm);
 addFormValidator.enableValidation();
 
-const userInfo = new UserInfo(profileName, profileBio);
+const userInfo = new UserInfo(profileNameStg, profileBioStg);
 
 const profilePopup = new PopupWithForm(
   editModalClassStg,

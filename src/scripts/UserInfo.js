@@ -1,7 +1,10 @@
 export default class UserInfo {
-  constructor(nameSelector, bioElement) {
+  constructor(nameSelector, bioSelector) {
     this._nameSelector = nameSelector;
-    this._bioElement = bioElement;
+    this._bioSelector = bioSelector;
+
+    this._nameElement = document.querySelector(this._nameSelector);
+    this._bioElement = document.querySelector(this._bioSelector);
   }
 
   // returns an object containing information about the
@@ -9,7 +12,7 @@ export default class UserInfo {
   // necessary to display the user data in the open form
   getUserInfo() {
     const userInfo = {
-      name: this._nameSelector.textContent,
+      name: this._nameElement.textContent,
       bio: this._bioElement.textContent,
     };
 
@@ -20,7 +23,7 @@ export default class UserInfo {
   // to the page. This method should be used after successful
   // submission of the profile form
   setUserInfo(newName, newBio) {
-    this._nameSelector.textContent = newName;
+    this._nameElement.textContent = newName;
     this._bioElement.textContent = newBio;
   }
 }

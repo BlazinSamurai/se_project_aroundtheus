@@ -7,24 +7,30 @@ export default class Section {
   // adds a single item to the page.
 
   // The third item is a CSS class selector where you'll add the card elements
-  //      - Word selector means a string that is used for searching elements in the DOM
   constructor({ items, renderer }, classSelector) {
     this._items = items;
     this._renderer = renderer;
-    // I'm searching the DOM using the selector, 'string', in querySelector am I not?
-    this._classSelector = document.querySelector(classSelector);
+    this._classSelector = classSelector;
+
+    this.container = document.querySelector(this._classSelector);
   }
 
   // renders all elements on the page
   renderItems() {
     this._items.forEach((item) => {
-      this._renderer(item);
+      let name = item.name;
+      let altName = item.name;
+      let link = item.link;
+      let newCard = this._renderer({ name, altName, link });
+      // this._renderer(item);
+      // this.addItem(item);
+      this.addItem(newCard);
     });
   }
 
   // takes a DOM element and adds it to the container. This method
   // should be called when adding an individual card to the DOM
   addItem(element) {
-    this._classSelector.prepend(element);
+    this.container.prepend(element);
   }
 }
