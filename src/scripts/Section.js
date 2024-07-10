@@ -22,8 +22,6 @@ export default class Section {
       let altName = item.name;
       let link = item.link;
       let newCard = this._renderer({ name, altName, link });
-      // this._renderer(item);
-      // this.addItem(item);
       this.addItem(newCard);
     });
   }

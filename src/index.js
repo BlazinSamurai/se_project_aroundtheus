@@ -111,15 +111,6 @@ profileAddButton.addEventListener("click", () => {
 });
 
 /*---------------------------------------------------*/
-/*                 Card Constructor                  */
-/*---------------------------------------------------*/
-
-// cardsData.forEach((data) => {
-//   const cardElement = createCard(data);
-//   cardListEl.prepend(cardElement);
-// });
-
-/*---------------------------------------------------*/
 /*                 Form Constructor                  */
 /*---------------------------------------------------*/
 
