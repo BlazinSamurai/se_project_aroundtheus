@@ -4,6 +4,10 @@ export default class Popup {
 
     this._popupElement = document.querySelector(popupSelector);
     this._closePopupButton = this._popupElement.querySelector(".modal__close");
+
+    // Define the event handlers separately
+    this._handleOverlayClick = (e) => this._handleOverlay(e);
+    this._handleDocumentKeydown = (e) => this._handleEscClose(e);
   }
 
   _handleEscClose(e) {
@@ -20,38 +24,14 @@ export default class Popup {
 
   open() {
     this._popupElement.classList.add("modal_opened");
-    document.addEventListener(
-      "click",
-      (e) => {
-        this._handleOverlay(e);
-      },
-      true
-    );
-    document.addEventListener(
-      "keydown",
-      (e) => {
-        this._handleEscClose(e);
-      },
-      false
-    );
+    document.addEventListener("click", this._handleOverlayClick, true);
+    document.addEventListener("keydown", this._handleDocumentKeydown, false);
   }
 
   close() {
     this._popupElement.classList.remove("modal_opened");
-    document.removeEventListener(
-      "click",
-      (e) => {
-        this._handleOverlay(e);
-      },
-      true
-    );
-    document.removeEventListener(
-      "keydown",
-      (e) => {
-        this._handleEscClose(e);
-      },
-      false
-    );
+    document.removeEventListener("click", this._handleOverlayClick, true);
+    document.removeEventListener("keydown", this._handleDocumentKeydown, false);
   }
 
   // click event listener to the close icon of the popup.

@@ -37,3 +37,9 @@ export const validationConfig = {
   submitButtonSelector: "modal__button",
   errorClass: "modal__input-error",
 };
+
+export const addModalClassStg = "#add-modal";
+export const editModalClassStg = "#edit-modal";
+export const previewModalClassStg = "#preview-modal";
+export const profileNameStg = ".profile__name";
+export const profileBioStg = ".profile__bio";

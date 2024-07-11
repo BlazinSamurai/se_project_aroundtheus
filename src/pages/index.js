@@ -1,12 +1,19 @@
-import Card from "../scripts/Card.js";
-import FormValidator from "../scripts/FormValidation.js";
-import PopupWithForm from "../scripts/PopupWithForm.js";
-import PopupWithImage from "../scripts/PopupWithImage.js";
-import Section from "../scripts/Section.js";
-import UserInfo from "../scripts/UserInfo.js";
 import "./index.css";
-import { cardsData } from "../utils/utils.js";
-import { validationConfig } from "../utils/utils.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidation.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import Section from "../components/Section.js";
+import UserInfo from "../components/UserInfo.js";
+import {
+  cardsData,
+  validationConfig,
+  addModalClassStg,
+  editModalClassStg,
+  previewModalClassStg,
+  profileNameStg,
+  profileBioStg,
+} from "../utils/constants.js";
 
 /*---------------------------------------------------*/
 /*                     Elements                      */
@@ -45,13 +52,6 @@ const profileAddButton = document.querySelector(".profile__button-add");
 const profileName = document.querySelector(".profile__name");
 const profileBio = document.querySelector(".profile__bio");
 
-/*-- Class Strings --*/
-const addModalClassStg = "#add-modal";
-const editModalClassStg = "#edit-modal";
-const previewModalClassStg = "#preview-modal";
-const profileNameStg = ".profile__name";
-const profileBioStg = ".profile__bio";
-
 const items = cardsData;
 const section = new Section({ items, renderer: createCard }, ".card__list");
 section.renderItems();
@@ -89,7 +89,6 @@ function handleAddCardFormSubmit(formValues) {
   const cardElement = createCard({ name, altName, link });
   section.addItem(cardElement);
   cardPopup.close();
-  addFormValidator.disableButton();
 }
 
 function handleImageClick(data) {
@@ -108,6 +107,7 @@ profileEditButton.addEventListener("click", () => {
 
 profileAddButton.addEventListener("click", () => {
   cardPopup.open();
+  addFormValidator.disableButton();
 });
 
 /*---------------------------------------------------*/
