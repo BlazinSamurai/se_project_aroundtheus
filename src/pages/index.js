@@ -1,4 +1,5 @@
 import "./index.css";
+import Api from "../components/Api.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidation.js";
 import PopupWithForm from "../components/PopupWithForm.js";
@@ -78,6 +79,7 @@ function createCard(cardData) {
 
 function handleProfileFormSubmit(formValues) {
   userInfo.setUserInfo(formValues.name, formValues.bio);
+  api.setProfileInfo({ name: formValues.name, bio: formValues.bio });
   profilePopup.close();
   editProfileFormValidator.disableButton();
 }
@@ -136,3 +138,35 @@ cardPopup.setEventListeners();
 
 const popupImg = new PopupWithImage(previewModalClassStg);
 popupImg.setEventListeners();
+
+// User routes
+// GET /users/me – Get the current user’s info
+// PATCH /users/me – Update your profile information
+// PATCH /users/me/avatar – Update avatar
+
+// Card routes
+// GET /cards – Get all cards
+// POST /cards – Create a card
+// DELETE /cards/:cardId – Delete a card
+// PUT /cards/:cardId/likes – Like a card
+// DELETE /cards/:cardId/likes – Dislike a card
+
+// connecting it to a database via an API, allowing user changes to
+// the cards or the profile info to persist when the page reloads
+//    -User information should be fetched from the server. To do that,
+//     make a GET request to the following URL:
+//     https://around-api.en.tripleten-services.com/v1/users/me
+//    -Once edited, profile data must be saved on the server. To do this,
+//     send a request using the PATCH method:
+//     PATCH https://around-api.en.tripleten-services.com/v1/users/me
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1/users/me",
+  headers: {
+    authorization: "c430f938-707d-41ce-9931-5e6195b9093a",
+  },
+});
+
+api.getProfile();
+
+api.patchProfile();
