@@ -55,9 +55,3 @@ export default class Card {
     return this.cardElement;
   }
 }
-
-// GET /cards – Get all cards
-// POST /cards – Create a card
-// DELETE /cards/:cardId – Delete a card
-// PUT /cards/:cardId/likes – Like a card
-// DELETE /cards/:cardId/likes – Dislike a card

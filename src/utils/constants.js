@@ -2,7 +2,7 @@ export const cardsData = [
   {
     name: "Lago di Braies",
     altName: "Lago di Braise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg ",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
   },
   {
     name: "Vanoise National Park",
@@ -43,3 +43,5 @@ export const editModalClassStg = "#edit-modal";
 export const previewModalClassStg = "#preview-modal";
 export const profileNameStg = ".profile__name";
 export const profileBioStg = ".profile__bio";
+
+export const authorizationCode = "c430f938-707d-41ce-9931-5e6195b9093a";

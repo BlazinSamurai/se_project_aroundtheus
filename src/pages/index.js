@@ -7,6 +7,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import {
+  authorizationCode,
   cardsData,
   validationConfig,
   addModalClassStg,
@@ -55,7 +56,8 @@ const profileBio = document.querySelector(".profile__bio");
 
 const items = cardsData;
 const section = new Section({ items, renderer: createCard }, ".card__list");
-section.renderItems();
+//this is where the cards are created and then added
+//section.renderItems();
 
 /*---------------------------------------------------*/
 /*                     Functions                     */
@@ -79,7 +81,15 @@ function createCard(cardData) {
 
 function handleProfileFormSubmit(formValues) {
   userInfo.setUserInfo(formValues.name, formValues.bio);
-  api.setProfileInfo({ name: formValues.name, bio: formValues.bio });
+  profileApi.setProfileInfo({ name: formValues.name, bio: formValues.bio });
+  profileApi
+    .patchProfile()
+    .then((updatedProfile) => {
+      console.log("Profile updated successfully:", updatedProfile);
+    })
+    .catch((err) => {
+      console.error("Error updating profile:", err);
+    });
   profilePopup.close();
   editProfileFormValidator.disableButton();
 }
@@ -89,7 +99,7 @@ function handleAddCardFormSubmit(formValues) {
   const altName = formValues.title;
   const link = formValues.url;
   const cardElement = createCard({ name, altName, link });
-  section.addItem(cardElement);
+  // section.addItem(cardElement); api should handle adding new card elements
   cardPopup.close();
 }
 
@@ -103,6 +113,7 @@ function handleImageClick(data) {
 
 profileEditButton.addEventListener("click", () => {
   const currentUserInfo = userInfo.getUserInfo();
+  //const currentUserInfo = profileApi.getProfileInfo();
   profilePopup.setInputValues(currentUserInfo);
   profilePopup.open();
 });
@@ -139,34 +150,30 @@ cardPopup.setEventListeners();
 const popupImg = new PopupWithImage(previewModalClassStg);
 popupImg.setEventListeners();
 
-// User routes
-// GET /users/me – Get the current user’s info
-// PATCH /users/me – Update your profile information
-// PATCH /users/me/avatar – Update avatar
-
-// Card routes
-// GET /cards – Get all cards
-// POST /cards – Create a card
-// DELETE /cards/:cardId – Delete a card
-// PUT /cards/:cardId/likes – Like a card
-// DELETE /cards/:cardId/likes – Dislike a card
-
-// connecting it to a database via an API, allowing user changes to
-// the cards or the profile info to persist when the page reloads
-//    -User information should be fetched from the server. To do that,
-//     make a GET request to the following URL:
-//     https://around-api.en.tripleten-services.com/v1/users/me
-//    -Once edited, profile data must be saved on the server. To do this,
-//     send a request using the PATCH method:
-//     PATCH https://around-api.en.tripleten-services.com/v1/users/me
-
-const api = new Api({
+const profileApi = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1/users/me",
   headers: {
-    authorization: "c430f938-707d-41ce-9931-5e6195b9093a",
+    authorization: authorizationCode,
   },
 });
 
-api.getProfile();
+profileApi.getProfile();
 
-api.patchProfile();
+const cardsApi = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1/cards",
+  headers: {
+    authorization: authorizationCode,
+  },
+});
+
+//cardsApi.postCards(cardsData);
+cardsApi.getCards();
+
+const deleteCardApi = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1/cards",
+  headers: {
+    authorization: authorizationCode,
+  },
+});
+
+deleteCardApi.deleteCards();
