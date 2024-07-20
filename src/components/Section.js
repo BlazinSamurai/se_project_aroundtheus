@@ -29,6 +29,8 @@ export default class Section {
   // takes a DOM element and adds it to the container. This method
   // should be called when adding an individual card to the DOM
   addItem(element) {
+    // console.log("section's this: ", this);
+    // console.log("section's card BEFOR prepend: ", element);
     this.container.prepend(element);
   }
 }

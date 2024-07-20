@@ -56,14 +56,15 @@ const profileBio = document.querySelector(".profile__bio");
 
 const items = cardsData;
 const section = new Section({ items, renderer: createCard }, ".card__list");
-//this is where the cards are created and then added
-//section.renderItems();
+//this is where the cards are created and then added to the DOM
+// section.renderItems();
 
 /*---------------------------------------------------*/
 /*                     Functions                     */
 /*---------------------------------------------------*/
 
 function createCard(cardData) {
+  // console.log("createCard()");
   const name = cardData.name;
   const altName = cardData.name;
   const link = cardData.link;
@@ -98,12 +99,14 @@ function handleAddCardFormSubmit(formValues) {
   const name = formValues.title;
   const altName = formValues.title;
   const link = formValues.url;
-  const cardElement = createCard({ name, altName, link });
-  // section.addItem(cardElement); api should handle adding new card elements
+  // const cardElement = createCard({ name, altName, link });
+  //createCard({ name, altName, link });
+  cardApi.postCards({ name, link });
   cardPopup.close();
 }
 
 function handleImageClick(data) {
+  console.log("index.js/handleImageClick()");
   popupImg.open(data);
 }
 
@@ -112,8 +115,8 @@ function handleImageClick(data) {
 /*---------------------------------------------------*/
 
 profileEditButton.addEventListener("click", () => {
-  const currentUserInfo = userInfo.getUserInfo();
-  //const currentUserInfo = profileApi.getProfileInfo();
+  //const currentUserInfo = userInfo.getUserInfo();
+  const currentUserInfo = profileApi.getProfileInfo();
   profilePopup.setInputValues(currentUserInfo);
   profilePopup.open();
 });
@@ -124,8 +127,10 @@ profileAddButton.addEventListener("click", () => {
 });
 
 /*---------------------------------------------------*/
-/*                 Form Constructor                  */
+/*                 Constructor                       */
 /*---------------------------------------------------*/
+
+const userInfo = new UserInfo(profileNameStg, profileBioStg);
 
 const editProfileFormValidator = new FormValidator(
   validationConfig,
@@ -135,8 +140,6 @@ editProfileFormValidator.enableValidation();
 
 const addFormValidator = new FormValidator(validationConfig, addModalForm);
 addFormValidator.enableValidation();
-
-const userInfo = new UserInfo(profileNameStg, profileBioStg);
 
 const profilePopup = new PopupWithForm(
   editModalClassStg,
@@ -159,21 +162,40 @@ const profileApi = new Api({
 
 profileApi.getProfile();
 
-const cardsApi = new Api({
+const cardApi = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1/cards",
   headers: {
     authorization: authorizationCode,
   },
 });
 
-//cardsApi.postCards(cardsData);
-cardsApi.getCards();
-
-const deleteCardApi = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1/cards",
-  headers: {
-    authorization: authorizationCode,
-  },
+// I think you might have to do something like this
+// so when you create the card then you create/set
+// event listener for those card but only after they
+// are created?
+// profileApi
+// .patchProfile()
+// .then((updatedProfile) => {
+//   console.log("Profile updated successfully:", updatedProfile);
+// })
+// .catch((err) => {
+//   console.error("Error updating profile:", err);
+// });
+cardsData.forEach((card) => {
+  //console.log(card);
+  cardApi.postCards(card);
+  // const newCardElement = cardApi.postCards(card);
+  // console.log("newCardElement:", newCardElement);
 });
+//section.renderItems();
+// cardApi.handleCardOperations();
 
-deleteCardApi.deleteCards();
+// CODE FOR THE LIKE BUTTON
+// PUT https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
+// cardId in the URL should be replaced with the _id property of the corresponding card
+// const cardApiPut = new Api({
+//   baseUrl: "https://around-api.en.tripleten-services.com/v1/cards/cardId/likes",
+//   headers: {
+//     authorization: authorizationCode,
+//   },
+// });

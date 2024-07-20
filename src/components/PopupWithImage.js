@@ -3,7 +3,7 @@ import Popup from "./Popup";
 export default class PopupWithImage extends Popup {
   constructor(popupSelector) {
     super({ popupSelector });
-
+    //#preview-modal #preview-modal-image #preview-modal-title
     this._popupPreviewImage = document.querySelector(`${popupSelector}-image`);
     this._popupPreviewCaption = document.querySelector(
       `${popupSelector}-title`
