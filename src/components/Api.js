@@ -5,18 +5,17 @@ export default class Api {
     this._baseUrl = baseUrl;
     this._headers = headers;
 
-    // Ensure context binding for non-arrow non-promise specific case
-    this.handleCardOperations = this.handleCardOperations.bind(this);
-
     this.cardElement = document
       .querySelector("#card-template")
       .content.querySelector(".card__section")
       .cloneNode(true);
+
     this._nameElement = document.querySelector(".profile__name");
     this._bioElement = document.querySelector(".profile__bio");
-
-    //#preview-modal #preview-modal-image #preview-modal-title
     this.previewElement = document.querySelector("#preview-modal");
+
+    // Ensure context binding for non-arrow non-promise specific case
+    //this.handleCardOperations = this.handleCardOperations.bind(this);
 
     // Define the event handlers separately
     this._handleOverlayClick = (e) => this._handleOverlay(e);
@@ -25,12 +24,15 @@ export default class Api {
     this.container = document.querySelector(".card__list");
 
     this._cardsID = [];
+    this._isLiked = [];
 
     this._name;
     this._bio;
   }
 
-  // Profile API functions
+  /*---------------------------------------------------*/
+  /*             Profile Api functions                 */
+  /*---------------------------------------------------*/
   getProfile() {
     fetch(this._baseUrl, {
       method: "GET",
@@ -89,115 +91,9 @@ export default class Api {
     return userInfo;
   }
 
-  // Cards Api functions
-  postCards(card) {
-    return fetch(this._baseUrl, {
-      method: "POST",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: card.name,
-        link: card.link,
-      }),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((result) => {
-        // this.returnResult(result); this returns a promise
-        // Ensure clean logging statements handle debug
-        // console.log("Post Results:", result); but this returns an object?????????
-        // Properly add individual card
-
-        this.renderCard(result);
-        // return result; returns a promise
-      })
-      .catch((err) => {
-        console.error("Post Error:", err);
-      });
-  }
-
-  renderCard(data) {
-    // console.log("Data coming in: ", data);
-    const cardElement = this._createCardElement(data); // Updated card creating
-    // console.log("Card element:", cardElement);
-    this.addItem(cardElement); // Ensure add individual items
-  }
-
-  // Create/ensure accurate element properties
-  _createCardElement({ name, link }) {
-    const cardElement = this.cardElement.cloneNode(true); // Clone template
-    const cardImage = cardElement.querySelector(".card__image");
-    const cardTitle = cardElement.querySelector(".card__title");
-
-    cardImage.src = link;
-    cardImage.alt = name;
-    cardTitle.textContent = name;
-
-    cardImage.addEventListener("click", () => {
-      // console.log("Clicked Image: ", cardElement);
-      this.handleImageClick({ name, link });
-    });
-
-    return cardElement;
-  }
-
-  // takes a DOM element and adds it to the container. This method
-  // should be called when adding an individual card to the DOM
-  addItem(element) {
-    // console.log("API this:", this); // Verify 'this' context
-    // console.log("API card BEFORE prepend:", element); // Verify individual card item
-    this.container.prepend(element);
-  }
-
-  handleImageClick({ name, link }) {
-    // console.log("handleImageClick link: ", link);
-    //this.previewElement
-    // set the image's src and alt
-
-    this._popupPreviewImage =
-      this.previewElement.querySelector(`#preview-modal-image`);
-    this._popupPreviewCaption =
-      this.previewElement.querySelector(`#preview-modal-title`);
-
-    this._popupPreviewImage.src = link;
-    this._popupPreviewImage.alt = name;
-
-    // set the caption's textContent
-    this._popupPreviewCaption.textContent = name;
-
-    // console.log("handleImageClick previewElement: ", this.previewElement);
-    // this.previewElement.classList.add("modal_opened");
-    this.open();
-  }
-
-  open() {
-    this.previewElement.classList.add("modal_opened");
-    document.addEventListener("click", this._handleOverlayClick, true);
-    document.addEventListener("keydown", this._handleDocumentKeydown, false);
-  }
-
-  close() {
-    this.previewElement.classList.remove("modal_opened");
-    document.removeEventListener("click", this._handleOverlayClick, true);
-    document.removeEventListener("keydown", this._handleDocumentKeydown, false);
-  }
-
-  _handleEscClose(e) {
-    if (e.key === "Escape") {
-      this.close();
-    }
-  }
-
-  _handleOverlay(evt) {
-    if (evt.target.id === this.previewElement.id) {
-      this.close();
-    }
-  }
-
+  /*---------------------------------------------------*/
+  /*             Card Api functions                    */
+  /*---------------------------------------------------*/
   getCards() {
     return fetch(this._baseUrl, {
       method: "GET",
@@ -221,7 +117,216 @@ export default class Api {
       });
   }
 
+  postCards(card) {
+    return fetch(this._baseUrl, {
+      method: "POST",
+      headers: {
+        authorization: this._headers.authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: card.name,
+        link: card.link,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((result) => {
+        //console.log("Post Results:", result);
+        this._cardsID.push({ name: result.name, id: result._id });
+        this.renderCard(result);
+      })
+      .catch((err) => {
+        console.error("Post Error:", err);
+      });
+  }
+
+  putCardLike(cardTitle, likeButton) {
+    const ID = this.getID(cardTitle);
+    return fetch(this._baseUrl + `/${ID}/likes`, {
+      method: "PUT",
+      headers: {
+        authorization: this._headers.authorization,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((result) => {
+        likeButton.classList.add("card__button-like_active");
+        // finds and updates object
+        const elem = this._isLiked.find(
+          ({ name }) => name === cardTitle.textContent
+        );
+        if (elem) elem.isLiked = true;
+      });
+  }
+
+  deleteCardLike(cardTitle, likeButton) {
+    const ID = this.getID(cardTitle);
+    return fetch(this._baseUrl + `/${ID}/likes`, {
+      method: "DELETE",
+      headers: {
+        authorization: this._headers.authorization,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((result) => {
+        likeButton.classList.remove("card__button-like_active");
+        const elem = this._isLiked.find(
+          ({ name }) => name === cardTitle.textContent
+        );
+        if (elem) elem.isLiked = false;
+      });
+  }
+
+  toggleLike(cardTitle, likeButton) {
+    // finds and returns index
+    // let index = this._isLiked.findIndex((x) => x.name === cardTitle);
+    // console.log(index);
+
+    this._isLiked.forEach((card) => {
+      if (card.name === cardTitle.textContent && card.isLiked) {
+        this.deleteCardLike(cardTitle, likeButton);
+      }
+      if (card.name === cardTitle.textContent && !card.isLiked) {
+        this.putCardLike(cardTitle, likeButton);
+      }
+    });
+  }
+
+  // Create/ensure accurate element properties
+  _createCardElement({ name, link }) {
+    const cardElement = this.cardElement.cloneNode(true); // Clone template
+    const cardImage = cardElement.querySelector(".card__image");
+    const cardTitle = cardElement.querySelector(".card__title");
+    const likeButton = cardElement.querySelector(".card__button-like");
+
+    cardImage.src = link;
+    cardImage.alt = name;
+    cardTitle.textContent = name;
+
+    // this._isLiked.push({ name: name, isLiked: false });
+    this._isLiked.push({ name: name, isLiked: false });
+
+    cardImage.addEventListener("click", () => {
+      this.handleImageClick({ name, link });
+    });
+
+    likeButton.addEventListener("click", () => {
+      this.toggleLike(cardTitle, likeButton);
+    });
+
+    return cardElement;
+  }
+
+  getID(element) {
+    let cardID;
+    this._cardsID.forEach((card) => {
+      if (card.name === element.textContent) {
+        cardID = card.id;
+      }
+    });
+    return cardID;
+  }
+
+  renderCard(data) {
+    const cardElement = this._createCardElement(data); // Updated card creating
+    this.addItem(cardElement); // Ensure add individual items
+  }
+
+  open() {
+    this.previewElement.classList.add("modal_opened");
+    document.addEventListener("click", this._handleOverlayClick, true);
+    document.addEventListener("keydown", this._handleDocumentKeydown, false);
+  }
+
+  close() {
+    this.previewElement.classList.remove("modal_opened");
+    document.removeEventListener("click", this._handleOverlayClick, true);
+    document.removeEventListener("keydown", this._handleDocumentKeydown, false);
+  }
+
+  // takes a DOM element and adds it to the container. This method
+  // should be called when adding an individual card to the DOM
+  addItem(element) {
+    this.container.prepend(element);
+  }
+
+  // Preview Image Function
+  handleImageClick({ name, link }) {
+    this._popupPreviewImage =
+      this.previewElement.querySelector(`#preview-modal-image`);
+    this._popupPreviewCaption =
+      this.previewElement.querySelector(`#preview-modal-title`);
+
+    this._popupPreviewImage.src = link;
+    this._popupPreviewImage.alt = name;
+
+    this._popupPreviewCaption.textContent = name;
+
+    this.open();
+  }
+
+  _handleEscClose(e) {
+    if (e.key === "Escape") {
+      this.close();
+    }
+  }
+
+  _handleOverlay(evt) {
+    if (evt.target.id === this.previewElement.id) {
+      this.close();
+    }
+  }
+
   ////////////////////////////////////////////////////////////////////////////////
+  // OLD BUT GOOD TOGGLELIKE FUNCTION!!!!!!!!!!!!!!!
+  // console.log("Passed value.textContent: ", cardTitle.textContent); ACTUAL VALUE!!!!
+  // if (this._isLiked.length === 0) {
+  //   console.log("first click.");
+  //   this._isLiked.push({ name: cardTitle.textContent, isLiked: true });
+  //   console.log(this._isLiked);
+  // } else {
+  //   this._isLiked.forEach((card) => {
+  //     if (card.name === cardTitle.textContent && card.isLiked) {
+  //       console.log("Should unlike.");
+  //     }
+  //     if (card.name === cardTitle.textContent && !card.isLiked) {
+  //       console.log("Should like");
+  //       this._isLiked.push({ name: cardTitle, isLiked: true });
+  //     }
+  //     else {
+  //       console.error("ERROR! Card not avaliable.");
+  //       console.error(
+  //         "Title: ",
+  //         cardTitle.textContent,
+  //         " != Name: ",
+  //         card.name
+  //       );
+  //     }
+  //   });
+  // }
+
+  // handleHeartClick(cardTitle, likeButton, isLiked) {
+  //   likeButton.addEventListener("click", () => {
+  //     if (isLiked) {
+  //       //console.log("Needs to be UNLIKED!");
+  //       this.deleteCardLike(cardTitle, likeButton);
+  //     } else {
+  //       //console.log(data, " Unliked. Button: ", likeButton);
+  //       this.putCardLike(cardTitle, likeButton);
+  //     }
+  //   });
+  // }
 
   // getCards() {
   //   return fetch(this._baseUrl, {
@@ -250,43 +355,44 @@ export default class Api {
   //     });
   // }
 
-  handleCardOperations() {
-    // Ensure promise chain is available
-    this.getCards()
-      .then(() => {
-        // Correct sequence handling
-        this.returnArray();
-      })
-      .then(() => {
-        this.deleteCards();
-      });
-  }
+  // deleteCards() {
+  //   this._cardsID.forEach((ID) => {
+  //     fetch(this._baseUrl + `/${ID}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         authorization: this._headers.authorization,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         if (res.ok) return res.json();
+  //         return Promise.reject(`Error: ${res.status}`);
+  //       })
+  //       .then((result) => {
+  //         console.log(result);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //       });
+  //   });
+  // }
 
-  returnArray() {
-    // console.log("Array Check:", this._cardsID); // Note an ensured invocation log
-    console.log(Array.isArray(this._cardsID)); // Should log true
-    // console.log("Card IDs length:", this._cardsID.length); // Should log count
-  }
+  // handleCardOperations() {
+  //   // Ensure promise chain is available
+  //   this.getCards()
+  //     .then(() => {
+  //       // Correct sequence handling
+  //       this.returnArray();
+  //     })
+  //     .then(() => {
+  //       this.deleteCards();
+  //     });
+  // }
 
-  deleteCards() {
-    this._cardsID.forEach((ID) => {
-      fetch(this._baseUrl + `/${ID}`, {
-        method: "DELETE",
-        headers: {
-          authorization: this._headers.authorization,
-        },
-      })
-        .then((res) => {
-          if (res.ok) return res.json();
-          return Promise.reject(`Error: ${res.status}`);
-        })
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
-  }
+  // returnArray() {
+  //   // console.log("Array Check:", this._cardsID); // Note an ensured invocation log
+  //   console.log(Array.isArray(this._cardsID)); // Should log true
+  //   // console.log("Card IDs length:", this._cardsID.length); // Should log count
+  // }
+
   /////////////////////////////////////////////////////////////////////////////////
 }

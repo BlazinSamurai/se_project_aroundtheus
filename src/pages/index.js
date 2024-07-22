@@ -169,33 +169,6 @@ const cardApi = new Api({
   },
 });
 
-// I think you might have to do something like this
-// so when you create the card then you create/set
-// event listener for those card but only after they
-// are created?
-// profileApi
-// .patchProfile()
-// .then((updatedProfile) => {
-//   console.log("Profile updated successfully:", updatedProfile);
-// })
-// .catch((err) => {
-//   console.error("Error updating profile:", err);
-// });
 cardsData.forEach((card) => {
-  //console.log(card);
   cardApi.postCards(card);
-  // const newCardElement = cardApi.postCards(card);
-  // console.log("newCardElement:", newCardElement);
 });
-//section.renderItems();
-// cardApi.handleCardOperations();
-
-// CODE FOR THE LIKE BUTTON
-// PUT https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
-// cardId in the URL should be replaced with the _id property of the corresponding card
-// const cardApiPut = new Api({
-//   baseUrl: "https://around-api.en.tripleten-services.com/v1/cards/cardId/likes",
-//   headers: {
-//     authorization: authorizationCode,
-//   },
-// });
