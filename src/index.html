@@ -28,6 +28,7 @@
           alt="Profile Pic"
           class="profile__avatar"
         />
+        <button></button>
         <div class="profile__info">
           <h1 class="profile__name">Jacques Cousteau</h1>
           <button class="profile__button-edit" type="button"></button>
@@ -42,6 +43,26 @@
     <footer class="footer page__section">
       <h3 class="footer__text">&copy; 2022 Around The U.S.</h3>
     </footer>
+
+    <!-- Card Template -->
+    <template id="card-template">
+      <li class="card__section">
+        <button
+          class="card__button-trash"
+          id="card-button-trash"
+          type="button"
+        ></button>
+        <img src="" alt="" class="card__image" />
+        <div class="card__description">
+          <h2 class="card__title"></h2>
+          <button
+            class="card__button-like"
+            id="card-button-like"
+            type="button"
+          ></button>
+        </div>
+      </li>
+    </template>
 
     <!-- Edit Modal -->
     <div class="modal" id="edit-modal">
@@ -107,25 +128,43 @@
       </div>
     </div>
 
-    <!-- Card Template -->
-    <template id="card-template">
-      <li class="card__section">
-        <button
-          class="card__button-trash"
-          id="card-button-trash"
-          type="button"
-        ></button>
-        <img src="" alt="" class="card__image" />
-        <div class="card__description">
-          <h2 class="card__title"></h2>
-          <button
-            class="card__button-like"
-            id="card-button-like"
-            type="button"
-          ></button>
-        </div>
-      </li>
-    </template>
+    <!-- Trash Modal -->
+    <div class="modal" id="trash-modal" novalidate>
+      <div class="modal__container modal__container-trash">
+        <button class="modal__close" type="button"></button>
+        <form class="modal__form modal__form-trash">
+          <h2 class="modal__heading modal__heading-trash">Are you sure?</h2>
+          <button class="modal__button modal__button-trash" type="submit">
+            Yes
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profile-modal" novalidate>
+      <div class="modal__container">
+        <button class="modal__close" type="button"></button>
+        <h2 class="modal__heading">Change profile picture</h2>
+        <form class="modal__form">
+          <input
+            class="modal__input"
+            id="profile-modal-title"
+            type="text"
+            name="Link"
+            placeholder="Link"
+            minlength="1"
+            maxlength="30"
+            required
+          />
+          <span
+            class="modal__input-error"
+            id="profile-modal-title-error"
+          ></span>
+          <button class="modal__button" type="submit" disabled>Save</button>
+        </form>
+      </div>
+    </div>
 
     <!-- Preview Modal -->
     <div class="modal" id="preview-modal">

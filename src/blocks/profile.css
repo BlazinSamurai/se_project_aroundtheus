@@ -10,6 +10,13 @@
   max-height: 120px;
 }
 
+.profile__avatar:hover {
+  /* background: transparent url(../images/profile_pen.svg) center no-repeat; */
+  background: white url(../images/profile_pen.svg);
+  opacity: 60%;
+  cursor: pointer;
+}
+
 .profile__info {
   display: grid;
   grid-template-areas:

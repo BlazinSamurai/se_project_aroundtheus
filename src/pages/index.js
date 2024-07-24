@@ -172,3 +172,5 @@ const cardApi = new Api({
 cardsData.forEach((card) => {
   cardApi.postCards(card);
 });
+
+// PATCH https://around-api.en.tripleten-services.com/v1/users/me/avatar
