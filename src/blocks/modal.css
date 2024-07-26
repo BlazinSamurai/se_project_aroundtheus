@@ -9,7 +9,7 @@
   z-index: 999;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s 0.6s, opacity 0.5s linear;
+  transition: visibility 0s 1s, opacity 1s linear;
 }
 
 .modal_opened {
@@ -34,6 +34,10 @@
 .modal__container-trash {
   height: 181px;
   padding: 0;
+}
+
+.modal__container-profile {
+  height: 272px;
 }
 
 .modal__close {
@@ -120,6 +124,10 @@
 .modal__input-error:last-of-type {
   position: absolute;
   top: 100px;
+}
+
+.modal__input-error-avatar:last-of-type {
+  top: 60px;
 }
 
 .modal__button {

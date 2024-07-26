@@ -24,9 +24,40 @@ export default class Api {
     this._cardsID = [];
     this._isLiked = [];
 
+    this.originalButtonContent;
     this._currentModal;
     this._name;
     this._bio;
+  }
+
+  /*---------------------------------------------------*/
+  /*         Profile Picture Api functions             */
+  /*---------------------------------------------------*/
+
+  patchProfileAvatar(link) {
+    return fetch(this._baseUrl, {
+      method: "PATCH",
+      headers: {
+        authorization: this._headers.authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        avatar: link,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((result) => {
+        this.handleSubmitButton();
+        this.handleAvatarChange(result.avatar);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   /*---------------------------------------------------*/
@@ -40,9 +71,7 @@ export default class Api {
       },
     })
       .then((res) => {
-        // return the method's result and call the then() callback.
         if (res.ok) return res.json();
-        // if the server returns an error, reject the promise
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((result) => {
@@ -71,6 +100,10 @@ export default class Api {
         }
         return Promise.reject(`Error: ${res.status}`);
       })
+      .then((result) => {
+        this.handleSubmitButton();
+        return result;
+      })
       .catch((err) => {
         console.error(err);
       });
@@ -92,7 +125,22 @@ export default class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((result) => {
-        this.renderCard(result);
+        console.log("Fetched Cards:", result); // Guarantee each card tracked
+
+        // Eliminate any apparent duplication by checking unique IDs
+        // Filter unique card IDs ensuring no-duplication occurs
+        const uniqueCardIds = new Set();
+        const uniqueCards = result.filter(({ _id }) => {
+          if (!uniqueCardIds.has(_id)) {
+            uniqueCardIds.add(_id);
+            return true;
+          }
+          return false;
+        });
+
+        console.log("Unique Cards:", uniqueCards); // Verify post-filter condition
+
+        this.renderCard(uniqueCards); // Call render only on distinct cards
       })
       .catch((err) => {
         console.error(err);
@@ -116,6 +164,7 @@ export default class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((result) => {
+        this.handleSubmitButton();
         this._cardsID.push({ name: result.name, id: result._id });
         this.renderCard(result);
       })
@@ -169,27 +218,83 @@ export default class Api {
       });
   }
 
-  deleteCard(cardTitle, cardElement) {
-    const ID = this.getID(cardTitle);
-    return fetch(this._baseUrl + `/${ID}/likes`, {
-      method: "DELETE",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then(() => {
-        cardElement.remove();
-        cardElement = null;
-      });
+  // deleteCard(cardTitle, cardElement) {
+  //   const ID = this.getID(cardTitle);
+  //   return fetch(this._baseUrl + `/${ID}/likes`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       authorization: this._headers.authorization,
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (res.ok) return res.json();
+  //       return Promise.reject(`Error: ${res.status}`);
+  //     })
+  //     .then(() => {
+  //       cardElement.remove();
+  //       cardElement = null;
+  //     });
+  // }
+
+  /*---------------------------------------------------*/
+  /*          Card/Profile helper function             */
+  /*---------------------------------------------------*/
+
+  open() {
+    //console.log("Open Current Modal: ", this._currentModal);
+    this._currentModal.classList.add("modal_opened");
+    document.addEventListener("click", this._handleOverlayClick, true);
+    document.addEventListener("keydown", this._handleDocumentKeydown, false);
+  }
+
+  close() {
+    this._currentModal.classList.remove("modal_opened");
+    document.removeEventListener("click", this._handleOverlayClick, true);
+    document.removeEventListener("keydown", this._handleDocumentKeydown, false);
+  }
+
+  setCurrentModal(selector) {
+    this._currentModal = selector;
+    //console.log("Set Current Modal: ", this._currentModal);
+  }
+
+  setSubmitButtonContentBack() {
+    const formSubmitButton = this._currentModal.querySelector(".modal__button");
+    formSubmitButton.textContent = this.originalButtonContent;
+  }
+
+  handleSubmitButton() {
+    const formSubmitButton = this._currentModal.querySelector(".modal__button");
+    this.originalButtonContent = formSubmitButton.textContent;
+    formSubmitButton.textContent = "Saving . . .";
   }
 
   /*---------------------------------------------------*/
-  /*      Profile Api helper functions                 */
+  /*      Profile Edit Pic Api helper function         */
+  /*---------------------------------------------------*/
+
+  setEventListeners(selector) {
+    const profileAvatarModal = document.querySelector("#profile-modal");
+    const profileAvatarCloseButton =
+      profileAvatarModal.querySelector(".modal__close");
+
+    selector.addEventListener("click", () => {
+      this._currentModal = profileAvatarModal;
+      this.open();
+    });
+    profileAvatarCloseButton.addEventListener("click", () => {
+      this.close();
+    });
+  }
+
+  handleAvatarChange(link) {
+    const avatarPic = document.querySelector("#profile__avatar-pic");
+    avatarPic.src = link;
+  }
+
+  /*---------------------------------------------------*/
+  /*         Profile Api helper functions              */
   /*---------------------------------------------------*/
 
   setProfileInfo({ name, bio }) {
@@ -210,9 +315,12 @@ export default class Api {
   /*         Card Api helper functions                 */
   /*---------------------------------------------------*/
 
-  renderCard(data) {
-    const cardElement = this._createCardElement(data); // Updated card creating
-    this.addItem(cardElement); // Ensure add individual items
+  renderCard(cards) {
+    cards.forEach((card) => {
+      const cardElement = this._createCardElement(card); // Updated card creating
+      console.log("Render API Card:", cardElement); // Verify each card rendered accurately
+      this.addItem(cardElement); // Ensure add individual item
+    });
   }
 
   getID(element) {
@@ -238,18 +346,6 @@ export default class Api {
         this.putCardLike(cardTitle, likeButton);
       }
     });
-  }
-
-  open() {
-    this._currentModal.classList.add("modal_opened");
-    document.addEventListener("click", this._handleOverlayClick, true);
-    document.addEventListener("keydown", this._handleDocumentKeydown, false);
-  }
-
-  close() {
-    this._currentModal.classList.remove("modal_opened");
-    document.removeEventListener("click", this._handleOverlayClick, true);
-    document.removeEventListener("keydown", this._handleDocumentKeydown, false);
   }
 
   // takes a DOM element and adds it to the container. This method
@@ -333,45 +429,17 @@ export default class Api {
       this.close();
     }
   }
-
-  ////////////////////////////////////////////////////////////////////////////////
-  // OLD BUT GOOD TOGGLELIKE FUNCTION!!!!!!!!!!!!!!!
-  // console.log("Passed value.textContent: ", cardTitle.textContent); ACTUAL VALUE!!!!
-  // if (this._isLiked.length === 0) {
-  //   console.log("first click.");
-  //   this._isLiked.push({ name: cardTitle.textContent, isLiked: true });
-  //   console.log(this._isLiked);
-  // } else {
-  //   this._isLiked.forEach((card) => {
-  //     if (card.name === cardTitle.textContent && card.isLiked) {
-  //       console.log("Should unlike.");
-  //     }
-  //     if (card.name === cardTitle.textContent && !card.isLiked) {
-  //       console.log("Should like");
-  //       this._isLiked.push({ name: cardTitle, isLiked: true });
-  //     }
-  //     else {
-  //       console.error("ERROR! Card not avaliable.");
-  //       console.error(
-  //         "Title: ",
-  //         cardTitle.textContent,
-  //         " != Name: ",
-  //         card.name
-  //       );
-  //     }
-  //   });
-  // }
-
-  // handleHeartClick(cardTitle, likeButton, isLiked) {
-  //   likeButton.addEventListener("click", () => {
-  //     if (isLiked) {
-  //       //console.log("Needs to be UNLIKED!");
-  //       this.deleteCardLike(cardTitle, likeButton);
-  //     } else {
-  //       //console.log(data, " Unliked. Button: ", likeButton);
-  //       this.putCardLike(cardTitle, likeButton);
-  //     }
-  //   });
+  //////////////////////////////////////////////////////////////////
+  // handleCardOperations() {
+  //   // Ensure promise chain is available
+  //   this.getCards()
+  //     .then(() => {
+  //       // Correct sequence handling
+  //       this.returnArray();
+  //     })
+  //     .then(() => {
+  //       this.deleteCards();
+  //     });
   // }
 
   // getCards() {
@@ -387,7 +455,8 @@ export default class Api {
   //       return Promise.reject(`Error: ${res.status}`);
   //     })
   //     .then((result) => {
-  //       // console.log(result);
+  //       //this.renderCard(result);
+  //       console.log(result);
   //       // Log the complete cards array
   //       // console.log("Fetched cards:", result);
   //       // Spread the array items into this._cardsID
@@ -399,6 +468,12 @@ export default class Api {
   //     .catch((err) => {
   //       console.error(err);
   //     });
+  // }
+
+  // returnArray() {
+  //   // console.log("Array Check:", this._cardsID); // Note an ensured invocation log
+  //   console.log(Array.isArray(this._cardsID)); // Should log true
+  //   // console.log("Card IDs length:", this._cardsID.length); // Should log count
   // }
 
   // deleteCards() {
@@ -421,24 +496,4 @@ export default class Api {
   //       });
   //   });
   // }
-
-  // handleCardOperations() {
-  //   // Ensure promise chain is available
-  //   this.getCards()
-  //     .then(() => {
-  //       // Correct sequence handling
-  //       this.returnArray();
-  //     })
-  //     .then(() => {
-  //       this.deleteCards();
-  //     });
-  // }
-
-  // returnArray() {
-  //   // console.log("Array Check:", this._cardsID); // Note an ensured invocation log
-  //   console.log(Array.isArray(this._cardsID)); // Should log true
-  //   // console.log("Card IDs length:", this._cardsID.length); // Should log count
-  // }
-
-  /////////////////////////////////////////////////////////////////////////////////
 }

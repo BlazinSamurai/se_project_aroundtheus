@@ -23,12 +23,23 @@
     </header>
     <main>
       <section class="profile page__section">
-        <img
-          src="<%=require('./images/jacques.cousteau.png')%>"
-          alt="Profile Pic"
-          class="profile__avatar"
-        />
-        <button></button>
+        <div class="hover-container">
+          <img
+            src="<%=require('./images/Jac_Cou.png')%>"
+            alt="Profile Pic"
+            class="profile__avatar"
+            id="profile__avatar-pic"
+          />
+          <div class="hover-effect">
+            <img
+              src="<%=require('./images/profile_pen.svg')%>"
+              class="profile__avatar profile__avatar-cursor"
+              id="profile__avatar-pen-icon"
+            />
+          </div>
+        </div>
+        <!-- profile__pen-->
+
         <div class="profile__info">
           <h1 class="profile__name">Jacques Cousteau</h1>
           <button class="profile__button-edit" type="button"></button>
@@ -143,23 +154,21 @@
 
     <!-- Profile Modal -->
     <div class="modal" id="profile-modal" novalidate>
-      <div class="modal__container">
+      <div class="modal__container modal__container-profile">
         <button class="modal__close" type="button"></button>
         <h2 class="modal__heading">Change profile picture</h2>
-        <form class="modal__form">
+        <form class="modal__form" id="profile-modal-form">
           <input
             class="modal__input"
-            id="profile-modal-title"
-            type="text"
-            name="Link"
+            id="profile-modal-avatar"
+            type="url"
+            name="url"
             placeholder="Link"
-            minlength="1"
-            maxlength="30"
             required
           />
           <span
-            class="modal__input-error"
-            id="profile-modal-title-error"
+            class="modal__input-error modal__input-error-avatar"
+            id="profile-modal-avatar-error"
           ></span>
           <button class="modal__button" type="submit" disabled>Save</button>
         </form>
