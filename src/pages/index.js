@@ -1,8 +1,10 @@
 import "./index.css";
 import Api from "../components/Api.js";
+import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidation.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import {
   authorizationCode,
@@ -137,7 +139,6 @@ const profileApi = new Api({
     authorization: authorizationCode,
   },
 });
-
 profileApi.getProfile();
 
 const profilePicApi = new Api({
@@ -146,17 +147,14 @@ const profilePicApi = new Api({
     authorization: authorizationCode,
   },
 });
-
 profilePicApi.setEventListeners(profileAvatarSelector);
 
 const cardApi = new Api({
-  // 'https://around-api.en.tripleten-services.com/v1/cards'
   baseUrl: "https://around-api.en.tripleten-services.com/v1/cards",
   headers: {
     authorization: authorizationCode,
   },
 });
-
 cardApi.getCards();
 
 // cardsData.forEach((card) => {
