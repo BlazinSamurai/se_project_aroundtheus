@@ -16,10 +16,6 @@ export default class Card {
     this._handleLikeIconClick = handleLikeIconClick;
   }
 
-  // _handleLikeIcon() {
-  //   this._likeButton.classList.toggle("card__button-like_active");
-  // }
-
   _setCardData() {
     this._cardImage.src = this.link;
     this._cardImage.alt = this.altName;

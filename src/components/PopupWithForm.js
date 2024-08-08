@@ -2,7 +2,6 @@ import Popup from "./Popup";
 export default class PopupWithForm extends Popup {
   constructor(popupSelector, handleFormSubmit) {
     super({ popupSelector });
-    // console.log("popupSelector of PopupWithForm:", popupSelector);
     this._handleFormSubmit = handleFormSubmit;
 
     this._popupForm = this._popupElement.querySelector(".modal__form");
@@ -21,7 +20,6 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  // Changes a user profile pic, avatar.
   handleAvatarChange(link) {
     this.avatarPic.src = link;
   }

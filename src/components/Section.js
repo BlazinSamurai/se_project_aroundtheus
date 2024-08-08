@@ -13,14 +13,11 @@ export default class Section {
     this._classSelector = classSelector;
 
     this.container = document.querySelector(this._classSelector);
-
-    // console.log("this._items:", this._items);
   }
 
   // renders all elements on the page
   renderItems() {
     this._items.forEach((item) => {
-      // console.log("item:", item);
       const name = item.name;
       const altName = item.name;
       const link = item.link;
@@ -32,8 +29,6 @@ export default class Section {
   // takes a DOM element and adds it to the container. This method
   // should be called when adding an individual card to the DOM
   addItem(element) {
-    // console.log("section's this: ", this);
-    // console.log("section's card BEFOR prepend: ", element);
     this.container.prepend(element);
   }
 }
