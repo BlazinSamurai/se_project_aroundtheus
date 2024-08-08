@@ -43,8 +43,6 @@ const avatarModalSubmitButton =
 
 /*-- Trash Icon Selectors --*/
 const trashModal = document.querySelector("#trash-modal");
-const trashModalCloseButton = trashModal.querySelector(".modal__close");
-const trashButton = document.querySelector(".card__button-trash");
 const trashModalSubmitButton = trashModal.querySelector(".modal__button");
 
 /*---------------------------------------------------*/
@@ -104,15 +102,11 @@ function handleDeleteConfirmModal(title) {
 }
 
 function handleLikeIconClick(data) {
-  //putCardLike needs an id
-  // console.log(data);
   const cardTitle = data.querySelector(".card__title");
   const likeButton = data.querySelector(".card__button-like");
   const cardID = getID(cardTitle);
-  // console.log("Card like button:", likeButton, "Card id:", cardID);
   const putLikeResult = cardApi.putCardLike(cardID);
   putLikeResult.then((result) => {
-    //console.log(result);
     if (result.isLiked) {
       likeButton.classList.add("card__button-like_active");
     }
@@ -221,8 +215,6 @@ profilePopup.setEventListeners();
 const cardPopup = new PopupWithForm(addModalClassStg, handleAddCardFormSubmit);
 cardPopup.setEventListeners();
 
-// const trashIconPopup = new PopupWithForm(trashModalClassStg, () => {});
-
 /*---------------------------------------------------*/
 /*          PopupWithImage Constructor               */
 /*---------------------------------------------------*/
@@ -256,7 +248,6 @@ profileApiObject.then((data) => {
   avatarPopup.handleAvatarChange(data.avatar);
 });
 
-//https://around-api.en.tripleten-services.com/v1/users/me/avatar
 const profilePicApi = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1/users/me/avatar",
   headers: {
