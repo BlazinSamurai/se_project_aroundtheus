@@ -13,11 +13,14 @@ export default class Section {
     this._classSelector = classSelector;
 
     this.container = document.querySelector(this._classSelector);
+
+    // console.log("this._items:", this._items);
   }
 
   // renders all elements on the page
   renderItems() {
     this._items.forEach((item) => {
+      // console.log("item:", item);
       const name = item.name;
       const altName = item.name;
       const link = item.link;

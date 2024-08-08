@@ -25,7 +25,7 @@
       <section class="profile page__section">
         <div class="hover-container">
           <img
-            src="<%=require('./images/Jac_Cou.png')%>"
+            src=""
             alt="Profile Pic"
             class="profile__avatar"
             id="profile__avatar-pic"
@@ -38,7 +38,6 @@
             />
           </div>
         </div>
-        <!-- profile__pen-->
 
         <div class="profile__info">
           <h1 class="profile__name">Jacques Cousteau</h1>
@@ -145,7 +144,11 @@
         <button class="modal__close" type="button"></button>
         <form class="modal__form modal__form-trash">
           <h2 class="modal__heading modal__heading-trash">Are you sure?</h2>
-          <button class="modal__button modal__button-trash" type="submit">
+          <button
+            class="modal__button modal__button-trash"
+            id="modal-button-trash"
+            type="submit"
+          >
             Yes
           </button>
         </form>

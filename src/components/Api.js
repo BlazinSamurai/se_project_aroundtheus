@@ -35,6 +35,7 @@ export default class Api {
   /*---------------------------------------------------*/
 
   patchProfileAvatar(link) {
+    //console.log("patchProfileAvatar link:", link);
     return fetch(this._baseUrl, {
       method: "PATCH",
       headers: {
@@ -49,12 +50,13 @@ export default class Api {
         if (res.ok) {
           return res.json();
         }
-        return Promise.reject(`Error: ${res.status}`);
+        return Promise.reject(`Error: ${res.status} + ${res.message}`);
       })
       .then((result) => {
         // this.handleSubmitButton();
         // this.handleAvatarChange(result.avatar);
-        console.log(result);
+        // console.log("patchProfile result:", result);
+        return result;
       })
       .catch((err) => {
         console.error(err);
@@ -65,7 +67,7 @@ export default class Api {
   /*             Profile Api functions                 */
   /*---------------------------------------------------*/
   getProfile() {
-    fetch(this._baseUrl, {
+    return fetch(this._baseUrl, {
       method: "GET",
       headers: {
         authorization: this._headers.authorization,
@@ -76,17 +78,18 @@ export default class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((result) => {
+        // console.log("getProfile result:", result);
         // this._avatarElement.src = result.avatar;
         // this._nameElement.textContent = result.name;
         // this._bioElement.textContent = result.about;
-        console.log(result);
+        return result;
       })
       .catch((err) => {
         console.error(err);
       });
   }
 
-  patchProfile() {
+  patchProfile(nameVar, bioVar) {
     return fetch(this._baseUrl, {
       method: "PATCH",
       headers: {
@@ -94,19 +97,16 @@ export default class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: this._name,
-        about: this._bio,
+        name: nameVar,
+        about: bioVar,
       }),
     })
       .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
+        if (res.ok) return res.json();
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((result) => {
-        // this.handleSubmitButton();
-        console.log(result);
+        // console.log("patchProfile result:", result);
       })
       .catch((err) => {
         console.error(err);
@@ -129,25 +129,25 @@ export default class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((result) => {
-        // Eliminate any apparent duplication by checking unique IDs
-        // Filter unique card IDs ensuring no-duplication occurs
-        // const uniqueCardIds = new Set();
-        // const uniqueCards = result.filter(({ name }) => {
-        //   if (!uniqueCardIds.has(name)) {
-        //     uniqueCardIds.add(name);
-        //     return true;
-        //   }
-        //   return false;
+        // console.log(result);
+        // Eliminate any apparent duplication by checking unique name
+        // Filter unique card name ensuring no-duplication occurs
+        // const extraCards = new Set();
+        const uniqueCardIds = new Set();
+        ///////////////////////////////////////////////////////////////////////////////
+        const uniqueCards = result.filter(({ name }) => {
+          if (!uniqueCardIds.has(name)) {
+            uniqueCardIds.add(name);
+            return true;
+          }
+          return false;
+        });
+        return uniqueCards;
+        ////////////////////////////////////////////////////////////////////////////////
+        // deletes the cards but once you reload the page they all pop up again with new ids
+        // result.forEach((card) => {
+        //   this.deleteCard(card._id);
         // });
-        // uniqueCards.forEach((card) => {
-        //   this._tempCardElement.push({
-        //     name: card.name,
-        //     id: card._id,
-        //     isLiked: false,
-        //   });
-        //   this.renderCard(card);
-        // });
-        console.log(result);
       })
       .catch((err) => {
         console.error("GET Card Error:", err);
@@ -178,15 +178,15 @@ export default class Api {
         //   isLiked: false,
         // });
         // this.renderCard(result);
-        console.log(result);
+        // console.log(result);
+        return result;
       })
       .catch((err) => {
         console.error("POST Card Error:", err);
       });
   }
 
-  putCardLike(cardTitle, likeButton) {
-    const ID = this.getID(cardTitle);
+  putCardLike(ID) {
     return fetch(this._baseUrl + `/${ID}/likes`, {
       method: "PUT",
       headers: {
@@ -205,7 +205,8 @@ export default class Api {
         //   ({ name }) => name === cardTitle.textContent
         // );
         // if (elem) elem.isLiked = true;
-        console.log(result);
+        //console.log(result);
+        return result;
       })
       .catch((err) => {
         console.error("PUT Like Error:", err);
@@ -238,9 +239,9 @@ export default class Api {
       });
   }
 
-  deleteCard(cardTitle, cardElement) {
-    const ID = this.getID(cardTitle);
-    return fetch(this._baseUrl + `/${ID}`, {
+  deleteCard(cardID) {
+    //const ID = this.getID(cardTitle);
+    return fetch(this._baseUrl + `/${cardID}`, {
       method: "DELETE",
       headers: {
         authorization: this._headers.authorization,
@@ -307,6 +308,7 @@ export default class Api {
   /*           Profile Pic helper function             */
   /*---------------------------------------------------*/
 
+  // MOVED to PopupWithForm.js!
   // setEventListeners(selector) {
   //   const profileAvatarModal = document.querySelector("#profile-modal");
   //   const profileAvatarCloseButton =
@@ -321,6 +323,7 @@ export default class Api {
   //   });
   // }
 
+  // MOVED to PopupWithForm.js!
   // handleAvatarChange(link) {
   //   const avatarPic = document.querySelector("#profile__avatar-pic");
   //   avatarPic.src = link;
