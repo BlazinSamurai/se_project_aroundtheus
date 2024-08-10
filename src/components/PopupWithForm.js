@@ -6,6 +6,7 @@ export default class PopupWithForm extends Popup {
 
     this._popupForm = this._popupElement.querySelector(".modal__form");
     this._inputList = this._popupForm.querySelectorAll(".modal__input");
+    this.avatarPic = document.querySelector("#profile__avatar-pic");
   }
 
   // collects data from all the input fields and returns it as an object.
@@ -17,6 +18,10 @@ export default class PopupWithForm extends Popup {
     });
 
     return this._formValues;
+  }
+
+  handleAvatarChange(link) {
+    this.avatarPic.src = link;
   }
 
   // which can insert data into inputs
@@ -32,13 +37,11 @@ export default class PopupWithForm extends Popup {
   // event listener to the form and call the setEventListeners() method of the
   // parent class.
   setEventListeners() {
-    this._popupForm.addEventListener("submit", (evt) => {
-      evt.preventDefault();
+    super.setEventListeners();
+    this._popupForm.addEventListener("submit", () => {
       const formValues = this._getInputValues();
       this._handleFormSubmit(formValues);
       this._popupForm.reset();
     });
-    super.setEventListeners();
-    // this._popupForm.reset();
   }
 }
