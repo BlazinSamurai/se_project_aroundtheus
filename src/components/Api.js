@@ -88,6 +88,7 @@ export default class Api {
   /*---------------------------------------------------*/
   /*             Card Api functions                    */
   /*---------------------------------------------------*/
+
   // – Get all cards
   // GET https://around-api.en.tripleten-services.com/v1/cards
   getCards() {
@@ -154,45 +155,49 @@ export default class Api {
   // – Like a card
   // PUT https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
   putCardLike(ID) {
-    return fetch(this._baseUrl + `cards/${ID}/likes`, {
-      method: "PUT",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
+    return (
+      fetch(this._baseUrl + `/cards/${ID}/likes`, {
+        method: "PUT",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": "application/json",
+        },
       })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.error("PUT Like Error:", err);
-      });
+        .then((res) => {
+          if (res.ok) return res.json();
+          return Promise.reject(`Error: ${res.status}`);
+        })
+        // .then((result) => {
+        //   return result;
+        // })
+        .catch((err) => {
+          console.error("PUT Like Error:", err);
+        })
+    );
   }
 
   // – Dislike a card
   // DELETE https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
-  deleteCardLike(cardTitle) {
-    return fetch(this._baseUrl + `cards/${ID}/likes`, {
-      method: "DELETE",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
+  deleteCardLike(ID) {
+    return (
+      fetch(this._baseUrl + `/cards/${ID}/likes`, {
+        method: "DELETE",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": "application/json",
+        },
       })
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.error("DELETE Like Error:", err);
-      });
+        .then((res) => {
+          if (res.ok) return res.json();
+          return Promise.reject(`Error: ${res.status}`);
+        })
+        // .then((result) => {
+        //   console.log(result);
+        // })
+        .catch((err) => {
+          console.error("DELETE Like Error:", err);
+        })
+    );
   }
 
   // – Delete a card

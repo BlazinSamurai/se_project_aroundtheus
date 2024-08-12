@@ -73,13 +73,6 @@ function handleAddCardFormSubmit(formValues) {
   const cardApiObject = api.postCards({ name, link });
   changeSubmitButton(addModalSubmitButton);
   cardApiObject.then((object) => {
-    // You're also creating a new section everytime you create
-    // a new card, you should not create a new Section everytime
-    // you add a card, it should be the same section
-    // const section = new Section(
-    //   { items: null, renderer: createCard },
-    //   ".card__list"
-    // );
     const element = createCard(object);
     section.addItem(element);
   });
@@ -94,26 +87,26 @@ function handleImageClick(data) {
 function handleConfirmModal(data) {
   trashModalSubmitButton.textContent = "Yes";
   trashConfirmPopup.open();
-  trashConfirmPopup.displayCard(data);
+  trashConfirmPopup.setEventListeners(data);
 }
 
 function handleDeleteConfirmModal(title) {
-  let cardID = getID(title);
-  api.deleteCard(cardID);
-  changeSubmitButton(trashModalSubmitButton);
+  uniqueCards.then((cards) => {
+    cards.forEach((card) => {
+      if (card.name === title.textContent) {
+        api.deleteCard(card._id);
+        changeSubmitButton(trashModalSubmitButton);
+      }
+    });
+  });
+
   trashConfirmPopup.close();
 }
 
 function handleLikeIconClick(data) {
-  const cardTitle = data.querySelector(".card__title");
-  const likeButton = data.querySelector(".card__button-like");
-  const cardID = getID(cardTitle);
-  const putLikeResult = api.putCardLike(cardID);
-  putLikeResult.then((result) => {
-    if (result.isLiked) {
-      likeButton.classList.add("card__button-like_active");
-    }
-  });
+  console.log(data);
+  // console.log("handleLikeIconClick:", data.cardElement);
+  data.setHeartIcon();
 }
 
 /*---------------------------------------------------*/
@@ -146,17 +139,23 @@ profileAddButton.addEventListener("click", () => {
 /*---------------------------------------------------*/
 
 function createCard(cardData) {
-  const name = cardData.name;
-  const altName = cardData.name;
-  const link = cardData.link;
+  //console.log("cardData:", cardData);
   const card = new Card(
-    { name, altName, link },
+    {
+      name: cardData.name,
+      altName: cardData.name,
+      link: cardData.link,
+      _id: cardData._id,
+    },
     "#card-template",
     handleImageClick,
     handleConfirmModal,
     handleLikeIconClick
   );
-  return card.getView();
+
+  const tempCard = card.getView();
+  card.setCardApiInfo(cardData);
+  return tempCard;
 }
 
 function getUniqueCards() {
@@ -170,6 +169,10 @@ function getUniqueCards() {
 
     return cardArray;
   });
+}
+
+function changeSubmitButton(button) {
+  button.textContent = "Saving . . .";
 }
 
 /*---------------------------------------------------*/

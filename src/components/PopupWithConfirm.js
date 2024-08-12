@@ -12,18 +12,18 @@ export default class PopupWithConfirm extends Popup {
     card = null;
   }
 
-  displayCard(data) {
+  setEventListeners(data) {
     this.trashModal = document.querySelector(`${this._popupSelector}`);
     this.trashModalSubmitButton = this.trashModal.querySelector(
       "#modal-button-trash"
     );
 
-    this.cardTitle = data.querySelector(".card__title");
+    this.cardTitle = data.cardElement.querySelector(".card__title");
 
     this.trashModal.addEventListener("submit", (e) => {
       e.preventDefault();
       this._handleDelete(this.cardTitle);
-      this._removeCard(data);
+      this._removeCard(data.cardElement);
     });
   }
 }

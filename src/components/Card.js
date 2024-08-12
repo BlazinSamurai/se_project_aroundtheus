@@ -1,6 +1,6 @@
 export default class Card {
   constructor(
-    { name, altName, link },
+    { name, altName, link, _id },
     cardSelector,
     handleImageClick,
     handleConfirmModal,
@@ -9,6 +9,7 @@ export default class Card {
     this.name = name;
     this.altName = altName;
     this.link = link;
+    this._id = _id;
 
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
@@ -26,19 +27,42 @@ export default class Card {
 
   _setEventListener() {
     this._likeButton.addEventListener("click", () => {
-      //this._handleLikeIconClick(this.cardElement);
-      //was recommended to pass "this" instead of "this.cardElement"
-      this._handleImageClick(this);
+      this._handleLikeIconClick(this);
     });
 
     this._trashButton.addEventListener("click", () => {
-      //this._handleConfirmModal(this.cardElement);
       this._handleConfirmModal(this);
     });
 
     this._cardImage.addEventListener("click", () => {
       this._handleImageClick(this);
     });
+  }
+
+  returnID() {
+    return this._id;
+  }
+
+  setHeartIcon() {
+    // this.cardApi.then((cardApi) => {
+    //   console.log(cardApi);
+    //   console.log(cardApi.isLiked);
+    // });
+
+    // console.log(this.cardApi);
+    // console.log(this.cardApi.isLiked);
+
+    if (this.cardApi.isLiked) {
+      this._likeButton.classList.add("card__button-like_active");
+    }
+  }
+
+  setCardApiInfo(apiData) {
+    //console.log(apiData);
+    // this.cardApi = apiData;
+    if (apiData.isLiked) {
+      this._likeButton.classList.add("card__button-like_active");
+    }
   }
 
   getView() {

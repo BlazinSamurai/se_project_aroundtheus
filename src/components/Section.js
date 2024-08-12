@@ -19,10 +19,7 @@ export default class Section {
   renderItems() {
     this._items.then((item) => {
       item.forEach((card) => {
-        const name = card.name;
-        const altName = card.name;
-        const link = card.link;
-        const newCard = this._renderer({ name, altName, link });
+        const newCard = this._renderer(card);
         this.addItem(newCard);
       });
     });
