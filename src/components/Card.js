@@ -43,23 +43,8 @@ export default class Card {
     return this._id;
   }
 
-  setHeartIcon() {
-    // this.cardApi.then((cardApi) => {
-    //   console.log(cardApi);
-    //   console.log(cardApi.isLiked);
-    // });
-
-    // console.log(this.cardApi);
-    // console.log(this.cardApi.isLiked);
-
-    if (this.cardApi.isLiked) {
-      this._likeButton.classList.add("card__button-like_active");
-    }
-  }
-
-  setCardApiInfo(apiData) {
-    //console.log(apiData);
-    // this.cardApi = apiData;
+  setHeartIcon(apiData) {
+    this.apiData = apiData;
     if (apiData.isLiked) {
       this._likeButton.classList.add("card__button-like_active");
     }

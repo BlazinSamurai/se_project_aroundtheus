@@ -38,8 +38,6 @@ export const validationConfig = {
   errorClass: "modal__input-error",
 };
 
-export const globalCards = [];
-
 export const addModalClassStg = "#add-modal";
 export const editModalClassStg = "#edit-modal";
 export const avatarModalClassStg = "#profile-modal";

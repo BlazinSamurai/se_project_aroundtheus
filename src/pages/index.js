@@ -17,7 +17,6 @@ import {
   trashModalClassStg,
   profileNameStg,
   profileBioStg,
-  globalCards,
 } from "../utils/constants.js";
 
 /*---------------------------------------------------*/
@@ -104,9 +103,15 @@ function handleDeleteConfirmModal(title) {
 }
 
 function handleLikeIconClick(data) {
-  console.log(data);
-  // console.log("handleLikeIconClick:", data.cardElement);
-  data.setHeartIcon();
+  const tempLikeButton = data.cardElement.querySelector(".card__button-like");
+
+  if (data.apiData.isLiked) {
+    api.deleteCardLike(data.apiData._id);
+    tempLikeButton.classList.remove("card__button-like_active");
+  } else {
+    api.putCardLike(data.apiData._id);
+    tempLikeButton.classList.add("card__button-like_active");
+  }
 }
 
 /*---------------------------------------------------*/
@@ -154,7 +159,7 @@ function createCard(cardData) {
   );
 
   const tempCard = card.getView();
-  card.setCardApiInfo(cardData);
+  card.setHeartIcon(cardData);
   return tempCard;
 }
 
