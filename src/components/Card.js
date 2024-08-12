@@ -26,11 +26,14 @@ export default class Card {
 
   _setEventListener() {
     this._likeButton.addEventListener("click", () => {
-      this._handleLikeIconClick(this.cardElement);
+      //this._handleLikeIconClick(this.cardElement);
+      //was recommended to pass "this" instead of "this.cardElement"
+      this._handleImageClick(this);
     });
 
     this._trashButton.addEventListener("click", () => {
-      this._handleConfirmModal(this.cardElement);
+      //this._handleConfirmModal(this.cardElement);
+      this._handleConfirmModal(this);
     });
 
     this._cardImage.addEventListener("click", () => {

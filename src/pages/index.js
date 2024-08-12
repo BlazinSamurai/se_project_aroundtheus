@@ -50,7 +50,7 @@ const trashModalSubmitButton = trashModal.querySelector(".modal__button");
 /*---------------------------------------------------*/
 
 function handleAvatarFormSubmit(formValues) {
-  const profilePicObject = profilePicApi.patchProfileAvatar(formValues.url);
+  const profilePicObject = api.patchProfileAvatar(formValues.url);
   changeSubmitButton(avatarModalSubmitButton);
   profilePicObject.then((object) => {
     avatarPopup.handleAvatarChange(object.avatar);
@@ -60,7 +60,7 @@ function handleAvatarFormSubmit(formValues) {
 }
 
 function handleProfileFormSubmit(formValues) {
-  profileApi.patchProfile(formValues.name, formValues.bio);
+  api.patchProfile(formValues.name, formValues.bio);
   changeSubmitButton(editModalSubmitButton);
   userInfo.setUserInfo(formValues.name, formValues.bio);
   profilePopup.close();
@@ -70,13 +70,16 @@ function handleProfileFormSubmit(formValues) {
 function handleAddCardFormSubmit(formValues) {
   const name = formValues.title;
   const link = formValues.url;
-  const cardApiObject = cardApi.postCards({ name, link });
+  const cardApiObject = api.postCards({ name, link });
   changeSubmitButton(addModalSubmitButton);
   cardApiObject.then((object) => {
-    const section = new Section(
-      { items: null, renderer: createCard },
-      ".card__list"
-    );
+    // You're also creating a new section everytime you create
+    // a new card, you should not create a new Section everytime
+    // you add a card, it should be the same section
+    // const section = new Section(
+    //   { items: null, renderer: createCard },
+    //   ".card__list"
+    // );
     const element = createCard(object);
     section.addItem(element);
   });
@@ -96,7 +99,7 @@ function handleConfirmModal(data) {
 
 function handleDeleteConfirmModal(title) {
   let cardID = getID(title);
-  cardApi.deleteCard(cardID);
+  api.deleteCard(cardID);
   changeSubmitButton(trashModalSubmitButton);
   trashConfirmPopup.close();
 }
@@ -105,7 +108,7 @@ function handleLikeIconClick(data) {
   const cardTitle = data.querySelector(".card__title");
   const likeButton = data.querySelector(".card__button-like");
   const cardID = getID(cardTitle);
-  const putLikeResult = cardApi.putCardLike(cardID);
+  const putLikeResult = api.putCardLike(cardID);
   putLikeResult.then((result) => {
     if (result.isLiked) {
       likeButton.classList.add("card__button-like_active");
@@ -153,22 +156,20 @@ function createCard(cardData) {
     handleConfirmModal,
     handleLikeIconClick
   );
-
   return card.getView();
 }
 
-function getID(data) {
-  let cardID;
-  globalCards.forEach((card) => {
-    if (card.name === data.textContent) {
-      cardID = card._id;
-    }
-  });
-  return cardID;
-}
+function getUniqueCards() {
+  const cardArray = new Set();
+  const promiseHolder = api.getCards();
 
-function changeSubmitButton(button) {
-  button.textContent = "Saving . . .";
+  return promiseHolder.then((promiseResult) => {
+    promiseResult.forEach((card) => {
+      cardArray.add(card);
+    });
+
+    return cardArray;
+  });
 }
 
 /*---------------------------------------------------*/
@@ -234,45 +235,32 @@ const trashConfirmPopup = new PopupWithConfirm(
 /*                      Api                          */
 /*---------------------------------------------------*/
 
-const profileApi = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1/users/me",
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
     authorization: authorizationCode,
   },
 });
 
-const profileApiObject = profileApi.getProfile();
+const profileApiObject = api.getProfile();
 
 profileApiObject.then((data) => {
   userInfo.setUserInfo(data.name, data.about);
   avatarPopup.handleAvatarChange(data.avatar);
 });
 
-const profilePicApi = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1/users/me/avatar",
-  headers: {
-    authorization: authorizationCode,
-  },
-});
+/*---------------------------------------------------*/
+/*               Section Constructor                 */
+/*---------------------------------------------------*/
+// To get the size of cardArray outside the getUniqueCards function,
+// you need to handle it asynchronously since getUniqueCards has
+// asynchronous logic inside. You can return a promise from getUniqueCards
+// and then handle it accordingly.
+const uniqueCards = getUniqueCards();
 
-const cardApi = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1/cards",
-  headers: {
-    authorization: authorizationCode,
-  },
-});
+const section = new Section(
+  { items: uniqueCards, renderer: createCard },
+  ".card__list"
+);
 
-const cardsApiObject = cardApi.getCards();
-
-cardsApiObject.then((cards) => {
-  const section = new Section(
-    { items: cards, renderer: createCard },
-    ".card__list"
-  );
-  section.renderItems();
-
-  cards.forEach((card) => {
-    globalCards.push(card);
-    cardApi.postCards(card);
-  });
-});
+section.renderItems();

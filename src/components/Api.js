@@ -1,5 +1,6 @@
 export default class Api {
   constructor({ baseUrl, headers }) {
+    // baseUrl: "https://around-api.en.tripleten-services.com/v1"
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
@@ -8,8 +9,10 @@ export default class Api {
   /*         Profile Picture Api functions             */
   /*---------------------------------------------------*/
 
+  // – Update avatar
+  // PATCH https://around-api.en.tripleten-services.com/v1/users/me/avatar
   patchProfileAvatar(link) {
-    return fetch(this._baseUrl, {
+    return fetch(this._baseUrl + "/users/me/avatar", {
       method: "PATCH",
       headers: {
         authorization: this._headers.authorization,
@@ -36,8 +39,11 @@ export default class Api {
   /*---------------------------------------------------*/
   /*             Profile Api functions                 */
   /*---------------------------------------------------*/
+
+  // – Get the current user’s info
+  // GET https://around-api.en.tripleten-services.com/v1/users/me
   getProfile() {
-    return fetch(this._baseUrl, {
+    return fetch(this._baseUrl + "/users/me", {
       method: "GET",
       headers: {
         authorization: this._headers.authorization,
@@ -49,14 +55,17 @@ export default class Api {
       })
       .then((result) => {
         return result;
+        //console.log(result);
       })
       .catch((err) => {
         console.error(err);
       });
   }
 
+  // – Update your profile information
+  // PATCH https://around-api.en.tripleten-services.com/v1/users/me
   patchProfile(nameVar, bioVar) {
-    return fetch(this._baseUrl, {
+    return fetch(this._baseUrl + "/users/me", {
       method: "PATCH",
       headers: {
         authorization: this._headers.authorization,
@@ -79,8 +88,10 @@ export default class Api {
   /*---------------------------------------------------*/
   /*             Card Api functions                    */
   /*---------------------------------------------------*/
+  // – Get all cards
+  // GET https://around-api.en.tripleten-services.com/v1/cards
   getCards() {
-    return fetch(this._baseUrl, {
+    return fetch(this._baseUrl + "/cards", {
       method: "GET",
       headers: {
         authorization: this._headers.authorization,
@@ -92,7 +103,7 @@ export default class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         const uniqueCardIds = new Set();
         const uniqueCards = result.filter(({ name }) => {
           if (!uniqueCardIds.has(name)) {
@@ -101,9 +112,11 @@ export default class Api {
           }
           return false;
         });
+        // console.log(uniqueCards.length);
         return uniqueCards;
-        // console.log(result);
+
         // result.forEach((card) => {
+        //   //console.log(card._id);
         //   this.deleteCard(card._id);
         // });
       })
@@ -112,8 +125,10 @@ export default class Api {
       });
   }
 
+  // – Create a card
+  // POST https://around-api.en.tripleten-services.com/v1/cards
   postCards(card) {
-    return fetch(this._baseUrl, {
+    return fetch(this._baseUrl + "/cards", {
       method: "POST",
       headers: {
         authorization: this._headers.authorization,
@@ -136,8 +151,10 @@ export default class Api {
       });
   }
 
+  // – Like a card
+  // PUT https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
   putCardLike(ID) {
-    return fetch(this._baseUrl + `/${ID}/likes`, {
+    return fetch(this._baseUrl + `cards/${ID}/likes`, {
       method: "PUT",
       headers: {
         authorization: this._headers.authorization,
@@ -156,8 +173,10 @@ export default class Api {
       });
   }
 
+  // – Dislike a card
+  // DELETE https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
   deleteCardLike(cardTitle) {
-    return fetch(this._baseUrl + `/${ID}/likes`, {
+    return fetch(this._baseUrl + `cards/${ID}/likes`, {
       method: "DELETE",
       headers: {
         authorization: this._headers.authorization,
@@ -176,20 +195,23 @@ export default class Api {
       });
   }
 
+  // – Delete a card
+  // DELETE https://around-api.en.tripleten-services.com/v1/cards/cardId
   deleteCard(cardID) {
-    return fetch(this._baseUrl + `/${cardID}`, {
+    return fetch(this._baseUrl + `/cards/${cardID}`, {
       method: "DELETE",
       headers: {
         authorization: this._headers.authorization,
         "Content-Type": "application/json",
       },
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(`Error: ${res.status}`);
-    });
-    // .then((result) => {
-    //   console.log(result);
-    // })
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((result) => {
+        console.log(result);
+      });
     // .catch((err) => {
     //   console.error("DELETE Card Error:", err);
     // });
