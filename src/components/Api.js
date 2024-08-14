@@ -155,49 +155,29 @@ export default class Api {
   // – Like a card
   // PUT https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
   putCardLike(ID) {
-    return (
-      fetch(this._baseUrl + `/cards/${ID}/likes`, {
-        method: "PUT",
-        headers: {
-          authorization: this._headers.authorization,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          if (res.ok) return res.json();
-          return Promise.reject(`Error: ${res.status}`);
-        })
-        // .then((result) => {
-        //   return result;
-        // })
-        .catch((err) => {
-          console.error("PUT Like Error:", err);
-        })
-    );
+    return fetch(this._baseUrl + `/cards/${ID}/likes`, {
+      method: "PUT",
+      headers: {
+        authorization: this._headers.authorization,
+      },
+    }).then((res) => {
+      if (res.ok) return res.json();
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   // – Dislike a card
   // DELETE https://around-api.en.tripleten-services.com/v1/cards/cardId/likes
   deleteCardLike(ID) {
-    return (
-      fetch(this._baseUrl + `/cards/${ID}/likes`, {
-        method: "DELETE",
-        headers: {
-          authorization: this._headers.authorization,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          if (res.ok) return res.json();
-          return Promise.reject(`Error: ${res.status}`);
-        })
-        // .then((result) => {
-        //   console.log(result);
-        // })
-        .catch((err) => {
-          console.error("DELETE Like Error:", err);
-        })
-    );
+    return fetch(this._baseUrl + `/cards/${ID}/likes`, {
+      method: "DELETE",
+      headers: {
+        authorization: this._headers.authorization,
+      },
+    }).then((res) => {
+      if (res.ok) return res.json();
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   // – Delete a card

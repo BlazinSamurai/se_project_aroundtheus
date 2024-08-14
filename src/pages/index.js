@@ -17,6 +17,7 @@ import {
   trashModalClassStg,
   profileNameStg,
   profileBioStg,
+  globalVariable,
 } from "../utils/constants.js";
 
 /*---------------------------------------------------*/
@@ -103,14 +104,12 @@ function handleDeleteConfirmModal(title) {
 }
 
 function handleLikeIconClick(data) {
-  const tempLikeButton = data.cardElement.querySelector(".card__button-like");
-
   if (data.apiData.isLiked) {
     api.deleteCardLike(data.apiData._id);
-    tempLikeButton.classList.remove("card__button-like_active");
+    data.changeHeartIcon(data);
   } else {
     api.putCardLike(data.apiData._id);
-    tempLikeButton.classList.add("card__button-like_active");
+    data.changeHeartIcon(data);
   }
 }
 
@@ -144,7 +143,6 @@ profileAddButton.addEventListener("click", () => {
 /*---------------------------------------------------*/
 
 function createCard(cardData) {
-  //console.log("cardData:", cardData);
   const card = new Card(
     {
       name: cardData.name,

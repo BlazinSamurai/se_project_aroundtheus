@@ -39,12 +39,19 @@ export default class Card {
     });
   }
 
-  returnID() {
-    return this._id;
+  changeHeartIcon(data) {
+    if (data.apiData.isLiked) {
+      this._likeButton.classList.remove("card__button-like_active");
+      data.apiData.isLiked = false;
+    } else {
+      this._likeButton.classList.add("card__button-like_active");
+      data.apiData.isLiked = true;
+    }
   }
 
   setHeartIcon(apiData) {
     this.apiData = apiData;
+    console.log(apiData.name, apiData.isLiked);
     if (apiData.isLiked) {
       this._likeButton.classList.add("card__button-like_active");
     }
@@ -55,6 +62,7 @@ export default class Card {
       .querySelector(this._cardSelector)
       .content.querySelector(".card__section")
       .cloneNode(true);
+
     this._likeButton = this.cardElement.querySelector(".card__button-like");
     this._trashButton = this.cardElement.querySelector(".card__button-trash");
     this._cardImage = this.cardElement.querySelector(".card__image");
