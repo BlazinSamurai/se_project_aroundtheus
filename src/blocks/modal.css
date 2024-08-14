@@ -11,7 +11,7 @@
   ,(commas seperate the two transition)*/
   visibility: hidden;
   opacity: 0;
-  transition: visibility 3s, opacity 3s;
+  transition: visibility 0.3s, opacity 0.3s;
 }
 
 .modal_opened {
