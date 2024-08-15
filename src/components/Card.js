@@ -57,6 +57,11 @@ export default class Card {
     }
   }
 
+  removeCard(card) {
+    card.remove();
+    card = null;
+  }
+
   getView() {
     this.cardElement = document
       .querySelector(this._cardSelector)

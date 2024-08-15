@@ -17,7 +17,6 @@ import {
   trashModalClassStg,
   profileNameStg,
   profileBioStg,
-  globalVariable,
 } from "../utils/constants.js";
 
 /*---------------------------------------------------*/
@@ -87,13 +86,16 @@ function handleImageClick(data) {
 function handleConfirmModal(data) {
   trashModalSubmitButton.textContent = "Yes";
   trashConfirmPopup.open();
-  trashConfirmPopup.setEventListeners(data);
+  trashConfirmPopup.setSubmitFunction(() => {
+    handleDeleteConfirmModal(data.apiData.name);
+    data.removeCard(data.cardElement);
+  });
 }
 
 function handleDeleteConfirmModal(title) {
   uniqueCards.then((cards) => {
     cards.forEach((card) => {
-      if (card.name === title.textContent) {
+      if (card.name === title) {
         api.deleteCard(card._id);
         changeSubmitButton(trashModalSubmitButton);
       }
@@ -236,6 +238,7 @@ const trashConfirmPopup = new PopupWithConfirm(
   trashModalClassStg,
   handleDeleteConfirmModal
 );
+trashConfirmPopup.setEventListeners();
 
 /*---------------------------------------------------*/
 /*                      Api                          */
