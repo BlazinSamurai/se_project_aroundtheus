@@ -255,6 +255,9 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
+// .catch((err) => {
+//   console.error(err);
+// });
 
 const profileApiObject = api.getProfile();
 

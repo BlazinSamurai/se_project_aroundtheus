@@ -5,6 +5,15 @@ export default class Api {
     this._headers = headers;
   }
 
+  _checkResponse(res) {
+    if (res.ok) return res.json();
+    return Promise.reject(`Error: ${res.status} + ${res.message}`);
+  }
+
+  _request(url, options) {
+    return fetch(url, options).then(this._checkResponse);
+  }
+
   /*---------------------------------------------------*/
   /*         Profile Picture Api functions             */
   /*---------------------------------------------------*/
@@ -12,28 +21,22 @@ export default class Api {
   // – Update avatar
   // PATCH https://around-api.en.tripleten-services.com/v1/users/me/avatar
   patchProfileAvatar(link) {
-    return fetch(this._baseUrl + "/users/me/avatar", {
+    // const requestUrl = `${this._baseUrl}/users/me/avatar`;
+
+    // this._request(tempUrl, {
+    //   method: "PATCH",
+    //   headers: this._headers,
+    //   body: JSON.stringify({
+    //     avatar: link,
+    //   }),
+    // });
+    return this._request(this._baseUrl + "/users/me/avatar", {
       method: "PATCH",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         avatar: link,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status} + ${res.message}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    });
   }
 
   /*---------------------------------------------------*/
@@ -43,46 +46,23 @@ export default class Api {
   // – Get the current user’s info
   // GET https://around-api.en.tripleten-services.com/v1/users/me
   getProfile() {
-    return fetch(this._baseUrl + "/users/me", {
+    return this._request(`${this._baseUrl}/users/me`, {
       method: "GET",
-      headers: {
-        authorization: this._headers.authorization,
-      },
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-        //console.log(result);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      headers: this._headers,
+    });
   }
 
   // – Update your profile information
   // PATCH https://around-api.en.tripleten-services.com/v1/users/me
   patchProfile(nameVar, bioVar) {
-    return fetch(this._baseUrl + "/users/me", {
+    return this._request(this._baseUrl + "/users/me", {
       method: "PATCH",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: nameVar,
         about: bioVar,
       }),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    });
   }
 
   /*---------------------------------------------------*/
@@ -94,22 +74,13 @@ export default class Api {
   getCards() {
     return fetch(this._baseUrl + "/cards", {
       method: "GET",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
     })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
-      })
+      .then(this._checkResponse)
       .then((result) => {
         // console.log(result);
         return result;
       });
-    // .catch((err) => {
-    //   console.error("GET Card Error:", err);
-    // });
   }
 
   // – Create a card
@@ -117,24 +88,15 @@ export default class Api {
   postCards(card) {
     return fetch(this._baseUrl + "/cards", {
       method: "POST",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: card.name,
         link: card.link,
       }),
     })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
-      })
+      .then(this._checkResponse)
       .then((result) => {
         return result;
-      })
-      .catch((err) => {
-        console.error("POST Card Error:", err);
       });
   }
 
@@ -143,13 +105,8 @@ export default class Api {
   putCardLike(ID) {
     return fetch(this._baseUrl + `/cards/${ID}/likes`, {
       method: "PUT",
-      headers: {
-        authorization: this._headers.authorization,
-      },
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(`Error: ${res.status}`);
-    });
+      headers: this._headers,
+    }).then(this._checkResponse);
   }
 
   // – Dislike a card
@@ -157,13 +114,8 @@ export default class Api {
   deleteCardLike(ID) {
     return fetch(this._baseUrl + `/cards/${ID}/likes`, {
       method: "DELETE",
-      headers: {
-        authorization: this._headers.authorization,
-      },
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(`Error: ${res.status}`);
-    });
+      headers: this._headers,
+    }).then(this._checkResponse);
   }
 
   // – Delete a card
@@ -171,20 +123,11 @@ export default class Api {
   deleteCard(cardID) {
     return fetch(this._baseUrl + `/cards/${cardID}`, {
       method: "DELETE",
-      headers: {
-        authorization: this._headers.authorization,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
     })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Error: ${res.status}`);
-      })
+      .then(this._checkResponse)
       .then((result) => {
         console.log(result);
       });
-    // .catch((err) => {
-    //   console.error("DELETE Card Error:", err);
-    // });
   }
 }
