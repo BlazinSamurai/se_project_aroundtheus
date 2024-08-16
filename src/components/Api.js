@@ -105,25 +105,11 @@ export default class Api {
       })
       .then((result) => {
         // console.log(result);
-        const uniqueCardIds = new Set();
-        const uniqueCards = result.filter(({ name }) => {
-          if (!uniqueCardIds.has(name)) {
-            uniqueCardIds.add(name);
-            return true;
-          }
-          return false;
-        });
-        // console.log(uniqueCards.length);
-        return uniqueCards;
-
-        // result.forEach((card) => {
-        //   //console.log(card._id);
-        //   this.deleteCard(card._id);
-        // });
-      })
-      .catch((err) => {
-        console.error("GET Card Error:", err);
+        return result;
       });
+    // .catch((err) => {
+    //   console.error("GET Card Error:", err);
+    // });
   }
 
   // – Create a card

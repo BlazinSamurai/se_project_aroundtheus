@@ -93,7 +93,7 @@ function handleConfirmModal(data) {
 }
 
 function handleDeleteConfirmModal(title) {
-  uniqueCards.then((cards) => {
+  cards.then((cards) => {
     cards.forEach((card) => {
       if (card.name === title) {
         api.deleteCard(card._id);
@@ -145,6 +145,9 @@ profileAddButton.addEventListener("click", () => {
 /*---------------------------------------------------*/
 
 function createCard(cardData) {
+  // console.log("cardData:", cardData);
+  // let tempCard;
+
   const card = new Card(
     {
       name: cardData.name,
@@ -160,10 +163,12 @@ function createCard(cardData) {
 
   const tempCard = card.getView();
   card.setHeartIcon(cardData);
+  // console.log("tempCard:", tempCard);
+
   return tempCard;
 }
 
-function getUniqueCards() {
+function gettingCards() {
   const cardArray = new Set();
   const promiseHolder = api.getCards();
 
@@ -171,7 +176,6 @@ function getUniqueCards() {
     promiseResult.forEach((card) => {
       cardArray.add(card);
     });
-
     return cardArray;
   });
 }
@@ -248,6 +252,7 @@ const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
     authorization: authorizationCode,
+    "Content-Type": "application/json",
   },
 });
 
@@ -265,11 +270,12 @@ profileApiObject.then((data) => {
 // you need to handle it asynchronously since getUniqueCards has
 // asynchronous logic inside. You can return a promise from getUniqueCards
 // and then handle it accordingly.
-const uniqueCards = getUniqueCards();
+
+const cards = api.getCards();
 
 const section = new Section(
-  { items: uniqueCards, renderer: createCard },
+  { items: cards, renderer: createCard },
   ".card__list"
 );
 
-section.renderItems();
+section.renderItems(cards);
