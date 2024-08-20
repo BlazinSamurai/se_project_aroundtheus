@@ -21,7 +21,6 @@ export default class Card {
     this._cardImage.src = this.link;
     this._cardImage.alt = this.altName;
     this._cardTitle.textContent = this.name;
-    // console.log("this._cardElement:", this.cardElement);
 
     return this.cardElement;
   }
@@ -52,7 +51,6 @@ export default class Card {
 
   setHeartIcon(apiData) {
     this.apiData = apiData;
-    // console.log("apiData:", apiData);
     if (apiData.isLiked) {
       this._likeButton.classList.add("card__button-like_active");
     }

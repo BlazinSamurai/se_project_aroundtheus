@@ -6,7 +6,9 @@ export default class PopupWithForm extends Popup {
 
     this._popupForm = this._popupElement.querySelector(".modal__form");
     this._inputList = this._popupForm.querySelectorAll(".modal__input");
-    this.avatarPic = document.querySelector("#profile__avatar-pic");
+
+    // fix the initial button text only once in the constructor
+    // this._submitBtnText = this._submitBtn.textContent;
   }
 
   // collects data from all the input fields and returns it as an object.
@@ -20,10 +22,6 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  handleAvatarChange(link) {
-    this.avatarPic.src = link;
-  }
-
   // which can insert data into inputs
   // So, this way you’ll not have to search the inputs of the profile in index.js
   setInputValues(data) {
@@ -31,6 +29,16 @@ export default class PopupWithForm extends Popup {
       // Here you insert the `value` by the `name` of the input
       input.value = data[input.name];
     });
+  }
+
+  // add 2 params: isLoading and loadingText with a default text
+  renderLoading(isLoading, loadingText = "Saving...") {
+    if (isLoading) {
+      this._submitBtn.textContent = loadingText;
+    } else {
+      // here we return back the initial text. So, you don’t need to bother yourself about it
+      this._submitBtn.textContent = this._submitBtnText;
+    }
   }
 
   // setEventListeners() method of the PopupWithForm class should add a submit
@@ -41,7 +49,7 @@ export default class PopupWithForm extends Popup {
     this._popupForm.addEventListener("submit", () => {
       const formValues = this._getInputValues();
       this._handleFormSubmit(formValues);
-      this._popupForm.reset();
+      // this._popupForm.reset();
     });
   }
 }

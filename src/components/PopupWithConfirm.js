@@ -13,9 +13,8 @@ export default class PopupWithConfirm extends Popup {
 
   setEventListeners() {
     super.setEventListeners();
-    this.trashModal = document.querySelector(`${this._popupSelector}`);
 
-    this.trashModal.addEventListener("submit", (e) => {
+    this._popupElement.addEventListener("submit", (e) => {
       e.preventDefault();
       this._handleDelete();
     });

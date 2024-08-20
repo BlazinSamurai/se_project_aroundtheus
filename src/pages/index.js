@@ -39,6 +39,7 @@ const profileEditButton = document.querySelector(".profile__button-edit");
 const profileAddButton = document.querySelector(".profile__button-add");
 const avatarModalSubmitButton =
   profileAvatarForm.querySelector(".modal__button");
+const avatarPic = document.querySelector("#profile__avatar-pic");
 
 /*-- Trash Icon Selectors --*/
 const trashModal = document.querySelector("#trash-modal");
@@ -49,55 +50,89 @@ const trashModalSubmitButton = trashModal.querySelector(".modal__button");
 /*---------------------------------------------------*/
 
 function handleAvatarFormSubmit(formValues) {
-  const profilePicObject = api.patchProfileAvatar(formValues.url);
-  changeSubmitButton(avatarModalSubmitButton);
-  profilePicObject.then((object) => {
-    avatarPopup.handleAvatarChange(object.avatar);
-  });
-  avatarPopup.close();
-  profileAvatarFormValidator.disableButton();
+  api
+    .patchProfileAvatar(formValues.url)
+    .then((object) => {
+      changeSubmitButton(avatarModalSubmitButton);
+      avatarPic.src = object.avatar;
+      avatarPopup.close();
+      profileAvatarForm.reset();
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      profileAvatarFormValidator.disableButton();
+      // avatarModalSubmitButton.textContent = "Save";
+    });
 }
 
 function handleProfileFormSubmit(formValues) {
-  api.patchProfile(formValues.name, formValues.bio);
-  changeSubmitButton(editModalSubmitButton);
-  userInfo.setUserInfo(formValues.name, formValues.bio);
-  profilePopup.close();
-  editProfileFormValidator.disableButton();
+  api
+    .patchProfile(formValues.name, formValues.bio)
+    .then(() => {
+      changeSubmitButton(editModalSubmitButton);
+      userInfo.setUserInfo(formValues.name, formValues.bio);
+      // profilePopup.renderLoading(true);
+      profilePopup.close();
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      // profilePopup.renderLoading(false);
+      editProfileFormValidator.disableButton();
+      // editModalSubmitButton.textContent = "Save";
+    });
 }
 
 function handleAddCardFormSubmit(formValues) {
   const name = formValues.title;
   const link = formValues.url;
-  const cardApiObject = api.postCards({ name, link });
-  changeSubmitButton(addModalSubmitButton);
-  cardApiObject.then((object) => {
-    const element = createCard(object);
-    section.addItem(element);
-  });
-  cardPopup.close();
+  api
+    .postCards({ name, link })
+    .then((object) => {
+      changeSubmitButton(addModalSubmitButton);
+      const element = createCard(object);
+      section.addItem(element);
+      cardPopup.close();
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      // addModalSubmitButton.textContent = "Create";
+    });
 }
 
 function handleImageClick(data) {
   popupImg.open(data);
-  popupImg.setEventListeners();
 }
 
 function handleConfirmModal(data) {
-  trashModalSubmitButton.textContent = "Yes";
   trashConfirmPopup.open();
   trashConfirmPopup.setSubmitFunction(() => {
-    handleDeleteConfirmModal(data.apiData.name);
+    handleDeleteConfirmModal(data.apiData._id);
     data.removeCard(data.cardElement);
   });
 }
 
-function handleDeleteConfirmModal(title) {
+function handleDeleteConfirmModal(ID) {
   cards.then((cards) => {
     cards.forEach((card) => {
-      if (card.name === title) {
-        api.deleteCard(card._id);
-        changeSubmitButton(trashModalSubmitButton);
+      if (card._id === ID) {
+        api
+          .deleteCard(card._id)
+          .then(() => {
+            changeSubmitButton(trashModalSubmitButton);
+            trashConfirmPopup.close();
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            // trashModalSubmitButton.textContent = "Yes";
+          });
       }
     });
   });
@@ -107,11 +142,23 @@ function handleDeleteConfirmModal(title) {
 
 function handleLikeIconClick(data) {
   if (data.apiData.isLiked) {
-    api.deleteCardLike(data.apiData._id);
-    data.changeHeartIcon(data);
+    api
+      .deleteCardLike(data.apiData._id)
+      .then(() => {
+        data.changeHeartIcon(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   } else {
-    api.putCardLike(data.apiData._id);
-    data.changeHeartIcon(data);
+    api
+      .putCardLike(data.apiData._id)
+      .then(() => {
+        data.changeHeartIcon(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 }
 
@@ -123,7 +170,6 @@ profilePenIcon.addEventListener("click", () => {
   avatarModalSubmitButton.textContent = "Save";
   avatarPopup.open();
   profileAvatarFormValidator.disableButton();
-  avatarPopup.setEventListeners();
 });
 
 profileEditButton.addEventListener("click", () => {
@@ -145,9 +191,6 @@ profileAddButton.addEventListener("click", () => {
 /*---------------------------------------------------*/
 
 function createCard(cardData) {
-  // console.log("cardData:", cardData);
-  // let tempCard;
-
   const card = new Card(
     {
       name: cardData.name,
@@ -163,21 +206,8 @@ function createCard(cardData) {
 
   const tempCard = card.getView();
   card.setHeartIcon(cardData);
-  // console.log("tempCard:", tempCard);
 
   return tempCard;
-}
-
-function gettingCards() {
-  const cardArray = new Set();
-  const promiseHolder = api.getCards();
-
-  return promiseHolder.then((promiseResult) => {
-    promiseResult.forEach((card) => {
-      cardArray.add(card);
-    });
-    return cardArray;
-  });
 }
 
 function changeSubmitButton(button) {
@@ -233,6 +263,7 @@ cardPopup.setEventListeners();
 /*---------------------------------------------------*/
 
 const popupImg = new PopupWithImage(previewModalClassStg);
+popupImg.setEventListeners();
 
 /*---------------------------------------------------*/
 /*         PopupWithCofirm Constructor               */
@@ -255,16 +286,16 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-// .catch((err) => {
-//   console.error(err);
-// });
 
-const profileApiObject = api.getProfile();
-
-profileApiObject.then((data) => {
-  userInfo.setUserInfo(data.name, data.about);
-  avatarPopup.handleAvatarChange(data.avatar);
-});
+api
+  .getProfile()
+  .then((data) => {
+    userInfo.setUserInfo(data.name, data.about);
+    avatarPic.src = data.avatar;
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 /*---------------------------------------------------*/
 /*               Section Constructor                 */

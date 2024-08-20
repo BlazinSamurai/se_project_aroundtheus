@@ -22,14 +22,6 @@ export default class Api {
   // PATCH https://around-api.en.tripleten-services.com/v1/users/me/avatar
   patchProfileAvatar(link) {
     // const requestUrl = `${this._baseUrl}/users/me/avatar`;
-
-    // this._request(tempUrl, {
-    //   method: "PATCH",
-    //   headers: this._headers,
-    //   body: JSON.stringify({
-    //     avatar: link,
-    //   }),
-    // });
     return this._request(this._baseUrl + "/users/me/avatar", {
       method: "PATCH",
       headers: this._headers,
@@ -78,7 +70,6 @@ export default class Api {
     })
       .then(this._checkResponse)
       .then((result) => {
-        // console.log(result);
         return result;
       });
   }

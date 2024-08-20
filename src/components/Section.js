@@ -28,6 +28,6 @@ export default class Section {
   // takes a DOM element and adds it to the container. This method
   // should be called when adding an individual card to the DOM
   addItem(element) {
-    this.container.prepend(element);
+    this.container.append(element);
   }
 }
