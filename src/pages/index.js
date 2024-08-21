@@ -53,17 +53,17 @@ function handleAvatarFormSubmit(formValues) {
   api
     .patchProfileAvatar(formValues.url)
     .then((object) => {
-      changeSubmitButton(avatarModalSubmitButton);
+      avatarPopup.setButtonText(true, avatarModalSubmitButton);
       userInfo.setAvatarPic(avatarPic, object.avatar);
-      avatarPopup.close();
       profileAvatarFormValidator.disableButton();
+      avatarPopup.close();
       profileAvatarForm.reset();
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
-      avatarModalSubmitButton.textContent = "Save";
+      avatarPopup.setButtonText(false, avatarModalSubmitButton, "Save");
     });
 }
 
@@ -71,16 +71,16 @@ function handleProfileFormSubmit(formValues) {
   api
     .patchProfile(formValues.name, formValues.bio)
     .then(() => {
-      changeSubmitButton(editModalSubmitButton);
+      profilePopup.setButtonText(true, editModalSubmitButton);
       userInfo.setUserInfo(formValues.name, formValues.bio);
-      profilePopup.close();
       editProfileFormValidator.disableButton();
+      profilePopup.close();
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
-      editModalSubmitButton.textContent = "Save";
+      profilePopup.setButtonText(false, editModalSubmitButton, "Save");
     });
 }
 
@@ -90,16 +90,17 @@ function handleAddCardFormSubmit(formValues) {
   api
     .postCards({ name, link })
     .then((object) => {
-      changeSubmitButton(addModalSubmitButton);
+      cardPopup.setButtonText(true, addModalSubmitButton);
       const element = createCard(object);
       section.addItem(element);
       cardPopup.close();
+      addModalForm.reset();
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
-      addModalSubmitButton.textContent = "Create";
+      cardPopup.setButtonText(false, addModalSubmitButton, "Create");
     });
 }
 
@@ -113,7 +114,7 @@ function handleConfirmModal(data) {
     api
       .deleteCard(data.apiData._id)
       .then(() => {
-        changeSubmitButton(trashModalSubmitButton);
+        cardPopup.setButtonText(true, trashModalSubmitButton);
         trashConfirmPopup.close();
         data.removeCard(data.cardElement);
       })
@@ -121,7 +122,7 @@ function handleConfirmModal(data) {
         console.error(err);
       })
       .finally(() => {
-        trashModalSubmitButton.textContent = "Yes";
+        cardPopup.setButtonText(false, trashModalSubmitButton, "Yes");
       });
   });
 }
@@ -193,9 +194,9 @@ function createCard(cardData) {
   return tempCard;
 }
 
-function changeSubmitButton(button) {
-  button.textContent = "Saving . . .";
-}
+// function changeSubmitButton(button) {
+//   button.textContent = "Saving . . .";
+// }
 
 /*---------------------------------------------------*/
 /*              UserInfo Constructor                 */

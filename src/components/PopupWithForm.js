@@ -19,6 +19,15 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
+  setButtonText(isLoading, button, btnText = "Saving . . .") {
+    if (isLoading) {
+      button.textContent = btnText;
+      return true;
+    } else {
+      button.textContent = btnText;
+    }
+  }
+
   // which can insert data into inputs
   // So, this way you’ll not have to search the inputs of the profile in index.js
   setInputValues(data) {
