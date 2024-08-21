@@ -17,17 +17,15 @@ export default class Section {
 
   // renders all elements on the page
   renderItems(cards) {
-    cards.then((card) => {
-      card.forEach((item) => {
-        const newCard = this._renderer(item);
-        this.addItem(newCard);
-      });
+    cards.forEach((card) => {
+      const newCard = this._renderer(card);
+      this.addItem(newCard);
     });
   }
 
   // takes a DOM element and adds it to the container. This method
   // should be called when adding an individual card to the DOM
   addItem(element) {
-    this.container.append(element);
+    this.container.prepend(element);
   }
 }

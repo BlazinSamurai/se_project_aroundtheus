@@ -7,6 +7,10 @@ export default class UserInfo {
     this._bioElement = document.querySelector(this._bioSelector);
   }
 
+  setAvatarPic(element, link) {
+    element.src = link;
+  }
+
   // returns an object containing information about the
   // user. This method will be handy for cases when it's
   // necessary to display the user data in the open form

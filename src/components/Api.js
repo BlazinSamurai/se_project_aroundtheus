@@ -21,7 +21,6 @@ export default class Api {
   // – Update avatar
   // PATCH https://around-api.en.tripleten-services.com/v1/users/me/avatar
   patchProfileAvatar(link) {
-    // const requestUrl = `${this._baseUrl}/users/me/avatar`;
     return this._request(this._baseUrl + "/users/me/avatar", {
       method: "PATCH",
       headers: this._headers,

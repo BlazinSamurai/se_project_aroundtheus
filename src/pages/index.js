@@ -54,16 +54,16 @@ function handleAvatarFormSubmit(formValues) {
     .patchProfileAvatar(formValues.url)
     .then((object) => {
       changeSubmitButton(avatarModalSubmitButton);
-      avatarPic.src = object.avatar;
+      userInfo.setAvatarPic(avatarPic, object.avatar);
       avatarPopup.close();
+      profileAvatarFormValidator.disableButton();
       profileAvatarForm.reset();
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
-      profileAvatarFormValidator.disableButton();
-      // avatarModalSubmitButton.textContent = "Save";
+      avatarModalSubmitButton.textContent = "Save";
     });
 }
 
@@ -73,16 +73,14 @@ function handleProfileFormSubmit(formValues) {
     .then(() => {
       changeSubmitButton(editModalSubmitButton);
       userInfo.setUserInfo(formValues.name, formValues.bio);
-      // profilePopup.renderLoading(true);
       profilePopup.close();
+      editProfileFormValidator.disableButton();
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
-      // profilePopup.renderLoading(false);
-      editProfileFormValidator.disableButton();
-      // editModalSubmitButton.textContent = "Save";
+      editModalSubmitButton.textContent = "Save";
     });
 }
 
@@ -101,7 +99,7 @@ function handleAddCardFormSubmit(formValues) {
       console.error(err);
     })
     .finally(() => {
-      // addModalSubmitButton.textContent = "Create";
+      addModalSubmitButton.textContent = "Create";
     });
 }
 
@@ -112,32 +110,20 @@ function handleImageClick(data) {
 function handleConfirmModal(data) {
   trashConfirmPopup.open();
   trashConfirmPopup.setSubmitFunction(() => {
-    handleDeleteConfirmModal(data.apiData._id);
-    data.removeCard(data.cardElement);
+    api
+      .deleteCard(data.apiData._id)
+      .then(() => {
+        changeSubmitButton(trashModalSubmitButton);
+        trashConfirmPopup.close();
+        data.removeCard(data.cardElement);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        trashModalSubmitButton.textContent = "Yes";
+      });
   });
-}
-
-function handleDeleteConfirmModal(ID) {
-  cards.then((cards) => {
-    cards.forEach((card) => {
-      if (card._id === ID) {
-        api
-          .deleteCard(card._id)
-          .then(() => {
-            changeSubmitButton(trashModalSubmitButton);
-            trashConfirmPopup.close();
-          })
-          .catch((err) => {
-            console.error(err);
-          })
-          .finally(() => {
-            // trashModalSubmitButton.textContent = "Yes";
-          });
-      }
-    });
-  });
-
-  trashConfirmPopup.close();
 }
 
 function handleLikeIconClick(data) {
@@ -167,13 +153,11 @@ function handleLikeIconClick(data) {
 /*---------------------------------------------------*/
 
 profilePenIcon.addEventListener("click", () => {
-  avatarModalSubmitButton.textContent = "Save";
   avatarPopup.open();
   profileAvatarFormValidator.disableButton();
 });
 
 profileEditButton.addEventListener("click", () => {
-  editModalSubmitButton.textContent = "Save";
   const currentUserInfo = userInfo.getUserInfo();
   profilePopup.setInputValues(currentUserInfo);
   profilePopup.open();
@@ -181,7 +165,6 @@ profileEditButton.addEventListener("click", () => {
 });
 
 profileAddButton.addEventListener("click", () => {
-  addModalSubmitButton.textContent = "Create";
   cardPopup.open();
   addFormValidator.disableButton();
 });
@@ -271,7 +254,7 @@ popupImg.setEventListeners();
 
 const trashConfirmPopup = new PopupWithConfirm(
   trashModalClassStg,
-  handleDeleteConfirmModal
+  handleConfirmModal
 );
 trashConfirmPopup.setEventListeners();
 
@@ -300,16 +283,12 @@ api
 /*---------------------------------------------------*/
 /*               Section Constructor                 */
 /*---------------------------------------------------*/
-// To get the size of cardArray outside the getUniqueCards function,
-// you need to handle it asynchronously since getUniqueCards has
-// asynchronous logic inside. You can return a promise from getUniqueCards
-// and then handle it accordingly.
-
-const cards = api.getCards();
 
 const section = new Section(
-  { items: cards, renderer: createCard },
+  { items: null, renderer: createCard },
   ".card__list"
 );
 
-section.renderItems(cards);
+api.getCards().then((cards) => {
+  section.renderItems(cards);
+});
