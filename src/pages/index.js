@@ -50,12 +50,12 @@ const trashModalSubmitButton = trashModal.querySelector(".modal__button");
 /*---------------------------------------------------*/
 
 function handleAvatarFormSubmit(formValues) {
+  avatarPopup.setButtonText(true, avatarModalSubmitButton);
   api
     .patchProfileAvatar(formValues.url)
     .then((object) => {
-      avatarPopup.setButtonText(true, avatarModalSubmitButton);
-      userInfo.setAvatarPic(avatarPic, object.avatar);
       profileAvatarFormValidator.disableButton();
+      userInfo.setAvatarPic(avatarPic, object.avatar);
       avatarPopup.close();
       profileAvatarForm.reset();
     })
@@ -68,12 +68,12 @@ function handleAvatarFormSubmit(formValues) {
 }
 
 function handleProfileFormSubmit(formValues) {
+  profilePopup.setButtonText(true, editModalSubmitButton);
   api
     .patchProfile(formValues.name, formValues.bio)
     .then(() => {
-      profilePopup.setButtonText(true, editModalSubmitButton);
-      userInfo.setUserInfo(formValues.name, formValues.bio);
       editProfileFormValidator.disableButton();
+      userInfo.setUserInfo(formValues.name, formValues.bio);
       profilePopup.close();
     })
     .catch((err) => {
@@ -87,10 +87,11 @@ function handleProfileFormSubmit(formValues) {
 function handleAddCardFormSubmit(formValues) {
   const name = formValues.title;
   const link = formValues.url;
+  cardPopup.setButtonText(true, addModalSubmitButton);
   api
     .postCards({ name, link })
     .then((object) => {
-      cardPopup.setButtonText(true, addModalSubmitButton);
+      addFormValidator.disableButton();
       const element = createCard(object);
       section.addItem(element);
       cardPopup.close();
@@ -111,10 +112,10 @@ function handleImageClick(data) {
 function handleConfirmModal(data) {
   trashConfirmPopup.open();
   trashConfirmPopup.setSubmitFunction(() => {
+    cardPopup.setButtonText(true, trashModalSubmitButton);
     api
       .deleteCard(data.apiData._id)
       .then(() => {
-        cardPopup.setButtonText(true, trashModalSubmitButton);
         trashConfirmPopup.close();
         data.removeCard(data.cardElement);
       })
