@@ -17,6 +17,7 @@ import {
   trashModalClassStg,
   profileNameStg,
   profileBioStg,
+  avatarPicStg,
 } from "../utils/constants.js";
 
 /*---------------------------------------------------*/
@@ -55,7 +56,7 @@ function handleAvatarFormSubmit(formValues) {
     .patchProfileAvatar(formValues.url)
     .then((object) => {
       profileAvatarFormValidator.disableButton();
-      userInfo.setAvatarPic(avatarPic, object.avatar);
+      userInfo.setAvatarPic(object.avatar);
       avatarPopup.close();
       profileAvatarForm.reset();
     })
@@ -68,12 +69,17 @@ function handleAvatarFormSubmit(formValues) {
 }
 
 function handleProfileFormSubmit(formValues) {
+  const currentUserInfo = userInfo.getUserInfo();
   profilePopup.setButtonText(true, editModalSubmitButton);
   api
     .patchProfile(formValues.name, formValues.bio)
     .then(() => {
       editProfileFormValidator.disableButton();
-      userInfo.setUserInfo(formValues.name, formValues.bio);
+      userInfo.setUserInfo(
+        formValues.name,
+        formValues.bio,
+        currentUserInfo.avatar
+      );
       profilePopup.close();
     })
     .catch((err) => {
@@ -199,7 +205,7 @@ function createCard(cardData) {
 /*              UserInfo Constructor                 */
 /*---------------------------------------------------*/
 
-const userInfo = new UserInfo(profileNameStg, profileBioStg);
+const userInfo = new UserInfo(profileNameStg, profileBioStg, avatarPicStg);
 
 /*---------------------------------------------------*/
 /*           FormValidator Constructor               */
@@ -271,8 +277,7 @@ const api = new Api({
 api
   .getProfile()
   .then((data) => {
-    userInfo.setUserInfo(data.name, data.about);
-    avatarPic.src = data.avatar;
+    userInfo.setUserInfo(data.name, data.about, data.avatar);
   })
   .catch((err) => {
     console.error(err);

@@ -45,5 +45,6 @@ export const previewModalClassStg = "#preview-modal";
 export const trashModalClassStg = "#trash-modal";
 export const profileNameStg = ".profile__name";
 export const profileBioStg = ".profile__bio";
+export const avatarPicStg = "#profile__avatar-pic";
 
 export const authorizationCode = "c430f938-707d-41ce-9931-5e6195b9093a";
