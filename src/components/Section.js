@@ -21,7 +21,6 @@ export default class Section {
       const newCard = this._renderer(card);
       this.container.append(newCard);
     });
-    console.log(this.container);
   }
 
   // takes a DOM element and adds it to the container. This method

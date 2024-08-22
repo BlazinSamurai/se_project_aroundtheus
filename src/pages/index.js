@@ -195,10 +195,6 @@ function createCard(cardData) {
   return tempCard;
 }
 
-// function changeSubmitButton(button) {
-//   button.textContent = "Saving . . .";
-// }
-
 /*---------------------------------------------------*/
 /*              UserInfo Constructor                 */
 /*---------------------------------------------------*/
@@ -291,6 +287,11 @@ const section = new Section(
   ".card__list"
 );
 
-api.getCards().then((cards) => {
-  section.renderItems(cards);
-});
+api
+  .getCards()
+  .then((cards) => {
+    section.renderItems(cards);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
