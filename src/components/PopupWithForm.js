@@ -19,6 +19,15 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
+  setButtonText(isLoading, button, btnText = "Saving . . .") {
+    if (isLoading) {
+      button.textContent = btnText;
+      return true;
+    } else {
+      button.textContent = btnText;
+    }
+  }
+
   // which can insert data into inputs
   // So, this way you’ll not have to search the inputs of the profile in index.js
   setInputValues(data) {
@@ -32,13 +41,10 @@ export default class PopupWithForm extends Popup {
   // event listener to the form and call the setEventListeners() method of the
   // parent class.
   setEventListeners() {
-    this._popupForm.addEventListener("submit", (evt) => {
-      evt.preventDefault();
+    super.setEventListeners();
+    this._popupForm.addEventListener("submit", () => {
       const formValues = this._getInputValues();
       this._handleFormSubmit(formValues);
-      this._popupForm.reset();
     });
-    super.setEventListeners();
-    // this._popupForm.reset();
   }
 }

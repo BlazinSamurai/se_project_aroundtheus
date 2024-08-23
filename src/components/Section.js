@@ -16,13 +16,10 @@ export default class Section {
   }
 
   // renders all elements on the page
-  renderItems() {
-    this._items.forEach((item) => {
-      const name = item.name;
-      const altName = item.name;
-      const link = item.link;
-      const newCard = this._renderer({ name, altName, link });
-      this.addItem(newCard);
+  renderItems(cards) {
+    cards.forEach((card) => {
+      const newCard = this._renderer(card);
+      this.container.append(newCard);
     });
   }
 

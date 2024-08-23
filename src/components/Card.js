@@ -1,20 +1,20 @@
 export default class Card {
-  constructor({ name, altName, link }, cardSelector, handleImageClick) {
+  constructor(
+    { name, altName, link, _id },
+    cardSelector,
+    handleImageClick,
+    handleConfirmModal,
+    handleLikeIconClick
+  ) {
     this.name = name;
     this.altName = altName;
     this.link = link;
+    this._id = _id;
 
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
-  }
-
-  _handleLikeIcon() {
-    this._likeButton.classList.toggle("card__button-like_active");
-  }
-
-  _handleDeleteButton() {
-    this.cardElement.remove();
-    this.cardElement = null;
+    this._handleConfirmModal = handleConfirmModal;
+    this._handleLikeIconClick = handleLikeIconClick;
   }
 
   _setCardData() {
@@ -27,11 +27,11 @@ export default class Card {
 
   _setEventListener() {
     this._likeButton.addEventListener("click", () => {
-      this._handleLikeIcon();
+      this._handleLikeIconClick(this);
     });
 
     this._trashButton.addEventListener("click", () => {
-      this._handleDeleteButton();
+      this._handleConfirmModal(this);
     });
 
     this._cardImage.addEventListener("click", () => {
@@ -39,11 +39,34 @@ export default class Card {
     });
   }
 
+  changeHeartIcon(data) {
+    if (data.apiData.isLiked) {
+      this._likeButton.classList.remove("card__button-like_active");
+      data.apiData.isLiked = false;
+    } else {
+      this._likeButton.classList.add("card__button-like_active");
+      data.apiData.isLiked = true;
+    }
+  }
+
+  setHeartIcon(apiData) {
+    this.apiData = apiData;
+    if (apiData.isLiked) {
+      this._likeButton.classList.add("card__button-like_active");
+    }
+  }
+
+  removeCard(card) {
+    card.remove();
+    card = null;
+  }
+
   getView() {
     this.cardElement = document
       .querySelector(this._cardSelector)
       .content.querySelector(".card__section")
       .cloneNode(true);
+
     this._likeButton = this.cardElement.querySelector(".card__button-like");
     this._trashButton = this.cardElement.querySelector(".card__button-trash");
     this._cardImage = this.cardElement.querySelector(".card__image");

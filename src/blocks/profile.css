@@ -4,10 +4,45 @@
   padding-top: 40px;
 }
 
+.hover-container {
+  position: relative;
+  display: inline-block;
+}
+
 .profile__avatar {
   margin-right: 24px;
   max-width: 120px;
   max-height: 120px;
+  border-radius: 50%;
+}
+
+.profile__avatar-cursor {
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.hover-effect {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  height: 120px;
+  width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hover-effect .profile__avatar {
+  width: 26px;
+  height: 26px;
+}
+
+.hover-container:hover .hover-effect {
+  opacity: 1;
 }
 
 .profile__info {
@@ -104,6 +139,11 @@
   .profile__avatar {
     padding: 42px 99px 30px 101px;
     margin: 0;
+  }
+
+  .hover-effect {
+    top: 42px;
+    left: 95px;
   }
 
   .profile__info {
