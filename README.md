@@ -36,9 +36,12 @@
 
 ## Images
 
-The way you'll do this at work is by exporting images directly from Figma — we recommend doing that to practice more. Don't forget to optimize them [here](https://tinypng.com/), so your project loads faster.
-
-![alt text](<src/images/Screenshots - Copy/Screenshot 2024-08-26 174947.png>)
+(<src/images/Screenshots - Copy/Screenshot 2024-08-26 174947.png>)
+(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175308.png>)
+(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175443.png>)
+(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175520.png>)
+(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175147.png>)
+(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175205.png>)
 
 ## Github Page
 
