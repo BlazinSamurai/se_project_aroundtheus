@@ -36,12 +36,12 @@
 
 ## Images
 
-(<src/images/Screenshots - Copy/Screenshot 2024-08-26 174947.png>)
-(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175308.png>)
-(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175443.png>)
-(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175520.png>)
-(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175147.png>)
-(<src/images/Screenshots - Copy/Screenshot 2024-08-26 175205.png>)
+![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 174947.png>)
+![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 175308.png>)
+![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 175443.png>)
+![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 175520.png>)
+![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 175147.png>)
+![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 175205.png>)
 
 ## Github Page
 
