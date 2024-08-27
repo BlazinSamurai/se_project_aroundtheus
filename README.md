@@ -43,11 +43,11 @@
 ![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 175147.png>)
 ![](<src/images/Screenshots - Copy/Screenshot 2024-08-26 175205.png>)
 
-## Github Page
+## Links
+
+Link to server [here](https://blazinsamurai.github.io/se_project_aroundtheus/)
 
 Damian's Github Page [here](https://github.com/BlazinSamurai/se_project_aroundtheus)
-
-## Video Link
 
 Video of me explaining the flex box and grid layouts [here](https://drive.google.com/file/d/1-TwsCNcsvpfXEE-sTDxPrcwjE4PF_rxY/view?usp=drive_link).
 
